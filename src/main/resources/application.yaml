@@ -26,3 +26,21 @@ spring:
     filters: stat, wall, log4j
     # 通过connectProperties属性来打开mergeSql功能，慢SQL记录
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  data:
+    mongodb:
+      uri: mongodb://120.27.145.123:27017/final_work
+  redis:
+    database: 0
+    host: 120.27.145.123
+    port: 6379
+  # ThymeLeaf配置
+  thymeleaf:
+    # 模板的模式，支持 HTML, XML TEXT JAVASCRIPT
+    mode: LEGACYHTML5
+    # 编码 可不用配置
+    encoding: UTF-8
+    # 开发配置为false,避免修改模板还要重启服务器
+    cache: false
+    # 配置模板路径，默认是templates，可以不用配置
+    prefix: classpath:/templates
+    suffix: .html
