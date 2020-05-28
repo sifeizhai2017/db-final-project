@@ -2,6 +2,7 @@ package com.shnu.work;
 
 import com.shnu.work.entity.Student;
 import com.shnu.work.repository.StudentRepository;
+import com.shnu.work.util.RedisUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,9 @@ class WorkApplicationTests {
 
     @Autowired
     StudentRepository studentRepository;
+
+    @Autowired
+    RedisUtils redisUtils;
 
     @Test
     void contextLoads() {
@@ -29,5 +33,11 @@ class WorkApplicationTests {
         student.setGmtModified(new Date());
         Student save = studentRepository.save(student);
         System.out.println("save = " + save);
+    }
+
+    @Test
+    public void testRedis() {
+        boolean set = redisUtils.set("kkk", "vvv");
+        System.out.println("set = " + set);
     }
 }

@@ -125,6 +125,13 @@
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <!-- Java第二API apache的commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/net.sourceforge.nekohtml/nekohtml -->
         <!-- NekoHTML是一个简单地HTML扫描器和标签补偿器（tag balancer）,使得程序能解析HTML文档并用标准的XML接口来访问其中的信息。 -->
         <dependency>
