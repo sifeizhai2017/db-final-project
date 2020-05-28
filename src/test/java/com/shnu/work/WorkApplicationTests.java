@@ -25,14 +25,16 @@ class WorkApplicationTests {
 
     @Test
     public void testJPA() {
-        Student student = new Student();
-        student.setStuAddress("sh");
-        student.setStuAge("23");
-        student.setStuSex("male");
-        student.setStuName("zs");
-        student.setGmtModified(new Date());
-        Student save = studentRepository.save(student);
-        System.out.println("save = " + save);
+//        Student student = new Student();
+//        student.setStuAddress("sh");
+//        student.setStuAge("23");
+//        student.setStuSex("male");
+//        student.setStuName("zs");
+//        student.setGmtModified(new Date());
+//        Student save = studentRepository.save(student);
+//        System.out.println("save = " + save);
+        Iterable<Student> all = studentRepository.findAll();
+        System.out.println("all = " + all);
     }
 
     @Test
