@@ -1,13 +1,11 @@
 package com.shnu.work;
 
-import com.shnu.work.entity.Student;
+import com.google.gson.Gson;
 import com.shnu.work.repository.StudentRepository;
 import com.shnu.work.util.RedisUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Date;
 
 @SpringBootTest
 class WorkApplicationTests {
@@ -17,6 +15,8 @@ class WorkApplicationTests {
 
     @Autowired
     RedisUtils redisUtils;
+
+    Gson gson = new Gson();
 
     @Test
     void contextLoads() {
@@ -34,7 +34,7 @@ class WorkApplicationTests {
 //        Student save = studentRepository.save(student);
 //        System.out.println("save = " + save);
         Iterable<Student> all = studentRepository.findAll();
-        System.out.println("all = " + all);
+        System.out.println("all = " + gson.toJson(all));
     }
 
     @Test

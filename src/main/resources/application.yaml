@@ -53,4 +53,4 @@ logging:
   level:
     root: debug
   file:
-    path: D:/data/log/seller.log
+    path: /tungho/documents/spring.log
