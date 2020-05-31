@@ -1,6 +1,7 @@
 package com.shnu.work.util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +19,9 @@ public class RandomLocationUtils {
      */
     public static Map<String, String> randomLonLat(double MinLon, double MaxLon, double MinLat, double MaxLat) {
         BigDecimal db = new BigDecimal(Math.random() * (MaxLon - MinLon) + MinLon);
-        String lon = db.setScale(6, BigDecimal.ROUND_HALF_UP).toString();
+        String lon = db.setScale(6, RoundingMode.HALF_UP).toString();
         db = new BigDecimal(Math.random() * (MaxLat - MinLat) + MinLat);
-        String lat = db.setScale(6, BigDecimal.ROUND_HALF_UP).toString();
+        String lat = db.setScale(6, RoundingMode.HALF_UP).toString();
         Map<String, String> map = new HashMap<>();
         map.put("J", lon);
         map.put("W", lat);
