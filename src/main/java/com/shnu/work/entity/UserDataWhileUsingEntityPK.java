@@ -5,6 +5,9 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * @author Shinomiya Kaguya
+ */
 public class UserDataWhileUsingEntityPK implements Serializable {
     private static final long serialVersionUID = 5765653977651853097L;
 
@@ -34,8 +37,12 @@ public class UserDataWhileUsingEntityPK implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         UserDataWhileUsingEntityPK that = (UserDataWhileUsingEntityPK) o;
         return deviceId == that.deviceId &&
                 userId == that.userId;

@@ -6,6 +6,8 @@ import java.util.Date;
 
 /**
  * 深度学习传感器用表
+ *
+ * @author Shinomiya Kaguya
  */
 @Entity
 @Table(name = "deep_learning_data_documents", schema = "final_work")

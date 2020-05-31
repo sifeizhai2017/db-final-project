@@ -8,6 +8,7 @@ import java.util.Objects;
 
 /**
  * 管理员账户表
+ * @author Shinomiya Kaguya
  */
 @Entity
 @Table(name = "administration_information", schema = "final_work")

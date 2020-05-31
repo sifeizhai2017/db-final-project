@@ -14,6 +14,8 @@ import java.util.stream.IntStream;
 
 /**
  * 加解密工具类
+ *
+ * @author Shinomiya Kaguya
  */
 public class EncryptUtils {
     public static final String MD5 = "MD5";
@@ -38,7 +40,8 @@ public class EncryptUtils {
 
     public static EncryptUtils ME;
 
-    private EncryptUtils() { }
+    private EncryptUtils() {
+    }
 
     //双重锁
     public static EncryptUtils getInstance() {
@@ -137,15 +140,24 @@ public class EncryptUtils {
         return null;
     }
 
+    /**
+     * base64 encode
+     *
+     * @param res arr
+     * @return
+     */
     private String base64(byte[] res) {
         return Base64.encode(res);
     }
 
     /**
      * 将二进制转换成16进制
+     *
+     * @param buf 二进制arr
+     * @return
      */
     public static String parseByte2HexStr(byte[] buf) {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (byte b : buf) {
             String hex = Integer.toHexString(b & 0xFF);
             if (hex.length() == 1) {
@@ -158,10 +170,13 @@ public class EncryptUtils {
 
     /**
      * 将16进制转换为二进制
+     * @param hexStr 十六进制字符串
+     * @return
      */
     public static byte[] parseHexStr2Byte(String hexStr) {
-        if (hexStr.length() < 1)
+        if (hexStr.length() < 1) {
             return null;
+        }
         byte[] result = new byte[hexStr.length() / 2];
         for (int i = 0; i < hexStr.length() / 2; i++) {
             int high = Integer.parseInt(hexStr.substring(i * 2, i * 2 + 1), 16);

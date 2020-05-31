@@ -8,6 +8,8 @@ import java.util.Date;
 
 /**
  * 用户数据信息表
+ *
+ * @author Shinomiya Kaguya
  */
 @Entity
 @Table(name = "user_data_while_using", schema = "final_work")
