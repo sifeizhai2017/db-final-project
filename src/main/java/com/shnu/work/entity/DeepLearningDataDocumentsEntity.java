@@ -4,30 +4,51 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 深度学习传感器用表
+ */
 @Entity
 @Table(name = "deep_learning_data_documents", schema = "final_work")
 public class DeepLearningDataDocumentsEntity implements Serializable {
     private static final long serialVersionUID = 5442185087549798540L;
+    /**
+     * 暂时未知
+     */
     @Id
     @Column(name = "document_id", nullable = false)
     private long documentId;
 
+    /**
+     * 用户id
+     */
     @Basic
     @Column(name = "user_id", nullable = true)
     private Long userId;
 
+    /**
+     * 设备id
+     */
     @Basic
     @Column(name = "device_id", nullable = true)
     private Long deviceId;
 
+    /**
+     * 设备数据
+     */
     @Basic
     @Column(name = "document_data", nullable = true, length = 255)
     private String documentData;
 
+    /**
+     * 创建时间
+     */
     @Basic
     @Column(name = "create_time", nullable = true)
     private Date createTime;
 
+    /**
+     * 更新时间
+     */
     @Basic
     @Column(name = "update_time", nullable = true)
     private Date updateTime;

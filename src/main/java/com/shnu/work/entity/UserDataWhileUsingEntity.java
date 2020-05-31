@@ -6,47 +6,88 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
+/**
+ * 用户数据信息表
+ */
 @Entity
 @Table(name = "user_data_while_using", schema = "final_work")
 @IdClass(UserDataWhileUsingEntityPK.class)
 public class UserDataWhileUsingEntity implements Serializable {
     private static final long serialVersionUID = -8291610504245525538L;
 
+    /**
+     * 设备id
+     */
     @Id
     @Column(name = "device_id", nullable = false)
     private long deviceId;
+
+    /**
+     * 用户id
+     */
     @Id
     @Column(name = "user_id", nullable = false)
     private long userId;
+
+    /**
+     * 记录位置时间
+     */
     @Basic
     @Column(name = "user_document_time", nullable = true)
     private Timestamp userDocumentTime;
 
+    /**
+     * 经度
+     */
     @Basic
     @Column(name = "user_location_x", nullable = true, precision = 5)
     private BigDecimal userLocationX;
 
+    /**
+     * 纬度
+     */
     @Basic
     @Column(name = "user_location_y", nullable = true, precision = 5)
     private BigDecimal userLocationY;
+
+    /**
+     * 用户名
+     */
     @Basic
     @Column(name = "user_name", nullable = true, length = 255)
     private String userName;
+
+    /**
+     * 紧急联络电话
+     */
     @Basic
     @Column(name = "user_emergency_contact", nullable = true, length = 255)
     private String userEmergencyContact;
+
+    /**
+     * 社保信息
+     */
     @Basic
     @Column(name = "user_health_care_demo", nullable = true, length = 255)
     private String userHealthCareDemo;
 
+    /**
+     * 警告信息
+     */
     @Basic
     @Column(name = "document_alert", nullable = true)
     private Integer documentAlert;
 
+    /**
+     * 创建时间
+     */
     @Basic
     @Column(name = "create_time", nullable = true)
     private Date createTime;
 
+    /**
+     * 更新时间
+     */
     @Basic
     @Column(name = "update_time", nullable = true)
     private Date updateTime;

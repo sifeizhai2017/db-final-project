@@ -4,47 +4,80 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 文档表
+ */
 @Entity
 @Table(name = "system_information", schema = "final_work")
 public class SystemInformationEntity implements Serializable {
     private static final long serialVersionUID = -7481496331560022948L;
 
+    /**
+     * 版本号
+     */
     @Id
     @Column(name = "version_id", nullable = false)
     private long versionId;
 
+    /**
+     * 免责声明
+     */
     @Basic
     @Column(name = "note_of_duty_free", nullable = true, length = 255)
     private String noteOfDutyFree;
 
+    /**
+     * 备用信息2
+     */
     @Basic
     @Column(name = "note_of_2", nullable = true, length = 255)
     private String noteOf2;
 
+    /**
+     * 备用信息3
+     */
     @Basic
     @Column(name = "note_of_3", nullable = true, length = 255)
     private String noteOf3;
 
+    /**
+     * 备用信息4
+     */
     @Basic
     @Column(name = "note_of_4", nullable = true, length = 255)
     private String noteOf4;
 
+    /**
+     * 备用信息5
+     */
     @Basic
     @Column(name = "note_of_5", nullable = true, length = 255)
     private String noteOf5;
 
+    /**
+     * 备用信息6
+     */
     @Basic
     @Column(name = "note_of_6", nullable = true, length = 255)
     private String noteOf6;
 
+    /**
+     * 备用信息7
+     */
     @Basic
     @Column(name = "note_of_7", nullable = true, length = 255)
     private String noteOf7;
 
+    /**
+     * 创建时间
+     */
     @Basic
     @Column(name = "create_time", nullable = true)
     private Date createTime;
 
+    /**
+     * 更新时间
+     */
     @Basic
     @Column(name = "update_time", nullable = true)
     private Date updateTime;

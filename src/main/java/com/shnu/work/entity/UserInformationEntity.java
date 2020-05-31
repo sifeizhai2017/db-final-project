@@ -4,43 +4,73 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * 用户信息表
+ */
 @Entity
 @Table(name = "user_information", schema = "final_work")
 public class UserInformationEntity implements Serializable {
     private static final long serialVersionUID = -157252971123766076L;
 
+    /**
+     * 用户id
+     */
     @Id
     @Column(name = "user_id", nullable = false)
     private long userId;
 
+    /**
+     * 用户名
+     */
     @Basic
     @Column(name = "user_name", nullable = true, length = 255)
     private String userName;
 
+    /**
+     * 用户密码
+     */
     @Basic
     @Column(name = "user_password", nullable = true, length = 255)
     private String userPassword;
 
+    /**
+     * 用户账户
+     */
     @Basic
     @Column(name = "user_account", nullable = true, length = 255)
     private String userAccount;
 
+    /**
+     * 用户性别
+     */
     @Basic
     @Column(name = "user_sex", nullable = true)
     private Byte userSex;
 
+    /**
+     * 用户签名
+     */
     @Basic
     @Column(name = "user_signature", nullable = true, length = -1)
     private Object userSignature;
 
+    /**
+     * 用户设备数量
+     */
     @Basic
     @Column(name = "user_num_of_device", nullable = false)
     private short userNumOfDevice;
 
+    /**
+     * 创建时间
+     */
     @Basic
     @Column(name = "create_time", nullable = true)
     private Date createTime;
 
+    /**
+     * 更新时间
+     */
     @Basic
     @Column(name = "update_time", nullable = true)
     private Date updateTime;
