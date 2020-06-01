@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * @author Shinomiya Kaguya
  */
 @Repository
-public interface DeepLearningDataDocumentsRepository extends CrudRepository<Integer, DeepLearningDataDocumentsEntity> {
+public interface DeepLearningDataDocumentsRepository extends CrudRepository<DeepLearningDataDocumentsEntity, Integer> {
 }

@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * @author Shinomiya Kaguya
  */
 @Repository
-public interface UserDataWhileUsingRepository extends CrudRepository<Integer, UserDataWhileUsingEntity> {
+public interface UserDataWhileUsingRepository extends CrudRepository<UserDataWhileUsingEntity, Integer> {
 }

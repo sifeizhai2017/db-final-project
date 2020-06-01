@@ -157,6 +157,37 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <!-- js和css压缩 -->
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>compress</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <jswarn>false</jswarn>
+                    <nosuffix>true</nosuffix>
+                    <linebreakpos>-1</linebreakpos>
+                    <sourceDirectory>src/main/resources/static</sourceDirectory>
+                    <outputDirectory>target/classes/static</outputDirectory>
+                    <force>true</force>
+                    <includes>
+                        <include>css/**.css</include>
+                        <include>js/**.js</include>
+                    </includes>
+                    <excludes>
+                        <exclude>css/jquery.slider.css</exclude>
+                        <exclude>js/jquery.slider.min.js</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

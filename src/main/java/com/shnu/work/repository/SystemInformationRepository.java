@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * @author Shinomiya Kaguya
  */
 @Repository
-public interface SystemInformationRepository extends CrudRepository<Integer, SystemInformationEntity> {
+public interface SystemInformationRepository extends CrudRepository<SystemInformationEntity, Integer> {
 }
