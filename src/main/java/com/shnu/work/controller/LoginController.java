@@ -74,4 +74,18 @@ public class LoginController {
 
         return modelAndView;
     }
+
+    /**
+     * 管理员登陆
+     *
+     * @param modelAndView ModelAndView
+     * @return 管理后台界面
+     */
+    @RequestMapping(value = "/adminLogin")
+    public ModelAndView adminLogin(ModelAndView modelAndView) {
+        // 暂时不对账号密码进行验证
+        modelAndView.setViewName("/admin");
+
+        return modelAndView;
+    }
 }
