@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author tonghao
@@ -60,20 +58,19 @@ public class LoginController {
     @PostMapping(value = "/saveNewUser")
     public ModelAndView saveNewUser(ModelAndView modelAndView, UserInformationEntity userInformationEntity) {
         Date now = new Date();
-        Map<String, Object> msgMap = new HashMap<>();
         LOGGER.info("user:{}", gson.toJson(userInformationEntity));
         userInformationEntity.setCreateTime(now);
         userInformationEntity.setUpdateTime(now);
+        // 密码加密
         userInformationEntity.setUserPassword(EncryptDecrypt.encrypt(userInformationEntity.getUserPassword(), ENCRYPT_KEY));
         UserInformationEntity returnEntity = userInformationService.saveNewUser(userInformationEntity);
         if (returnEntity != null) {
-            msgMap.put("msg", "err");
-            modelAndView.setViewName("/register");
-        } else {
-            msgMap.put("msg", "success");
+            modelAndView.addObject("msg", "success");
             modelAndView.setViewName("/login");
+        } else {
+            modelAndView.addObject("msg", "err");
+            modelAndView.setViewName("/register");
         }
-        modelAndView.addObject("msgMap", msgMap);
 
         return modelAndView;
     }
