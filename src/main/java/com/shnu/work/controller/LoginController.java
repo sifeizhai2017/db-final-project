@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author tonghao
  */
 @Controller
-public class WelcomeController {
+public class LoginController {
     /**
-     * 测试视图解析器
+     * 通用的登录操作
      */
     @RequestMapping("/")
-    public String welcome() {
-        return "/index";
+    public String commonLogin() {
+        return "/login";
     }
 }

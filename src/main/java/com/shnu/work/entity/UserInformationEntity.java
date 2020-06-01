@@ -54,7 +54,7 @@ public class UserInformationEntity implements Serializable {
      */
     @Basic
     @Column(name = "user_signature", nullable = true, length = -1)
-    private Object userSignature;
+    private String userSignature;
 
     /**
      * 用户设备数量
@@ -117,11 +117,11 @@ public class UserInformationEntity implements Serializable {
         this.userSex = userSex;
     }
 
-    public Object getUserSignature() {
+    public String getUserSignature() {
         return userSignature;
     }
 
-    public void setUserSignature(Object userSignature) {
+    public void setUserSignature(String userSignature) {
         this.userSignature = userSignature;
     }
 

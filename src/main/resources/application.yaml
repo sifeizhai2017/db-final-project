@@ -51,6 +51,6 @@ spring:
 
 logging:
   level:
-    root: debug
+    root: info
   file:
-    path: /tungho/documents/spring.log
+    path: /spring.log
