@@ -8,6 +8,9 @@
     <meta name="generator" content="Jekyll v3.8.6">
     <title>登录</title>
 
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/signin.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/shadow.css}">
 
     <style>
         .bd-placeholder-img {
@@ -24,50 +27,89 @@
                 font-size: 3.5rem;
             }
         }
+
+        @media (max-width: 992px) and (min-width: 768px) {
+            .login-box .form-col {
+                width: 500px;
+                height: 100%;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .login-box img {
+                display: none;
+            }
+
+            .form-signin {
+                width: 100%;
+                max-width: 450px;
+                padding: 15px;
+                margin: auto;
+            }
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 400px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .login-box .img-col {
+            overflow: hidden;
+        }
+
+        .login-box .img-col img {
+            margin-left: -15px;
+            margin-right: -15px;
+            max-height: 500px;
+            /*max-width: 70%;*/
+        }
     </style>
-
-    <link rel="canonical" href="https://v4.bootcss.com/docs/examples/sign-in/">
-
     <!-- Bootstrap core CSS -->
     <link href="webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/signin.css}">
+
 </head>
 <body class="text-center">
-<form class="form-signin">
-    <svg t="1590977332922" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-         p-id="3946" width="72" height="72">
-        <path d="M960 672V160c0-17.6-14.4-32-32-32H544V64h-64v64H96c-17.6 0-32 14.4-32 32v512c0 17.6 14.4 32 32 32h384v50.4l-152.8 89.6 32 56 144-84h19.2l144 84 32-56L544 754.4V704h384c17.6 0 32-14.4 32-32zM790.4 256l41.6 48.8-316.8 270.4L352 437.6 233.6 536.8 192.8 488l160-133.6 163.2 137.6L790.4 256z"
-              p-id="3947"
-              fill="#6f42c1"></path>
-    </svg>
-    <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
-    <label for="inputEmail" class="sr-only">账户</label>
-    <input type="text" id="inputEmail" class="form-control" placeholder="账户" required autofocus>
-    <label for="inputPassword" class="sr-only">密码</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
-<!--    &lt;!&ndash;-->
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" value="remember-me"> 记住我
-        </label>
+<div class="login-box container-fluid">
+    <div class="row shadow-lg">
+        <div class="col-lg-7 clearfix img-col">
+            <img th:src="@{/img/login-img.jpg}" alt="">
+        </div>
+        <div class="col-lg-5 col-xs-12 clearfix form-col">
+            <form class="form-signin">
+                <svg t="1590977332922" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                     xmlns="http://www.w3.org/2000/svg"
+                     p-id="3946" width="72" height="72">
+                    <path d="M960 672V160c0-17.6-14.4-32-32-32H544V64h-64v64H96c-17.6 0-32 14.4-32 32v512c0 17.6 14.4 32 32 32h384v50.4l-152.8 89.6 32 56 144-84h19.2l144 84 32-56L544 754.4V704h384c17.6 0 32-14.4 32-32zM790.4 256l41.6 48.8-316.8 270.4L352 437.6 233.6 536.8 192.8 488l160-133.6 163.2 137.6L790.4 256z"
+                          p-id="3947"
+                          fill="#6f42c1"></path>
+                </svg>
+                <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+                <label for="inputEmail" class="sr-only">账户</label>
+                <input type="text" id="inputEmail" class="form-control" placeholder="账户" required autofocus>
+                <label for="inputPassword" class="sr-only">密码</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+                <br>
+                <div class="container btn-container">
+                    <div class="row clearfix" style="margin-bottom: 2px;">
+                        <button class="btn btn-primary col-12 btn-block" type="submit">登录</button>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-success col-12 btn-block" type="submit">管理员登录</button>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <a href="/register" class="col-12 btn btn-link" id="registerLink">暂无账号？注册</a>
+                    </div>
+                </div>
+                <br>
+                <p class="mt-5 mb-3 text-muted">&copy; 2020-2020 能力有限公司</p>
+            </form>
+        </div>
     </div>
-<!--    &ndash;&gt;-->
-    <div class="container btn-container">
-        <div class="row clearfix" style="margin-bottom: 2px;">
-            <button class="btn btn-primary col-12 btn-block" type="submit">登录</button>
-        </div>
-        <div class="row">
-            <button class="btn btn-success col-12 btn-block" type="submit">管理员登录</button>
-        </div>
-        <hr>
-        <div class="row">
-            <a href="/register" class="col-12 btn btn-link" id="registerLink">暂无账号？注册</a>
-        </div>
-    </div>
-    <br>
-    <p class="mt-5 mb-3 text-muted">&copy; 2020-2020 能力有限公司</p>
-</form>
+</div>
+
 </body>
 </html>
