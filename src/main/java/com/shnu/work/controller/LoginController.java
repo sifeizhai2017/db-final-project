@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -50,26 +50,20 @@ public class LoginController {
     /**
      * 新增用户
      *
-     * @return
-     * @RequestParam model
+     * @param modelAndView          ModelAndView
+     * @param userInformationEntity 要插入表的用户
+     * @return 跳转地址
      */
-    @RequestMapping("/saveNewUser")
-    public String saveNewUser(Model model, @RequestParam("userName") String userName, @RequestParam("userPassword") String userPassword, @RequestParam("userAccount") String userAccount,
-                              @RequestParam("userSex") String userSex, @RequestParam("userSignature") String userSignature, @RequestParam("userNumOfDevice") String userNumOfDevice) {
+    @PostMapping(value = "/saveNewUser")
+    public String saveNewUser(ModelAndView modelAndView, UserInformationEntity userInformationEntity) {
+        Date now = new Date();
         Map<String, Object> msgMap = new HashMap<>();
-        UserInformationEntity user = new UserInformationEntity();
-        user.setUserName(userName);
-        user.setUserPassword(userPassword);
-        user.setUserPassword(userAccount);
-        user.setUserSex((byte) ("男".equals(userSex) ? 1 : 0));
-        user.setUserSignature(userSignature);
-//        user.setUserNumOfDevice(Short.parseShort(userNumOfDevice));
-        user.setCreateTime(new Date());
-        user.setUpdateTime(new Date());
-        LOGGER.info("saveNewUser:{}", gson.toJson(user));
-        UserInformationEntity returnEntity = userInformationService.saveNewUser(user);
+        LOGGER.info("user:{}", gson.toJson(userInformationEntity));
+        userInformationEntity.setCreateTime(now);
+        userInformationEntity.setUpdateTime(now);
+        UserInformationEntity returnEntity = userInformationService.saveNewUser(userInformationEntity);
         msgMap.put("msg", returnEntity == null ? "注册失败" : "注册成功");
-        model.addAttribute("msgMap", msgMap);
+        modelAndView.addObject("msgMap", msgMap);
 
         return "/login";
     }

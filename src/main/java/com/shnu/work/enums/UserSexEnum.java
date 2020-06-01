@@ -1,6 +1,10 @@
 package com.shnu.work.enums;
 
+import java.util.Arrays;
+
 /**
+ * 性别枚举类
+ *
  * @author Shinomiya Kaguya
  */
 public enum UserSexEnum {
@@ -35,5 +39,9 @@ public enum UserSexEnum {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public static UserSexEnum getEmByKey(Integer key) {
+        return Arrays.stream(UserSexEnum.values()).filter(em -> key.equals(em.getKey())).findFirst().orElse(null);
     }
 }
