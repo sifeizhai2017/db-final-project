@@ -3,6 +3,7 @@ package com.shnu.work.controller;
 import com.google.gson.Gson;
 import com.shnu.work.entity.UserInformationEntity;
 import com.shnu.work.service.IUserInformationService;
+import com.spoon.pass.encrypt.EncryptDecrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class LoginController {
     private final static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     private final Gson gson = new Gson();
+
+    private final String ENCRYPT_KEY = "developedByTongHao";
 
     /**
      * 通用的登录操作
@@ -61,6 +64,7 @@ public class LoginController {
         LOGGER.info("user:{}", gson.toJson(userInformationEntity));
         userInformationEntity.setCreateTime(now);
         userInformationEntity.setUpdateTime(now);
+        userInformationEntity.setUserPassword(EncryptDecrypt.encrypt(userInformationEntity.getUserPassword(), ENCRYPT_KEY));
         UserInformationEntity returnEntity = userInformationService.saveNewUser(userInformationEntity);
         msgMap.put("msg", returnEntity == null ? "注册失败" : "注册成功");
         modelAndView.addObject("msgMap", msgMap);

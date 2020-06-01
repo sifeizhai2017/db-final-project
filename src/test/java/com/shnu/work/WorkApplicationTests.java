@@ -3,6 +3,7 @@ package com.shnu.work;
 import com.google.gson.Gson;
 import com.shnu.work.util.RandomLocationUtils;
 import com.shnu.work.util.RedisUtils;
+import com.spoon.pass.encrypt.EncryptDecrypt;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,17 +24,12 @@ class WorkApplicationTests {
     }
 
     @Test
-    public void testJPA() {
-//        Student student = new Student();
-//        student.setStuAddress("sh");
-//        student.setStuAge("23");
-//        student.setStuSex("male");
-//        student.setStuName("zs");
-//        student.setGmtModified(new Date());
-//        Student save = studentRepository.save(student);
-//        System.out.println("save = " + save);
-//        Iterable<Student> all = studentRepository.findAll();
-//        System.out.println("all = " + gson.toJson(all));
+    public void testEncrypt() {
+        String ENCRYPT_KEY = "developedByTongHao";
+        String encrypt = EncryptDecrypt.encrypt("123456", ENCRYPT_KEY);
+        System.out.println("encrypt = " + encrypt);
+        String decrypt = EncryptDecrypt.decrypt(encrypt, ENCRYPT_KEY);
+        System.out.println("decrypt = " + decrypt);
     }
 
     @Test

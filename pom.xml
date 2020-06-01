@@ -149,6 +149,13 @@
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
         </dependency>
+        <!-- 加密 -->
+        <!-- https://mvnrepository.com/artifact/com.wcg.field.encrypt/encrypt-api -->
+        <dependency>
+            <groupId>com.wcg.field.encrypt</groupId>
+            <artifactId>encrypt-api</artifactId>
+            <version>0.0.4</version>
+        </dependency>
     </dependencies>
 
     <build>
