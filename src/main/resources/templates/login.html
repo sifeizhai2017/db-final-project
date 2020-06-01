@@ -8,10 +8,6 @@
     <meta name="generator" content="Jekyll v3.8.6">
     <title>登录</title>
 
-    <link rel="canonical" href="https://v4.bootcss.com/docs/examples/sign-in/">
-
-    <!-- Bootstrap core CSS -->
-    <link href="webjars/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
         .bd-placeholder-img {
@@ -29,6 +25,12 @@
             }
         }
     </style>
+
+    <link rel="canonical" href="https://v4.bootcss.com/docs/examples/sign-in/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+
     <!-- Custom styles for this template -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/signin.css}">
 </head>
@@ -52,18 +54,19 @@
         </label>
     </div>
     -->
-    <div class="container">
-        <div class="row mt-1">
-            <button class="btn btn-primary col-12" type="submit">登录</button>
+    <div class="container btn-container">
+        <div class="row clearfix" style="margin-bottom: 2px;">
+            <button class="btn btn-lg btn-primary col-12 btn-block" type="submit">登录</button>
         </div>
-        <div class="row mt-1">
-            <button class="btn btn-success col-12" type="submit">管理员登录</button>
+        <div class="row">
+            <button class="btn btn-lg btn-success col-12 btn-block" type="submit">管理员登录</button>
         </div>
         <hr>
         <div class="row">
-            <a href="/" class="col-12" id="registerLink">暂无账号？注册</a>
+            <a href="/" class="col-12 btn btn-link" id="registerLink">暂无账号？注册</a>
         </div>
     </div>
+    <br>
     <p class="mt-5 mb-3 text-muted">&copy; 2020-2020 能力有限公司</p>
 </form>
 </body>

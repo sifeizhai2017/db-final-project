@@ -48,8 +48,12 @@ body {
     border-top-right-radius: 0;
 }
 
-#registerLink {
-    font-size: 15px;
-    color: gray;
-    text-decoration: none;
+.form-signin .btn-container {
+    width: 100%;
 }
+
+/*.form-signin #registerLink {*/
+/*    font-size: 15px;*/
+/*    color: gray;*/
+/*    text-decoration: none;*/
+/*}*/
