@@ -58,7 +58,7 @@ public class LoginController {
      * @return 跳转地址
      */
     @PostMapping(value = "/saveNewUser")
-    public String saveNewUser(ModelAndView modelAndView, UserInformationEntity userInformationEntity) {
+    public ModelAndView saveNewUser(ModelAndView modelAndView, UserInformationEntity userInformationEntity) {
         Date now = new Date();
         Map<String, Object> msgMap = new HashMap<>();
         LOGGER.info("user:{}", gson.toJson(userInformationEntity));
@@ -66,9 +66,15 @@ public class LoginController {
         userInformationEntity.setUpdateTime(now);
         userInformationEntity.setUserPassword(EncryptDecrypt.encrypt(userInformationEntity.getUserPassword(), ENCRYPT_KEY));
         UserInformationEntity returnEntity = userInformationService.saveNewUser(userInformationEntity);
-        msgMap.put("msg", returnEntity == null ? "注册失败" : "注册成功");
+        if (returnEntity != null) {
+            msgMap.put("msg", "err");
+            modelAndView.setViewName("/register");
+        } else {
+            msgMap.put("msg", "success");
+            modelAndView.setViewName("/login");
+        }
         modelAndView.addObject("msgMap", msgMap);
 
-        return "/login";
+        return modelAndView;
     }
 }

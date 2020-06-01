@@ -83,5 +83,35 @@
     <p class="mt-5 mb-3 text-muted">&copy; 2020-2020 能力有限公司</p>
 </form>
 </body>
+<!-- 模态框，如果注册失败则会显示该模态框 -->
+<div class="modal fade myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">失败</h4>
+            </div>
+            <div class="modal-body">
+                <p>注册失败，请重试</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger">重试</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script>
+    $.ajax({
+        type: "post",
+        url: "/saveNewUser",
+        data: {},
+        async: false,
+        success: function (data) {
+            data = jQuery.parseJSON(data);
+            console.log(data);
+        }
+    });
+</script>
 <script th:src="@{/js/registerValidate.js}"></script>
 </html>
