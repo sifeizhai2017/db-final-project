@@ -31,6 +31,12 @@
                 font-size: 3.5rem;
             }
         }
+
+        .middle {
+            float: none;
+            display: inline-block;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -113,30 +119,35 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-5">
+                        <img src="/img/login-img.jpg" class="img-responsive img-thumbnail center-block"
+                             alt="Responsive image">
+                        <br>
+                    </div>
+                    <div class="col-lg-5">
                         <form>
                             <div class="form-group">
                                 <label for="userName">用户名</label>
-                                <input type="text" class="form-control" id="userName" placeholder="用户名">
+                                <input type="text" th:placeholder="${userInfo.getUserName()}" class="form-control" id="userName" placeholder="用户名">
                             </div>
                             <div class="form-group">
                                 <label for="userId">ID</label>
-                                <input type="text" class="form-control" id="userId" placeholder="用户ID" disabled>
+                                <input type="text" th:placeholder="${userInfo.getUserId()}" class="form-control" id="userId" placeholder="用户ID" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="userAccount">账号</label>
-                                <input type="text" id="userAccount" class="form-control" placeholder="账号" disabled>
+                                <input type="text" th:placeholder="${userInfo.getUserAccount()}" id="userAccount" class="form-control" placeholder="账号" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="userSignature">用户签名</label>
-                                <textarea rows="3" type="text" id="userSignature" class="form-control"
-                                          placeholder="用户签名"></textarea>
+                                <textarea rows="3" type="text" th:placeholder="${userInfo.getUserSignature()}" id="userSignature" class="form-control"
+                                          placeholder="用户签名" style="resize:none;"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="userSex">用户性别</label><br>
                                 <div class="btn-group" id="userSex" role="group" aria-label="...">
-                                    <button type="button" class="btn btn-primary">男</button>
-                                    <button type="button" class="btn btn-default">女</button>
-                                    <button type="button" class="btn btn-default">保密</button>
+                                    <button type="button" id="btnMale" class="btn" th:classappend="${userInfo.getUserSex()==1} ? 'btn-primary' : 'btn-default'">男</button>
+                                    <button type="button" id="btnFemale" class="btn" th:classappend="${userInfo.getUserSex()==0} ? 'btn-primary' : 'btn-default'">女</button>
+                                    <button type="button" id="btnSecret" class="btn btn-default">保密</button>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -146,13 +157,39 @@
                             <button type="submit" class="btn btn-primary center-block">修改</button>
                         </form>
                     </div>
-                    <div class="col-lg-5">
-                        <img th:src="@{/img/info-img.jpg}" alt="">
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 </body>
+<script>
+    const btnMale = document.getElementById("btnMale");
+    const btnFemale = document.getElementById("btnFemale");
+    const btnSecret = document.getElementById("btnSecret");
+    btnMale.onclick = function () {
+        btnMale.classList.add("btn-primary");
+        btnMale.classList.remove("btn-default");
+        btnFemale.classList.add("btn-default");
+        btnFemale.classList.remove("btn-primary");
+        btnSecret.classList.add("btn-default");
+        btnSecret.classList.remove("btn-primary");
+    }
+    btnFemale.onclick = function () {
+        btnFemale.classList.add("btn-primary");
+        btnFemale.classList.remove("btn-default");
+        btnMale.classList.add("btn-default");
+        btnMale.classList.remove("btn-primary");
+        btnSecret.classList.add("btn-default");
+        btnSecret.classList.remove("btn-primary");
+    }
+    btnSecret.onclick = function () {
+        btnSecret.classList.add("btn-primary");
+        btnSecret.classList.remove("btn-default");
+        btnMale.classList.add("btn-default");
+        btnMale.classList.remove("btn-primary");
+        btnFemale.classList.add("btn-default");
+        btnFemale.classList.remove("btn-primary");
+    }
+</script>
 </html>

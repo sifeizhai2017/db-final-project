@@ -29,8 +29,9 @@ public class UserController {
     @RequestMapping("/getUserInfo")
     public ModelAndView getUserInfo(ModelAndView modelAndView, HttpSession session) {
         String loginUser = (String) session.getAttribute("login_user");
-        UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
+        UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount("woshinidie");
 
+        modelAndView.addObject("userInfo", userInfo);
         modelAndView.setViewName("/userinfo");
         return modelAndView;
     }
