@@ -20,7 +20,7 @@ class WorkApplicationTests {
 
     @Test
     void contextLoads() {
-
+        System.out.println("多仓库测试");
     }
 
     @Test
