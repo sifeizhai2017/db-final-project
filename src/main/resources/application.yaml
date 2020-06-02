@@ -48,9 +48,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-
+  mvc:
+    static-path-pattern: /static/**
 logging:
   level:
-    root: debug
+    root: INFO
   file:
     path: /spring.log

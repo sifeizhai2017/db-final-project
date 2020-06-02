@@ -9,8 +9,9 @@
     <title>登录</title>
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/signin.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/shadow.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/signin.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/fcicon.css" th:href="@{/static//css/fcicon.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/shadow.css}">
 
     <style>
         .bd-placeholder-img {
@@ -62,30 +63,26 @@
         .login-box .img-col img {
             margin-left: -15px;
             margin-right: -15px;
-            max-height: 500px;
+            max-height: 550px;
             /*max-width: 70%;*/
         }
     </style>
     <!-- Bootstrap core CSS -->
     <link href="webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
-
-
 </head>
 <body class="text-center">
+
 <div class="login-box container-fluid">
+    <div class="alert alert-info alert-dismissible fade in" role="alert">
+        校徽字体源于<strong>封尘</strong><br>项目地址：https://gitee.com/lovefc/china_school_badge
+    </div>
     <div class="row shadow-lg">
         <div class="col-lg-7 clearfix img-col">
-            <img th:src="@{/img/login-img.jpg}" alt="">
+            <img th:src="@{/static/img/login-img.jpg}" alt="">
         </div>
         <div class="col-lg-5 col-xs-12 clearfix form-col">
             <form class="form-signin" method="post" action="/userLogin">
-                <svg t="1590977332922" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                     xmlns="http://www.w3.org/2000/svg"
-                     p-id="3946" width="72" height="72">
-                    <path d="M960 672V160c0-17.6-14.4-32-32-32H544V64h-64v64H96c-17.6 0-32 14.4-32 32v512c0 17.6 14.4 32 32 32h384v50.4l-152.8 89.6 32 56 144-84h19.2l144 84 32-56L544 754.4V704h384c17.6 0 32-14.4 32-32zM790.4 256l41.6 48.8-316.8 270.4L352 437.6 233.6 536.8 192.8 488l160-133.6 163.2 137.6L790.4 256z"
-                          p-id="3947"
-                          fill="#6f42c1"></path>
-                </svg>
+                <i class="fc-icon-shnu fc-icon-da" style="color: #2a645a; font-size: 120px !important;"></i>
                 <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
                 <label for="userAccount" class="sr-only">账户</label>
                 <input type="text" name="userAccount" id="userAccount" class="form-control" placeholder="账户" required autofocus>
