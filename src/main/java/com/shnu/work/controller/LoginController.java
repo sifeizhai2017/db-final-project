@@ -102,15 +102,22 @@ public class LoginController {
      */
     @RequestMapping(value = "/userLogin")
     public ModelAndView userLogin(HttpSession session, ModelAndView modelAndView, @Param("userAccount") String userAccount, @Param("userPassword") String userPassword) {
-        UserInformationEntity userAccountEntity = userInformationService.getUserInformationEntityByUserAccount(userAccount);
-        String decryptPassword = EncryptDecrypt.decrypt(userAccountEntity.getUserPassword(), ENCRYPT_KEY);
-        if (userPassword.equals(decryptPassword)) {
-            modelAndView.addObject("msg", "success");
-            modelAndView.setViewName("/index");
-            //todo: 同时在session和redis中放入用户信息。参考：https://www.cnblogs.com/leeego-123/p/10476855.html
-            session.setAttribute("login_user", userAccount);
-            redisUtils.set("login_user", gson.toJson(userAccountEntity));
-        } else {
+        try {
+            UserInformationEntity userAccountEntity = userInformationService.getUserInformationEntityByUserAccount(userAccount);
+            LOGGER.info("userAccountEntity:{}", gson.toJson(userAccountEntity));
+            String decryptPassword = EncryptDecrypt.decrypt(userAccountEntity.getUserPassword(), ENCRYPT_KEY);
+            if (!userPassword.equals(decryptPassword)) {
+                modelAndView.addObject("msg", "error");
+                modelAndView.setViewName("/login");
+            } else {
+                modelAndView.addObject("msg", "success");
+                modelAndView.setViewName("/index");
+                //todo: 同时在session和redis中放入用户信息。参考：https://www.cnblogs.com/leeego-123/p/10476855.html
+                session.setAttribute("login_user", userAccount);
+                redisUtils.set("login_user", gson.toJson(userAccountEntity));
+            }
+        } catch (Exception e) {
+            LOGGER.error("登录出错，userAccount:{}，userPassword:{}", userAccount, userPassword);
             modelAndView.addObject("msg", "error");
             modelAndView.setViewName("/login");
         }
