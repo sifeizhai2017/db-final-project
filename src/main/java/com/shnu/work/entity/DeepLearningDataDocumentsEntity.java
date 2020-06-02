@@ -1,60 +1,28 @@
 package com.shnu.work.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
-/**
- * 深度学习传感器用表
- *
- * @author Shinomiya Kaguya
- */
 @Entity
-@Table(name = "deep_learning_data_documents", schema = "final_work")
-public class DeepLearningDataDocumentsEntity implements Serializable {
-    private static final long serialVersionUID = 5442185087549798540L;
-    /**
-     * 暂时未知
-     */
-    @Id
-    @Column(name = "document_id", nullable = false)
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "deep_learning_data_documents", schema = "final_work", catalog = "")
+public class DeepLearningDataDocumentsEntity {
     private long documentId;
-
-    /**
-     * 用户id
-     */
-    @Basic
-    @Column(name = "user_id", nullable = true)
     private Long userId;
-
-    /**
-     * 设备id
-     */
-    @Basic
-    @Column(name = "device_id", nullable = true)
     private Long deviceId;
-
-    /**
-     * 设备数据
-     */
-    @Basic
-    @Column(name = "document_data", nullable = true, length = 255)
     private String documentData;
-
-    /**
-     * 创建时间
-     */
-    @Basic
-    @Column(name = "create_time", nullable = true)
+    @CreatedDate
     private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @Basic
-    @Column(name = "update_time", nullable = true)
+    @LastModifiedDate
     private Date updateTime;
 
+    @Id
+    @Column(name = "document_id", nullable = false)
     public long getDocumentId() {
         return documentId;
     }
@@ -63,6 +31,8 @@ public class DeepLearningDataDocumentsEntity implements Serializable {
         this.documentId = documentId;
     }
 
+    @Basic
+    @Column(name = "user_id", nullable = true)
     public Long getUserId() {
         return userId;
     }
@@ -71,6 +41,8 @@ public class DeepLearningDataDocumentsEntity implements Serializable {
         this.userId = userId;
     }
 
+    @Basic
+    @Column(name = "device_id", nullable = true)
     public Long getDeviceId() {
         return deviceId;
     }
@@ -79,6 +51,8 @@ public class DeepLearningDataDocumentsEntity implements Serializable {
         this.deviceId = deviceId;
     }
 
+    @Basic
+    @Column(name = "document_data", nullable = true, length = 255)
     public String getDocumentData() {
         return documentData;
     }
@@ -87,6 +61,8 @@ public class DeepLearningDataDocumentsEntity implements Serializable {
         this.documentData = documentData;
     }
 
+    @Basic
+    @Column(name = "create_time", nullable = true)
     public Date getCreateTime() {
         return createTime;
     }
@@ -95,6 +71,8 @@ public class DeepLearningDataDocumentsEntity implements Serializable {
         this.createTime = createTime;
     }
 
+    @Basic
+    @Column(name = "update_time", nullable = true)
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -104,14 +82,20 @@ public class DeepLearningDataDocumentsEntity implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "DeepLearningDataDocumentsEntity{" +
-                "documentId=" + documentId +
-                ", userId=" + userId +
-                ", deviceId=" + deviceId +
-                ", documentData='" + documentData + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DeepLearningDataDocumentsEntity that = (DeepLearningDataDocumentsEntity) o;
+        return documentId == that.documentId &&
+                Objects.equals(userId, that.userId) &&
+                Objects.equals(deviceId, that.deviceId) &&
+                Objects.equals(documentData, that.documentData) &&
+                Objects.equals(createTime, that.createTime) &&
+                Objects.equals(updateTime, that.updateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(documentId, userId, deviceId, documentData, createTime, updateTime);
     }
 }

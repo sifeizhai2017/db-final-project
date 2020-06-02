@@ -1,62 +1,28 @@
 package com.shnu.work.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
-import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
-/**
- * 管理员账户表
- * @author Shinomiya Kaguya
- */
 @Entity
-@Table(name = "administration_information", schema = "final_work")
-public class AdministrationInformationEntity implements Serializable {
-    private static final long serialVersionUID = -862196286696782038L;
-
-    /**
-     * 管理员id
-     */
-    @Id
-    @Column(name = "administration_id", nullable = false)
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "administration_information", schema = "final_work", catalog = "")
+public class AdministrationInformationEntity {
     private long administrationId;
-
-    /**
-     * 管理员名字
-     */
-    @Basic
-    @Column(name = "administration_name", nullable = true, length = 255)
     private String administrationName;
-
-    /**
-     * 管理员密码
-     */
-    @Basic
-    @Column(name = "administration_password", nullable = true, length = 255)
     private String administrationPassword;
-
-    /**
-     * 管理员账号
-     */
-    @Basic
-    @Column(name = "administration_account", nullable = true, length = 255)
     private String administrationAccount;
-
-    /**
-     * 创建时间
-     */
-    @Basic
-    @Column(name = "create_time", nullable = true)
+    @CreatedDate
+    private Date createTime;
+    @LastModifiedDate
     private Date updateTime;
 
-    /**
-     * 修改时间
-     */
-    @Basic
-    @Column(name = "update_time", nullable = true)
-    private Date createTime;
-
+    @Id
+    @Column(name = "administration_id", nullable = false)
     public long getAdministrationId() {
         return administrationId;
     }
@@ -65,6 +31,8 @@ public class AdministrationInformationEntity implements Serializable {
         this.administrationId = administrationId;
     }
 
+    @Basic
+    @Column(name = "administration_name", nullable = true, length = 255)
     public String getAdministrationName() {
         return administrationName;
     }
@@ -73,6 +41,8 @@ public class AdministrationInformationEntity implements Serializable {
         this.administrationName = administrationName;
     }
 
+    @Basic
+    @Column(name = "administration_password", nullable = true, length = 255)
     public String getAdministrationPassword() {
         return administrationPassword;
     }
@@ -81,6 +51,8 @@ public class AdministrationInformationEntity implements Serializable {
         this.administrationPassword = administrationPassword;
     }
 
+    @Basic
+    @Column(name = "administration_account", nullable = true, length = 255)
     public String getAdministrationAccount() {
         return administrationAccount;
     }
@@ -89,14 +61,8 @@ public class AdministrationInformationEntity implements Serializable {
         this.administrationAccount = administrationAccount;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
+    @Basic
+    @Column(name = "create_time", nullable = true)
     public Date getCreateTime() {
         return createTime;
     }
@@ -105,15 +71,31 @@ public class AdministrationInformationEntity implements Serializable {
         this.createTime = createTime;
     }
 
+    @Basic
+    @Column(name = "update_time", nullable = true)
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     @Override
-    public String toString() {
-        return "AdministrationInformationEntity{" +
-                "administrationId=" + administrationId +
-                ", administrationName='" + administrationName + '\'' +
-                ", administrationPassword='" + administrationPassword + '\'' +
-                ", administrationAccount='" + administrationAccount + '\'' +
-                ", updateTime=" + updateTime +
-                ", createTime=" + createTime +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AdministrationInformationEntity that = (AdministrationInformationEntity) o;
+        return administrationId == that.administrationId &&
+                Objects.equals(administrationName, that.administrationName) &&
+                Objects.equals(administrationPassword, that.administrationPassword) &&
+                Objects.equals(administrationAccount, that.administrationAccount) &&
+                Objects.equals(createTime, that.createTime) &&
+                Objects.equals(updateTime, that.updateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(administrationId, administrationName, administrationPassword, administrationAccount, createTime, updateTime);
     }
 }

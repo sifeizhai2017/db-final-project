@@ -78,7 +78,7 @@
             <img th:src="@{/img/login-img.jpg}" alt="">
         </div>
         <div class="col-lg-5 col-xs-12 clearfix form-col">
-            <form class="form-signin" method="post">
+            <form class="form-signin" method="post" action="/userLogin">
                 <svg t="1590977332922" class="icon" viewBox="0 0 1024 1024" version="1.1"
                      xmlns="http://www.w3.org/2000/svg"
                      p-id="3946" width="72" height="72">
@@ -87,10 +87,10 @@
                           fill="#6f42c1"></path>
                 </svg>
                 <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
-                <label for="inputEmail" class="sr-only">账户</label>
-                <input type="text" id="inputEmail" class="form-control" placeholder="账户" required autofocus>
-                <label for="inputPassword" class="sr-only">密码</label>
-                <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+                <label for="userAccount" class="sr-only">账户</label>
+                <input type="text" name="userAccount" id="userAccount" class="form-control" placeholder="账户" required autofocus>
+                <label for="userPassword" class="sr-only">密码</label>
+                <input type="password" name="userPassword" id="userPassword" class="form-control" placeholder="密码" required>
                 <br>
                 <div class="container btn-container">
                     <div class="row clearfix" style="margin-bottom: 2px;">

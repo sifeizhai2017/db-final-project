@@ -3,7 +3,9 @@ package com.shnu.work.controller;
 import com.google.gson.Gson;
 import com.shnu.work.entity.UserInformationEntity;
 import com.shnu.work.service.IUserInformationService;
+import com.shnu.work.util.RedisUtils;
 import com.spoon.pass.encrypt.EncryptDecrypt;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Date;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author tonghao
@@ -21,6 +23,9 @@ import java.util.Date;
 public class LoginController {
     @Autowired
     IUserInformationService userInformationService;
+
+    @Autowired
+    RedisUtils redisUtils;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
@@ -57,10 +62,10 @@ public class LoginController {
      */
     @PostMapping(value = "/saveNewUser")
     public ModelAndView saveNewUser(ModelAndView modelAndView, UserInformationEntity userInformationEntity) {
-        Date now = new Date();
+//        Date now = new Date();
         LOGGER.info("user:{}", gson.toJson(userInformationEntity));
-        userInformationEntity.setCreateTime(now);
-        userInformationEntity.setUpdateTime(now);
+//        userInformationEntity.setCreateTime(now);
+//        userInformationEntity.setUpdateTime(now);
         // 密码加密
         userInformationEntity.setUserPassword(EncryptDecrypt.encrypt(userInformationEntity.getUserPassword(), ENCRYPT_KEY));
         UserInformationEntity returnEntity = userInformationService.saveNewUser(userInformationEntity);
@@ -85,6 +90,30 @@ public class LoginController {
     public ModelAndView adminLogin(ModelAndView modelAndView) {
         // 暂时不对账号密码进行验证
         modelAndView.setViewName("/admin");
+
+        return modelAndView;
+    }
+
+    /**
+     * 用户登陆
+     *
+     * @param modelAndView ModelAndView
+     * @return 主界面
+     */
+    @RequestMapping(value = "/userLogin")
+    public ModelAndView userLogin(HttpSession session, ModelAndView modelAndView, @Param("userAccount") String userAccount, @Param("userPassword") String userPassword) {
+        UserInformationEntity userAccountEntity = userInformationService.getUserInformationEntityByUserAccount(userAccount);
+        String decryptPassword = EncryptDecrypt.decrypt(userAccountEntity.getUserPassword(), ENCRYPT_KEY);
+        if (userPassword.equals(decryptPassword)) {
+            modelAndView.addObject("msg", "success");
+            modelAndView.setViewName("/index");
+            //todo: 同时在session和redis中放入用户信息。参考：https://www.cnblogs.com/leeego-123/p/10476855.html
+            session.setAttribute("login_user", userAccount);
+            redisUtils.set("login_user", gson.toJson(userAccountEntity));
+        } else {
+            modelAndView.addObject("msg", "error");
+            modelAndView.setViewName("/login");
+        }
 
         return modelAndView;
     }

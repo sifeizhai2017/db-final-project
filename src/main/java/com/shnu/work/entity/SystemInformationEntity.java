@@ -1,89 +1,32 @@
 package com.shnu.work.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
-/**
- * 文档表
- *
- * @author Shinomiya Kaguya
- */
 @Entity
-@Table(name = "system_information", schema = "final_work")
-public class SystemInformationEntity implements Serializable {
-    private static final long serialVersionUID = -7481496331560022948L;
-
-    /**
-     * 版本号
-     */
-    @Id
-    @Column(name = "version_id", nullable = false)
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "system_information", schema = "final_work", catalog = "")
+public class SystemInformationEntity {
     private long versionId;
-
-    /**
-     * 免责声明
-     */
-    @Basic
-    @Column(name = "note_of_duty_free", nullable = true, length = 255)
     private String noteOfDutyFree;
-
-    /**
-     * 备用信息2
-     */
-    @Basic
-    @Column(name = "note_of_2", nullable = true, length = 255)
     private String noteOf2;
-
-    /**
-     * 备用信息3
-     */
-    @Basic
-    @Column(name = "note_of_3", nullable = true, length = 255)
     private String noteOf3;
-
-    /**
-     * 备用信息4
-     */
-    @Basic
-    @Column(name = "note_of_4", nullable = true, length = 255)
     private String noteOf4;
-
-    /**
-     * 备用信息5
-     */
-    @Basic
-    @Column(name = "note_of_5", nullable = true, length = 255)
     private String noteOf5;
-
-    /**
-     * 备用信息6
-     */
-    @Basic
-    @Column(name = "note_of_6", nullable = true, length = 255)
     private String noteOf6;
-
-    /**
-     * 备用信息7
-     */
-    @Basic
-    @Column(name = "note_of_7", nullable = true, length = 255)
     private String noteOf7;
-
-    /**
-     * 创建时间
-     */
-    @Basic
-    @Column(name = "create_time", nullable = true)
+    @CreatedDate
     private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @Basic
-    @Column(name = "update_time", nullable = true)
+    @LastModifiedDate
     private Date updateTime;
 
+    @Id
+    @Column(name = "version_id", nullable = false)
     public long getVersionId() {
         return versionId;
     }
@@ -92,6 +35,8 @@ public class SystemInformationEntity implements Serializable {
         this.versionId = versionId;
     }
 
+    @Basic
+    @Column(name = "note_of_duty_free", nullable = true, length = 255)
     public String getNoteOfDutyFree() {
         return noteOfDutyFree;
     }
@@ -100,6 +45,8 @@ public class SystemInformationEntity implements Serializable {
         this.noteOfDutyFree = noteOfDutyFree;
     }
 
+    @Basic
+    @Column(name = "note_of_2", nullable = true, length = 255)
     public String getNoteOf2() {
         return noteOf2;
     }
@@ -108,6 +55,8 @@ public class SystemInformationEntity implements Serializable {
         this.noteOf2 = noteOf2;
     }
 
+    @Basic
+    @Column(name = "note_of_3", nullable = true, length = 255)
     public String getNoteOf3() {
         return noteOf3;
     }
@@ -116,6 +65,8 @@ public class SystemInformationEntity implements Serializable {
         this.noteOf3 = noteOf3;
     }
 
+    @Basic
+    @Column(name = "note_of_4", nullable = true, length = 255)
     public String getNoteOf4() {
         return noteOf4;
     }
@@ -124,6 +75,8 @@ public class SystemInformationEntity implements Serializable {
         this.noteOf4 = noteOf4;
     }
 
+    @Basic
+    @Column(name = "note_of_5", nullable = true, length = 255)
     public String getNoteOf5() {
         return noteOf5;
     }
@@ -132,6 +85,8 @@ public class SystemInformationEntity implements Serializable {
         this.noteOf5 = noteOf5;
     }
 
+    @Basic
+    @Column(name = "note_of_6", nullable = true, length = 255)
     public String getNoteOf6() {
         return noteOf6;
     }
@@ -140,6 +95,8 @@ public class SystemInformationEntity implements Serializable {
         this.noteOf6 = noteOf6;
     }
 
+    @Basic
+    @Column(name = "note_of_7", nullable = true, length = 255)
     public String getNoteOf7() {
         return noteOf7;
     }
@@ -148,6 +105,8 @@ public class SystemInformationEntity implements Serializable {
         this.noteOf7 = noteOf7;
     }
 
+    @Basic
+    @Column(name = "create_time", nullable = true)
     public Date getCreateTime() {
         return createTime;
     }
@@ -156,6 +115,8 @@ public class SystemInformationEntity implements Serializable {
         this.createTime = createTime;
     }
 
+    @Basic
+    @Column(name = "update_time", nullable = true)
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -165,18 +126,24 @@ public class SystemInformationEntity implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "SystemInformationEntity{" +
-                "versionId=" + versionId +
-                ", noteOfDutyFree='" + noteOfDutyFree + '\'' +
-                ", noteOf2='" + noteOf2 + '\'' +
-                ", noteOf3='" + noteOf3 + '\'' +
-                ", noteOf4='" + noteOf4 + '\'' +
-                ", noteOf5='" + noteOf5 + '\'' +
-                ", noteOf6='" + noteOf6 + '\'' +
-                ", noteOf7='" + noteOf7 + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SystemInformationEntity that = (SystemInformationEntity) o;
+        return versionId == that.versionId &&
+                Objects.equals(noteOfDutyFree, that.noteOfDutyFree) &&
+                Objects.equals(noteOf2, that.noteOf2) &&
+                Objects.equals(noteOf3, that.noteOf3) &&
+                Objects.equals(noteOf4, that.noteOf4) &&
+                Objects.equals(noteOf5, that.noteOf5) &&
+                Objects.equals(noteOf6, that.noteOf6) &&
+                Objects.equals(noteOf7, that.noteOf7) &&
+                Objects.equals(createTime, that.createTime) &&
+                Objects.equals(updateTime, that.updateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(versionId, noteOfDutyFree, noteOf2, noteOf3, noteOf4, noteOf5, noteOf6, noteOf7, createTime, updateTime);
     }
 }

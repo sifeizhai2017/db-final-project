@@ -1,99 +1,35 @@
 package com.shnu.work.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Date;
+import java.util.Objects;
 
-/**
- * 用户数据信息表
- *
- * @author Shinomiya Kaguya
- */
 @Entity
-@Table(name = "user_data_while_using", schema = "final_work")
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "user_data_while_using", schema = "final_work", catalog = "")
 @IdClass(UserDataWhileUsingEntityPK.class)
-public class UserDataWhileUsingEntity implements Serializable {
-    private static final long serialVersionUID = -8291610504245525538L;
-
-    /**
-     * 设备id
-     */
-    @Id
-    @Column(name = "device_id", nullable = false)
+public class UserDataWhileUsingEntity {
     private long deviceId;
-
-    /**
-     * 用户id
-     */
-    @Id
-    @Column(name = "user_id", nullable = false)
     private long userId;
-
-    /**
-     * 记录位置时间
-     */
-    @Basic
-    @Column(name = "user_document_time", nullable = true)
-    private Timestamp userDocumentTime;
-
-    /**
-     * 经度
-     */
-    @Basic
-    @Column(name = "user_location_x", nullable = true, precision = 5)
+    private Date userDocumentTime;
     private BigDecimal userLocationX;
-
-    /**
-     * 纬度
-     */
-    @Basic
-    @Column(name = "user_location_y", nullable = true, precision = 5)
     private BigDecimal userLocationY;
-
-    /**
-     * 用户名
-     */
-    @Basic
-    @Column(name = "user_name", nullable = true, length = 255)
     private String userName;
-
-    /**
-     * 紧急联络电话
-     */
-    @Basic
-    @Column(name = "user_emergency_contact", nullable = true, length = 255)
     private String userEmergencyContact;
-
-    /**
-     * 社保信息
-     */
-    @Basic
-    @Column(name = "user_health_care_demo", nullable = true, length = 255)
     private String userHealthCareDemo;
-
-    /**
-     * 警告信息
-     */
-    @Basic
-    @Column(name = "document_alert", nullable = true)
     private Integer documentAlert;
-
-    /**
-     * 创建时间
-     */
-    @Basic
-    @Column(name = "create_time", nullable = true)
+    @CreatedDate
     private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @Basic
-    @Column(name = "update_time", nullable = true)
+    @LastModifiedDate
     private Date updateTime;
 
+    @Id
+    @Column(name = "device_id", nullable = false)
     public long getDeviceId() {
         return deviceId;
     }
@@ -102,6 +38,8 @@ public class UserDataWhileUsingEntity implements Serializable {
         this.deviceId = deviceId;
     }
 
+    @Id
+    @Column(name = "user_id", nullable = false)
     public long getUserId() {
         return userId;
     }
@@ -110,14 +48,18 @@ public class UserDataWhileUsingEntity implements Serializable {
         this.userId = userId;
     }
 
-    public Timestamp getUserDocumentTime() {
+    @Basic
+    @Column(name = "user_document_time", nullable = true)
+    public Date getUserDocumentTime() {
         return userDocumentTime;
     }
 
-    public void setUserDocumentTime(Timestamp userDocumentTime) {
+    public void setUserDocumentTime(Date userDocumentTime) {
         this.userDocumentTime = userDocumentTime;
     }
 
+    @Basic
+    @Column(name = "user_location_x", nullable = true, precision = 5)
     public BigDecimal getUserLocationX() {
         return userLocationX;
     }
@@ -126,6 +68,8 @@ public class UserDataWhileUsingEntity implements Serializable {
         this.userLocationX = userLocationX;
     }
 
+    @Basic
+    @Column(name = "user_location_y", nullable = true, precision = 5)
     public BigDecimal getUserLocationY() {
         return userLocationY;
     }
@@ -134,6 +78,8 @@ public class UserDataWhileUsingEntity implements Serializable {
         this.userLocationY = userLocationY;
     }
 
+    @Basic
+    @Column(name = "user_name", nullable = true, length = 255)
     public String getUserName() {
         return userName;
     }
@@ -142,6 +88,8 @@ public class UserDataWhileUsingEntity implements Serializable {
         this.userName = userName;
     }
 
+    @Basic
+    @Column(name = "user_emergency_contact", nullable = true, length = 255)
     public String getUserEmergencyContact() {
         return userEmergencyContact;
     }
@@ -150,6 +98,8 @@ public class UserDataWhileUsingEntity implements Serializable {
         this.userEmergencyContact = userEmergencyContact;
     }
 
+    @Basic
+    @Column(name = "user_health_care_demo", nullable = true, length = 255)
     public String getUserHealthCareDemo() {
         return userHealthCareDemo;
     }
@@ -158,6 +108,8 @@ public class UserDataWhileUsingEntity implements Serializable {
         this.userHealthCareDemo = userHealthCareDemo;
     }
 
+    @Basic
+    @Column(name = "document_alert", nullable = true)
     public Integer getDocumentAlert() {
         return documentAlert;
     }
@@ -166,6 +118,8 @@ public class UserDataWhileUsingEntity implements Serializable {
         this.documentAlert = documentAlert;
     }
 
+    @Basic
+    @Column(name = "create_time", nullable = true)
     public Date getCreateTime() {
         return createTime;
     }
@@ -174,6 +128,8 @@ public class UserDataWhileUsingEntity implements Serializable {
         this.createTime = createTime;
     }
 
+    @Basic
+    @Column(name = "update_time", nullable = true)
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -183,19 +139,25 @@ public class UserDataWhileUsingEntity implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "UserDataWhileUsingEntity{" +
-                "deviceId=" + deviceId +
-                ", userId=" + userId +
-                ", userDocumentTime=" + userDocumentTime +
-                ", userLocationX=" + userLocationX +
-                ", userLocationY=" + userLocationY +
-                ", userName='" + userName + '\'' +
-                ", userEmergencyContact='" + userEmergencyContact + '\'' +
-                ", userHealthCareDemo='" + userHealthCareDemo + '\'' +
-                ", documentAlert=" + documentAlert +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDataWhileUsingEntity that = (UserDataWhileUsingEntity) o;
+        return deviceId == that.deviceId &&
+                userId == that.userId &&
+                Objects.equals(userDocumentTime, that.userDocumentTime) &&
+                Objects.equals(userLocationX, that.userLocationX) &&
+                Objects.equals(userLocationY, that.userLocationY) &&
+                Objects.equals(userName, that.userName) &&
+                Objects.equals(userEmergencyContact, that.userEmergencyContact) &&
+                Objects.equals(userHealthCareDemo, that.userHealthCareDemo) &&
+                Objects.equals(documentAlert, that.documentAlert) &&
+                Objects.equals(createTime, that.createTime) &&
+                Objects.equals(updateTime, that.updateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(deviceId, userId, userDocumentTime, userLocationX, userLocationY, userName, userEmergencyContact, userHealthCareDemo, documentAlert, createTime, updateTime);
     }
 }

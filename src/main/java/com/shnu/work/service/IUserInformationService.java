@@ -1,7 +1,6 @@
 package com.shnu.work.service;
 
 import com.shnu.work.entity.UserInformationEntity;
-import org.springframework.stereotype.Service;
 
 /**
  * @author Shinomiya Kaguya
@@ -14,4 +13,12 @@ public interface IUserInformationService {
      * @return
      */
     UserInformationEntity saveNewUser(UserInformationEntity user);
+
+    /**
+     * 根据用户账户查询某一条记录
+     *
+     * @param userAccount 用户账户
+     * @return 这条记录
+     */
+    UserInformationEntity getUserInformationEntityByUserAccount(String userAccount);
 }

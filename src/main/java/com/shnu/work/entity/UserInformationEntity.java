@@ -1,82 +1,31 @@
 package com.shnu.work.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
-/**
- * 用户信息表
- *
- * @author Shinomiya Kaguya
- */
 @Entity
-@Table(name = "user_information", schema = "final_work")
-public class UserInformationEntity implements Serializable {
-    private static final long serialVersionUID = -157252971123766076L;
-
-    /**
-     * 用户id
-     */
-    @Id
-    @Column(name = "user_id", nullable = false)
+@EntityListeners(AuditingEntityListener.class)
+@Table(name = "user_information", schema = "final_work", catalog = "")
+public class UserInformationEntity {
     private long userId;
-
-    /**
-     * 用户名
-     */
-    @Basic
-    @Column(name = "user_name", nullable = true, length = 255)
     private String userName;
-
-    /**
-     * 用户密码
-     */
-    @Basic
-    @Column(name = "user_password", nullable = true, length = 255)
     private String userPassword;
-
-    /**
-     * 用户账户
-     */
-    @Basic
-    @Column(name = "user_account", nullable = true, length = 255)
     private String userAccount;
-
-    /**
-     * 用户性别
-     */
-    @Basic
-    @Column(name = "user_sex", nullable = true)
     private Byte userSex;
-
-    /**
-     * 用户签名
-     */
-    @Basic
-    @Column(name = "user_signature", nullable = true, length = -1)
     private String userSignature;
-
-    /**
-     * 用户设备数量
-     */
-    @Basic
-    @Column(name = "user_num_of_device", nullable = false)
     private short userNumOfDevice;
-
-    /**
-     * 创建时间
-     */
-    @Basic
-    @Column(name = "create_time", nullable = true)
+    @CreatedDate
     private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @Basic
-    @Column(name = "update_time", nullable = true)
+    @LastModifiedDate
     private Date updateTime;
 
+    @Id
+    @Column(name = "user_id", nullable = false)
     public long getUserId() {
         return userId;
     }
@@ -85,6 +34,8 @@ public class UserInformationEntity implements Serializable {
         this.userId = userId;
     }
 
+    @Basic
+    @Column(name = "user_name", nullable = true, length = 255)
     public String getUserName() {
         return userName;
     }
@@ -93,6 +44,8 @@ public class UserInformationEntity implements Serializable {
         this.userName = userName;
     }
 
+    @Basic
+    @Column(name = "user_password", nullable = true, length = 255)
     public String getUserPassword() {
         return userPassword;
     }
@@ -101,6 +54,8 @@ public class UserInformationEntity implements Serializable {
         this.userPassword = userPassword;
     }
 
+    @Basic
+    @Column(name = "user_account", nullable = true, length = 255)
     public String getUserAccount() {
         return userAccount;
     }
@@ -109,6 +64,8 @@ public class UserInformationEntity implements Serializable {
         this.userAccount = userAccount;
     }
 
+    @Basic
+    @Column(name = "user_sex", nullable = true)
     public Byte getUserSex() {
         return userSex;
     }
@@ -117,6 +74,8 @@ public class UserInformationEntity implements Serializable {
         this.userSex = userSex;
     }
 
+    @Basic
+    @Column(name = "user_signature", nullable = true, length = -1)
     public String getUserSignature() {
         return userSignature;
     }
@@ -125,6 +84,8 @@ public class UserInformationEntity implements Serializable {
         this.userSignature = userSignature;
     }
 
+    @Basic
+    @Column(name = "user_num_of_device", nullable = false)
     public short getUserNumOfDevice() {
         return userNumOfDevice;
     }
@@ -133,6 +94,8 @@ public class UserInformationEntity implements Serializable {
         this.userNumOfDevice = userNumOfDevice;
     }
 
+    @Basic
+    @Column(name = "create_time", nullable = true)
     public Date getCreateTime() {
         return createTime;
     }
@@ -141,6 +104,8 @@ public class UserInformationEntity implements Serializable {
         this.createTime = createTime;
     }
 
+    @Basic
+    @Column(name = "update_time", nullable = true)
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -150,17 +115,23 @@ public class UserInformationEntity implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "UserInformationEntity{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", userPassword='" + userPassword + '\'' +
-                ", userAccount='" + userAccount + '\'' +
-                ", userSex=" + userSex +
-                ", userSignature=" + userSignature +
-                ", userNumOfDevice=" + userNumOfDevice +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserInformationEntity that = (UserInformationEntity) o;
+        return userId == that.userId &&
+                userNumOfDevice == that.userNumOfDevice &&
+                Objects.equals(userName, that.userName) &&
+                Objects.equals(userPassword, that.userPassword) &&
+                Objects.equals(userAccount, that.userAccount) &&
+                Objects.equals(userSex, that.userSex) &&
+                Objects.equals(userSignature, that.userSignature) &&
+                Objects.equals(createTime, that.createTime) &&
+                Objects.equals(updateTime, that.updateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, userName, userPassword, userAccount, userSex, userSignature, userNumOfDevice, createTime, updateTime);
     }
 }
