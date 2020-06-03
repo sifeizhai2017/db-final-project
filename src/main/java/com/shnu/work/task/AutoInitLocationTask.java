@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 定时任务：自动生成经纬度信息
@@ -35,22 +36,25 @@ public class AutoInitLocationTask {
 
     private final Gson gson = new Gson();
 
-    @Scheduled(fixedRate = 100000)
+    @Scheduled(fixedRate = Integer.MAX_VALUE)
     private void configureTasks() {
         Iterable<UserInformationEntity> allUsers = userInformationRepository.findAll();
         for (UserInformationEntity user : allUsers) {
-
-            Map<String, String> lonLatMap = RandomLocationUtils.randomLonLat(100, 200, 300, 40);
-            UserDataWhileUsingEntity userDataWhileUsingEntity = new UserDataWhileUsingEntity();
-            userDataWhileUsingEntity.setUserId(user.getId());
-            userDataWhileUsingEntity.setUserDocumentTime(new Date());
-            userDataWhileUsingEntity.setUserLocationX(new BigDecimal(lonLatMap.get("J")));
-            userDataWhileUsingEntity.setUserLocationY(new BigDecimal(lonLatMap.get("W")));
-            userDataWhileUsingEntity.setUserName(user.getUserName());
-            userDataWhileUsingEntity.setUserEmergencyContact(RandomStringUtils.randomNumeric(11));
-            userDataWhileUsingEntity.setUserHealthCareDemo(RandomStringUtils.randomAlphabetic(12));
-            userDataWhileUsingEntity.setDocumentAlert(1);
-            userDataWhileUsingRepository.save(userDataWhileUsingEntity);
+            try {
+                Map<String, String> lonLatMap = RandomLocationUtils.randomLonLat(100, 200, 300, 40);
+                UserDataWhileUsingEntity userDataWhileUsingEntity = new UserDataWhileUsingEntity();
+                userDataWhileUsingEntity.setUserId(user.getId());
+                userDataWhileUsingEntity.setUserDocumentTime(new Date());
+                userDataWhileUsingEntity.setUserLocationX(new BigDecimal(Objects.requireNonNull(lonLatMap).get("J")));
+                userDataWhileUsingEntity.setUserLocationY(new BigDecimal(lonLatMap.get("W")));
+                userDataWhileUsingEntity.setUserName(user.getUserName());
+                userDataWhileUsingEntity.setUserEmergencyContact(RandomStringUtils.randomNumeric(11));
+                userDataWhileUsingEntity.setUserHealthCareDemo(RandomStringUtils.randomAlphabetic(12));
+                userDataWhileUsingEntity.setDocumentAlert(1);
+                userDataWhileUsingRepository.save(userDataWhileUsingEntity);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         LOGGER.info("执行静态定时任务时间：" + LocalDateTime.now());

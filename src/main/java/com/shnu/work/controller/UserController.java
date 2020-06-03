@@ -1,7 +1,9 @@
 package com.shnu.work.controller;
 
 import com.google.gson.Gson;
+import com.shnu.work.entity.UserDataWhileUsingEntity;
 import com.shnu.work.entity.UserInformationEntity;
+import com.shnu.work.service.IUserDataWhileUsingService;
 import com.shnu.work.service.IUserInformationService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * 和用户相关的Controller
@@ -24,6 +27,9 @@ import javax.servlet.http.HttpSession;
 public class UserController {
     @Autowired
     IUserInformationService userInformationService;
+
+    @Autowired
+    IUserDataWhileUsingService userDataWhileUsingService;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
@@ -64,7 +70,18 @@ public class UserController {
     }
 
     @RequestMapping("/getSensorInfo")
-    public String getSensorInfo() {
-        return "/sensorinfo";
+    public ModelAndView getSensorInfo(ModelAndView modelAndView, HttpSession session) {
+        String loginUser = (String) session.getAttribute("login_user");
+        if (!StringUtils.isBlank(loginUser)) {
+            UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
+            LOGGER.info("userInfo:{}", gson.toJson(userInfo));
+            List<UserDataWhileUsingEntity> userDataList =
+                    userDataWhileUsingService.listUserDataWhileUsingEntitiesByUserId(userInfo.getId());
+            LOGGER.info("userDataList:{}", gson.toJson(userDataList));
+            modelAndView.addObject("userDataList", userDataList);
+        }
+        modelAndView.setViewName("/sensorinfo");
+        return modelAndView;
     }
+
 }

@@ -1,11 +1,15 @@
 package com.shnu.work.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.sql.Timestamp;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user_data_while_using", schema = "final_work", catalog = "")
 @IdClass(UserDataWhileUsingEntityPK.class)
 public class UserDataWhileUsingEntity {
@@ -19,7 +23,9 @@ public class UserDataWhileUsingEntity {
     private String userEmergencyContact;
     private String userHealthCareDemo;
     private Integer documentAlert;
+    @CreatedDate
     private Date createTime;
+    @LastModifiedDate
     private Date updateTime;
 
     @Id

@@ -1,17 +1,24 @@
 package com.shnu.work.entity;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "administration_information", schema = "final_work", catalog = "")
 public class AdministrationInformationEntity {
     private long id;
     private String administrationName;
     private String administrationPassword;
     private String administrationAccount;
-    private Timestamp createTime;
-    private Timestamp updateTime;
+    @CreatedDate
+    private Date createTime;
+    @LastModifiedDate
+    private Date updateTime;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -55,21 +62,21 @@ public class AdministrationInformationEntity {
 
     @Basic
     @Column(name = "create_time", nullable = true)
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
     @Basic
     @Column(name = "update_time", nullable = true)
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
