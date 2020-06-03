@@ -12,7 +12,7 @@ public interface IUserInformationService {
      * @param user
      * @return
      */
-    UserInformationEntity saveNewUser(UserInformationEntity user);
+    UserInformationEntity saveUser(UserInformationEntity user);
 
     /**
      * 根据用户账户查询某一条记录

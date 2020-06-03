@@ -11,10 +11,10 @@
     <link rel="canonical" href="https://v4.bootcss.com/docs/examples/dashboard/">
 
     <!-- Bootstrap core CSS -->
-    <link href="webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
-    <link href="/css/dashboard.css" rel="stylesheet">
-    <script src="webjars/jquery/3.5.1/dist/jquery.js"></script>
-    <script src="webjars/bootstrap/3.4.1/js/bootstrap.js"></script>
+    <link href="../webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+    <script src="../webjars/jquery/3.5.1/dist/jquery.js"></script>
+    <script src="../webjars/bootstrap/3.4.1/js/bootstrap.js"></script>
 
     <style>
         .bd-placeholder-img {
@@ -58,31 +58,7 @@
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                        <li><a href="#">Link</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="navbar-form navbar-left">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Link</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                                aria-haspopup="true" aria-expanded="false" th:text="${session.login_user}"> <span
@@ -105,13 +81,13 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li><a href="/backToHomepage">传感器信息概览</a></li>
+                <li><a href="/user/backToHomepage">传感器信息概览</a></li>
                 <li class="active"><a href="#">用户信息修改 <span class="sr-only">(current)</span></a></li>
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <ol class="breadcrumb">
-                <li><a href="/backToHomepage">主页</a></li>
+                <li><a href="/user/backToHomepage">主页</a></li>
                 <li class="active">个人信息</li>
             </ol>
             <h1>个人信息 <small>Personal Information</small></h1>
@@ -119,35 +95,35 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-5">
-                        <img src="/img/login-img.jpg" class="img-responsive img-thumbnail center-block"
+                        <img src="/static/img/info-img.png" class="img-responsive img-thumbnail center-block"
                              alt="Responsive image">
                         <br>
                     </div>
                     <div class="col-lg-5">
-                        <form>
+                        <form action="/user/updateUserInfo">
                             <div class="form-group">
                                 <label for="userName">用户名</label>
-                                <input type="text" th:placeholder="${userInfo.getUserName()}" class="form-control" id="userName" placeholder="用户名">
+                                <input type="text" th:value="${userInfo.getUserName()}" name="userName" class="form-control" id="userName" placeholder="用户名">
                             </div>
                             <div class="form-group">
                                 <label for="userId">ID</label>
-                                <input type="text" th:placeholder="${userInfo.getUserId()}" class="form-control" id="userId" placeholder="用户ID" readonly>
+                                <input type="text" th:value="${userInfo.getUserId()}" name="userId" class="form-control" id="userId" placeholder="用户ID" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="userAccount">账号</label>
-                                <input type="text" th:placeholder="${userInfo.getUserAccount()}" id="userAccount" class="form-control" placeholder="账号" readonly>
+                                <input type="text" th:value="${userInfo.getUserAccount()}" name="userAccount" id="userAccount" class="form-control" placeholder="账号" readonly>
                             </div>
                             <div class="form-group">
                                 <label for="userSignature">用户签名</label>
-                                <textarea rows="3" type="text" th:placeholder="${userInfo.getUserSignature()}" id="userSignature" class="form-control"
+                                <textarea rows="3" th:value="${userInfo.getUserSignature()}" name="userSignature" id="userSignature" class="form-control"
                                           placeholder="用户签名" style="resize:none;"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="userSex">用户性别</label><br>
                                 <div class="btn-group" id="userSex" role="group" aria-label="...">
-                                    <button type="button" id="btnMale" class="btn" th:classappend="${userInfo.getUserSex()==1} ? 'btn-primary' : 'btn-default'">男</button>
-                                    <button type="button" id="btnFemale" class="btn" th:classappend="${userInfo.getUserSex()==0} ? 'btn-primary' : 'btn-default'">女</button>
-                                    <button type="button" id="btnSecret" class="btn btn-default">保密</button>
+                                    <button type="button" name="userSex" value="1" id="btnMale" class="btn" th:classappend="${userInfo.getUserSex()==1} ? 'btn-primary' : 'btn-default'">男</button>
+                                    <button type="button" name="userSex" value="0" id="btnFemale" class="btn" th:classappend="${userInfo.getUserSex()==0} ? 'btn-primary' : 'btn-default'">女</button>
+                                    <button type="button" name="userSex" value="2" id="btnSecret" class="btn btn-default">保密</button>
                                 </div>
                             </div>
                             <div class="form-group">

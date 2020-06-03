@@ -25,21 +25,21 @@
     </style>
     <link rel="canonical" href="https://v4.bootcss.com/docs/examples/sign-in/">
     <!-- Bootstrap core CSS -->
-    <link href="webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+    <link href="../webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" th:href="@{/css/signin.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/signin.css}">
     <!-- 表单验证相关 -->
-    <script src="webjars/jquery/3.5.1/dist/jquery.js"></script>
-    <script src="webjars/bootstrap/3.4.1/js/bootstrap.js"></script>
-    <link rel="stylesheet" th:href="@{/css/formValidation.css}">
-    <script th:src="@{/js/formValidation.js}"></script>
-    <script th:src="@{/js/framework/bootstrap.js}"></script>
-    <script th:src="@{/js/language/zh_CN.js}"></script>
-    <script th:src="@{/js/registerValidate.js}"></script>
+    <script src="../webjars/jquery/3.5.1/dist/jquery.js"></script>
+    <script src="../webjars/bootstrap/3.4.1/js/bootstrap.js"></script>
+    <link rel="stylesheet" th:href="@{/static/css/formValidation.css}">
+    <script th:src="@{/static/js/formValidation.js}"></script>
+    <script th:src="@{/static/js/framework/bootstrap.js}"></script>
+    <script th:src="@{/static/js/language/zh_CN.js}"></script>
+    <script th:src="@{/static/js/registerValidate.js}"></script>
 </head>
 <body class="text-center">
 <!--/*@thymesVar id="userEntity" type="com.shnu.work.entity.UserInformationEntity"*/-->
-<form class="form-signin" method="post" action="/saveNewUser">
+<form class="form-signin" method="post" action="/login/saveNewUser">
     <div th:if="${msg} eq 'err'" class="alert alert-danger" role="alert">注册失败，请重新注册</div>
     <svg t="1590983343213" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
          p-id="4069" width="72" height="72">
@@ -86,17 +86,4 @@
     <p class="mt-5 mb-3 text-muted">&copy; 2020-2020 能力有限公司</p>
 </form>
 </body>
-<!--
-<script th:inline="javascript">
-    // fixme：解决无法跳出摸态框的问题
-    const msg = [[${msg}]];
-    if (msg === 'err') {
-        console.log(msg);
-        $('#myModal').on('shown.bs.modal', function () {
-            // $('#myInput').focus()
-            console.log("进入函数")
-        })
-    }
-</script>
--->
 </html>

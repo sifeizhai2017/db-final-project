@@ -15,7 +15,7 @@ public class UserInformationServiceImpl implements IUserInformationService {
     UserInformationRepository userInformationRepository;
 
     @Override
-    public UserInformationEntity saveNewUser(UserInformationEntity user) {
+    public UserInformationEntity saveUser(UserInformationEntity user) {
         return userInformationRepository.save(user);
     }
 

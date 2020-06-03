@@ -1,5 +1,7 @@
 package com.shnu.work.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -10,13 +12,15 @@ import java.util.Objects;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "user_information", schema = "final_work", catalog = "")
 public class UserInformationEntity {
     private long userId;
     private String userName;
     private String userPassword;
     private String userAccount;
-    private Byte userSex;
+    private int userSex;
     private String userSignature;
     private short userNumOfDevice;
     @CreatedDate
@@ -66,11 +70,11 @@ public class UserInformationEntity {
 
     @Basic
     @Column(name = "user_sex", nullable = true)
-    public Byte getUserSex() {
+    public int getUserSex() {
         return userSex;
     }
 
-    public void setUserSex(Byte userSex) {
+    public void setUserSex(int userSex) {
         this.userSex = userSex;
     }
 

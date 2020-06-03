@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
  * @author tonghao
  */
 @Controller
+@RequestMapping("/login")
 public class LoginController {
     @Autowired
     IUserInformationService userInformationService;
@@ -62,13 +63,10 @@ public class LoginController {
      */
     @PostMapping(value = "/saveNewUser")
     public ModelAndView saveNewUser(ModelAndView modelAndView, UserInformationEntity userInformationEntity) {
-//        Date now = new Date();
         LOGGER.info("user:{}", gson.toJson(userInformationEntity));
-//        userInformationEntity.setCreateTime(now);
-//        userInformationEntity.setUpdateTime(now);
         // 密码加密
         userInformationEntity.setUserPassword(EncryptDecrypt.encrypt(userInformationEntity.getUserPassword(), ENCRYPT_KEY));
-        UserInformationEntity returnEntity = userInformationService.saveNewUser(userInformationEntity);
+        UserInformationEntity returnEntity = userInformationService.saveUser(userInformationEntity);
         if (returnEntity != null) {
             modelAndView.addObject("msg", "success");
             modelAndView.setViewName("/login");

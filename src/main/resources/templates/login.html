@@ -68,7 +68,7 @@
         }
     </style>
     <!-- Bootstrap core CSS -->
-    <link href="webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+    <link href="../webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
 </head>
 <body class="text-center">
 
@@ -81,7 +81,7 @@
             <img th:src="@{/static/img/login-img.jpg}" alt="">
         </div>
         <div class="col-lg-5 col-xs-12 clearfix form-col">
-            <form class="form-signin" method="post" action="/userLogin">
+            <form class="form-signin" method="post" action="/login/userLogin">
                 <i class="fc-icon-shnu fc-icon-da" style="color: #2a645a; font-size: 120px !important;"></i>
                 <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
                 <label for="userAccount" class="sr-only">账户</label>
@@ -94,11 +94,11 @@
                         <button class="btn btn-primary col-12 btn-block" type="submit">登录</button>
                     </div>
                     <div class="row">
-                        <a class="btn btn-success col-12 btn-block" role="button" href="/adminLogin">管理员登录</a>
+                        <a class="btn btn-success col-12 btn-block" role="button" href="/login/adminLogin">管理员登录</a>
                     </div>
                     <hr>
                     <div class="row">
-                        <a href="/register" class="col-12 btn btn-link" id="registerLink">暂无账号？注册</a>
+                        <a href="/login/register" class="col-12 btn btn-link" id="registerLink">暂无账号？注册</a>
                     </div>
                 </div>
                 <br>
