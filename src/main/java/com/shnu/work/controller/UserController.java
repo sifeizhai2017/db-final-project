@@ -49,8 +49,10 @@ public class UserController {
         UserInformationEntity resultEntity = userInformationService.getUserInformationEntityByUserAccount(userAccount);
         LOGGER.info("resultEntity:{}", gson.toJson(resultEntity));
         resultEntity.setUserName(userName);
-//        resultEntity.setUserSex(userSex);
-        resultEntity.setUserSignature(userSignature);
+        resultEntity.setUserSex(userSex);
+        if (!StringUtils.isBlank(userSignature)) {
+            resultEntity.setUserSignature(userSignature);
+        }
         userInformationService.saveUser(resultEntity);
 
         return "redirect:/user/getUserInfo";

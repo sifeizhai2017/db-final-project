@@ -115,16 +115,16 @@
                             </div>
                             <div class="form-group">
                                 <label for="userSignature">用户签名</label>
-                                <textarea rows="3" th:value="${userInfo.getUserSignature()}" name="userSignature" id="userSignature" class="form-control"
+                                <textarea rows="3" th:placeholder="${userInfo.getUserSignature()}" name="userSignature" id="userSignature" class="form-control"
                                           placeholder="用户签名" style="resize:none;"></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="userSex">用户性别</label><br>
-                                <div class="btn-group" id="userSex" role="group" aria-label="...">
-                                    <button type="button" name="userSex" value="1" id="btnMale" class="btn" th:classappend="${userInfo.getUserSex()==1} ? 'btn-primary' : 'btn-default'">男</button>
-                                    <button type="button" name="userSex" value="0" id="btnFemale" class="btn" th:classappend="${userInfo.getUserSex()==0} ? 'btn-primary' : 'btn-default'">女</button>
-                                    <button type="button" name="userSex" value="2" id="btnSecret" class="btn btn-default">保密</button>
-                                </div>
+                                <select class="form-control" id="userSex" name="userSex">
+                                    <option value="0" th:selected="${userInfo.getUserSex()==0}">女</option>
+                                    <option value="1" th:selected="${userInfo.getUserSex()==1}">男</option>
+                                    <option value="2" th:selected="${userInfo.getUserSex()==2}">保密</option>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label for="deviceId">设备编号</label>
@@ -139,33 +139,4 @@
     </div>
 </div>
 </body>
-<script>
-    const btnMale = document.getElementById("btnMale");
-    const btnFemale = document.getElementById("btnFemale");
-    const btnSecret = document.getElementById("btnSecret");
-    btnMale.onclick = function () {
-        btnMale.classList.add("btn-primary");
-        btnMale.classList.remove("btn-default");
-        btnFemale.classList.add("btn-default");
-        btnFemale.classList.remove("btn-primary");
-        btnSecret.classList.add("btn-default");
-        btnSecret.classList.remove("btn-primary");
-    }
-    btnFemale.onclick = function () {
-        btnFemale.classList.add("btn-primary");
-        btnFemale.classList.remove("btn-default");
-        btnMale.classList.add("btn-default");
-        btnMale.classList.remove("btn-primary");
-        btnSecret.classList.add("btn-default");
-        btnSecret.classList.remove("btn-primary");
-    }
-    btnSecret.onclick = function () {
-        btnSecret.classList.add("btn-primary");
-        btnSecret.classList.remove("btn-default");
-        btnMale.classList.add("btn-default");
-        btnMale.classList.remove("btn-primary");
-        btnFemale.classList.add("btn-default");
-        btnFemale.classList.remove("btn-primary");
-    }
-</script>
 </html>
