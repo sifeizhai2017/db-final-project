@@ -69,6 +69,8 @@
     </style>
     <!-- Bootstrap core CSS -->
     <link href="../webjars/bootstrap/3.4.1/css/bootstrap.css" rel="stylesheet">
+    <script src="../webjars/jquery/3.5.1/dist/jquery.js"></script>
+    <script src="../webjars/bootstrap/3.4.1/js/bootstrap.js"></script>
 </head>
 <body class="text-center">
 
@@ -94,7 +96,10 @@
                         <button class="btn btn-primary col-12 btn-block" type="submit">登录</button>
                     </div>
                     <div class="row">
-                        <a class="btn btn-success col-12 btn-block" role="button" href="/login/adminLogin">管理员登录</a>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-success col-12 btn-block" data-toggle="modal" data-target="#myModal">
+                            管理员登陆
+                        </button>
                     </div>
                     <hr>
                     <div class="row">
@@ -107,6 +112,30 @@
         </div>
     </div>
 </div>
-
 </body>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">管理员登陆</h4>
+            </div>
+            <div class="modal-body">
+                <img src="../static/img/admin-img.jpeg" class="img-responsive img-thumbnail" style="width: 200px; height: 200px;" alt="">
+                <hr>
+                <form class="form-signin" method="post" action="/login/adminLogin">
+                    <label for="adminAccount" class="sr-only-focusable">账户</label>
+                    <input type="text" name="adminAccount" id="adminAccount" class="form-control" placeholder="管理员账户" required autofocus>
+                    <label for="adminPassword" class="sr-only">密码</label>
+                    <input type="password" name="adminPassword" id="adminPassword" class="form-control" placeholder="管理员密码" required>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">登陆</button>
+            </div>
+        </div>
+    </div>
+</div>
 </html>
