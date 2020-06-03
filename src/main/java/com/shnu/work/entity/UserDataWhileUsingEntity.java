@@ -1,32 +1,35 @@
 package com.shnu.work.entity;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Objects;
+import java.sql.Timestamp;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "user_data_while_using", schema = "final_work", catalog = "")
 @IdClass(UserDataWhileUsingEntityPK.class)
 public class UserDataWhileUsingEntity {
+    private long id;
     private long deviceId;
     private long userId;
-    private Date userDocumentTime;
+    private Timestamp userDocumentTime;
     private BigDecimal userLocationX;
     private BigDecimal userLocationY;
     private String userName;
     private String userEmergencyContact;
     private String userHealthCareDemo;
     private Integer documentAlert;
-    @CreatedDate
-    private Date createTime;
-    @LastModifiedDate
-    private Date updateTime;
+    private Timestamp createTime;
+    private Timestamp updateTime;
+
+    @Id
+    @Column(name = "id", nullable = false)
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     @Id
     @Column(name = "device_id", nullable = false)
@@ -50,11 +53,11 @@ public class UserDataWhileUsingEntity {
 
     @Basic
     @Column(name = "user_document_time", nullable = true)
-    public Date getUserDocumentTime() {
+    public Timestamp getUserDocumentTime() {
         return userDocumentTime;
     }
 
-    public void setUserDocumentTime(Date userDocumentTime) {
+    public void setUserDocumentTime(Timestamp userDocumentTime) {
         this.userDocumentTime = userDocumentTime;
     }
 
@@ -120,21 +123,21 @@ public class UserDataWhileUsingEntity {
 
     @Basic
     @Column(name = "create_time", nullable = true)
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
     @Basic
     @Column(name = "update_time", nullable = true)
-    public Date getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -142,22 +145,45 @@ public class UserDataWhileUsingEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         UserDataWhileUsingEntity that = (UserDataWhileUsingEntity) o;
-        return deviceId == that.deviceId &&
-                userId == that.userId &&
-                Objects.equals(userDocumentTime, that.userDocumentTime) &&
-                Objects.equals(userLocationX, that.userLocationX) &&
-                Objects.equals(userLocationY, that.userLocationY) &&
-                Objects.equals(userName, that.userName) &&
-                Objects.equals(userEmergencyContact, that.userEmergencyContact) &&
-                Objects.equals(userHealthCareDemo, that.userHealthCareDemo) &&
-                Objects.equals(documentAlert, that.documentAlert) &&
-                Objects.equals(createTime, that.createTime) &&
-                Objects.equals(updateTime, that.updateTime);
+
+        if (id != that.id) return false;
+        if (deviceId != that.deviceId) return false;
+        if (userId != that.userId) return false;
+        if (userDocumentTime != null ? !userDocumentTime.equals(that.userDocumentTime) : that.userDocumentTime != null)
+            return false;
+        if (userLocationX != null ? !userLocationX.equals(that.userLocationX) : that.userLocationX != null)
+            return false;
+        if (userLocationY != null ? !userLocationY.equals(that.userLocationY) : that.userLocationY != null)
+            return false;
+        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+        if (userEmergencyContact != null ? !userEmergencyContact.equals(that.userEmergencyContact) : that.userEmergencyContact != null)
+            return false;
+        if (userHealthCareDemo != null ? !userHealthCareDemo.equals(that.userHealthCareDemo) : that.userHealthCareDemo != null)
+            return false;
+        if (documentAlert != null ? !documentAlert.equals(that.documentAlert) : that.documentAlert != null)
+            return false;
+        if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
+        if (updateTime != null ? !updateTime.equals(that.updateTime) : that.updateTime != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(deviceId, userId, userDocumentTime, userLocationX, userLocationY, userName, userEmergencyContact, userHealthCareDemo, documentAlert, createTime, updateTime);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (int) (deviceId ^ (deviceId >>> 32));
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
+        result = 31 * result + (userDocumentTime != null ? userDocumentTime.hashCode() : 0);
+        result = 31 * result + (userLocationX != null ? userLocationX.hashCode() : 0);
+        result = 31 * result + (userLocationY != null ? userLocationY.hashCode() : 0);
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (userEmergencyContact != null ? userEmergencyContact.hashCode() : 0);
+        result = 31 * result + (userHealthCareDemo != null ? userHealthCareDemo.hashCode() : 0);
+        result = 31 * result + (documentAlert != null ? documentAlert.hashCode() : 0);
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
+        return result;
     }
 }

@@ -42,7 +42,7 @@ public class UserController {
     }
 
     @RequestMapping("/updateUserInfo")
-    public String updateUserInfo(ModelAndView modelAndView, @Param("userName") String userName,
+    public String updateUserInfo(@Param("userName") String userName,
                                  @Param("userAccount") String userAccount,
                                  @Param("userSex") Integer userSex,
                                  @Param("userSignature") String userSignature) {

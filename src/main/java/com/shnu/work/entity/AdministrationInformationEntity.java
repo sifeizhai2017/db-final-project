@@ -1,34 +1,26 @@
 package com.shnu.work.entity;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
+import java.sql.Timestamp;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "administration_information", schema = "final_work", catalog = "")
 public class AdministrationInformationEntity {
-    private long administrationId;
+    private long id;
     private String administrationName;
     private String administrationPassword;
     private String administrationAccount;
-    @CreatedDate
-    private Date createTime;
-    @LastModifiedDate
-    private Date updateTime;
+    private Timestamp createTime;
+    private Timestamp updateTime;
 
     @Id
-    @Column(name = "administration_id", nullable = false)
-    public long getAdministrationId() {
-        return administrationId;
+    @Column(name = "id", nullable = false)
+    public long getId() {
+        return id;
     }
 
-    public void setAdministrationId(long administrationId) {
-        this.administrationId = administrationId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Basic
@@ -63,21 +55,21 @@ public class AdministrationInformationEntity {
 
     @Basic
     @Column(name = "create_time", nullable = true)
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
     @Basic
     @Column(name = "update_time", nullable = true)
-    public Date getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -85,17 +77,30 @@ public class AdministrationInformationEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         AdministrationInformationEntity that = (AdministrationInformationEntity) o;
-        return administrationId == that.administrationId &&
-                Objects.equals(administrationName, that.administrationName) &&
-                Objects.equals(administrationPassword, that.administrationPassword) &&
-                Objects.equals(administrationAccount, that.administrationAccount) &&
-                Objects.equals(createTime, that.createTime) &&
-                Objects.equals(updateTime, that.updateTime);
+
+        if (id != that.id) return false;
+        if (administrationName != null ? !administrationName.equals(that.administrationName) : that.administrationName != null)
+            return false;
+        if (administrationPassword != null ? !administrationPassword.equals(that.administrationPassword) : that.administrationPassword != null)
+            return false;
+        if (administrationAccount != null ? !administrationAccount.equals(that.administrationAccount) : that.administrationAccount != null)
+            return false;
+        if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
+        if (updateTime != null ? !updateTime.equals(that.updateTime) : that.updateTime != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(administrationId, administrationName, administrationPassword, administrationAccount, createTime, updateTime);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (administrationName != null ? administrationName.hashCode() : 0);
+        result = 31 * result + (administrationPassword != null ? administrationPassword.hashCode() : 0);
+        result = 31 * result + (administrationAccount != null ? administrationAccount.hashCode() : 0);
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
+        return result;
     }
 }

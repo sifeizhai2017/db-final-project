@@ -1,12 +1,8 @@
 package com.shnu.work.task;
 
 import com.google.gson.Gson;
-import com.shnu.work.entity.UserDataWhileUsingEntity;
-import com.shnu.work.entity.UserInformationEntity;
 import com.shnu.work.repository.UserDataWhileUsingRepository;
 import com.shnu.work.repository.UserInformationRepository;
-import com.shnu.work.util.RandomLocationUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Map;
 
 /**
  * 定时任务：自动生成经纬度信息

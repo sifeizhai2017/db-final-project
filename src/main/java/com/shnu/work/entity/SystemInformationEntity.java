@@ -1,18 +1,12 @@
 package com.shnu.work.entity;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
+import java.sql.Timestamp;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "system_information", schema = "final_work", catalog = "")
 public class SystemInformationEntity {
-    private long versionId;
+    private long id;
     private String noteOfDutyFree;
     private String noteOf2;
     private String noteOf3;
@@ -20,19 +14,17 @@ public class SystemInformationEntity {
     private String noteOf5;
     private String noteOf6;
     private String noteOf7;
-    @CreatedDate
-    private Date createTime;
-    @LastModifiedDate
-    private Date updateTime;
+    private Timestamp createTime;
+    private Timestamp updateTime;
 
     @Id
-    @Column(name = "version_id", nullable = false)
-    public long getVersionId() {
-        return versionId;
+    @Column(name = "id", nullable = false)
+    public long getId() {
+        return id;
     }
 
-    public void setVersionId(long versionId) {
-        this.versionId = versionId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Basic
@@ -107,21 +99,21 @@ public class SystemInformationEntity {
 
     @Basic
     @Column(name = "create_time", nullable = true)
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
     @Basic
     @Column(name = "update_time", nullable = true)
-    public Date getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -129,21 +121,36 @@ public class SystemInformationEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         SystemInformationEntity that = (SystemInformationEntity) o;
-        return versionId == that.versionId &&
-                Objects.equals(noteOfDutyFree, that.noteOfDutyFree) &&
-                Objects.equals(noteOf2, that.noteOf2) &&
-                Objects.equals(noteOf3, that.noteOf3) &&
-                Objects.equals(noteOf4, that.noteOf4) &&
-                Objects.equals(noteOf5, that.noteOf5) &&
-                Objects.equals(noteOf6, that.noteOf6) &&
-                Objects.equals(noteOf7, that.noteOf7) &&
-                Objects.equals(createTime, that.createTime) &&
-                Objects.equals(updateTime, that.updateTime);
+
+        if (id != that.id) return false;
+        if (noteOfDutyFree != null ? !noteOfDutyFree.equals(that.noteOfDutyFree) : that.noteOfDutyFree != null)
+            return false;
+        if (noteOf2 != null ? !noteOf2.equals(that.noteOf2) : that.noteOf2 != null) return false;
+        if (noteOf3 != null ? !noteOf3.equals(that.noteOf3) : that.noteOf3 != null) return false;
+        if (noteOf4 != null ? !noteOf4.equals(that.noteOf4) : that.noteOf4 != null) return false;
+        if (noteOf5 != null ? !noteOf5.equals(that.noteOf5) : that.noteOf5 != null) return false;
+        if (noteOf6 != null ? !noteOf6.equals(that.noteOf6) : that.noteOf6 != null) return false;
+        if (noteOf7 != null ? !noteOf7.equals(that.noteOf7) : that.noteOf7 != null) return false;
+        if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
+        if (updateTime != null ? !updateTime.equals(that.updateTime) : that.updateTime != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(versionId, noteOfDutyFree, noteOf2, noteOf3, noteOf4, noteOf5, noteOf6, noteOf7, createTime, updateTime);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (noteOfDutyFree != null ? noteOfDutyFree.hashCode() : 0);
+        result = 31 * result + (noteOf2 != null ? noteOf2.hashCode() : 0);
+        result = 31 * result + (noteOf3 != null ? noteOf3.hashCode() : 0);
+        result = 31 * result + (noteOf4 != null ? noteOf4.hashCode() : 0);
+        result = 31 * result + (noteOf5 != null ? noteOf5.hashCode() : 0);
+        result = 31 * result + (noteOf6 != null ? noteOf6.hashCode() : 0);
+        result = 31 * result + (noteOf7 != null ? noteOf7.hashCode() : 0);
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
+        return result;
     }
 }

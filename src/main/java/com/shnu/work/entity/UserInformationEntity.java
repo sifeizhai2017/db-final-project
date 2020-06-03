@@ -1,41 +1,29 @@
 package com.shnu.work.entity;
 
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
+import java.sql.Timestamp;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
-@DynamicInsert
-@DynamicUpdate
 @Table(name = "user_information", schema = "final_work", catalog = "")
 public class UserInformationEntity {
-    private long userId;
+    private long id;
     private String userName;
     private String userPassword;
     private String userAccount;
-    private int userSex;
+    private Integer userSex;
     private String userSignature;
     private short userNumOfDevice;
-    @CreatedDate
-    private Date createTime;
-    @LastModifiedDate
-    private Date updateTime;
+    private Timestamp createTime;
+    private Timestamp updateTime;
 
     @Id
-    @Column(name = "user_id", nullable = false)
-    public long getUserId() {
-        return userId;
+    @Column(name = "id", nullable = false)
+    public long getId() {
+        return id;
     }
 
-    public void setUserId(long userId) {
-        this.userId = userId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Basic
@@ -70,11 +58,11 @@ public class UserInformationEntity {
 
     @Basic
     @Column(name = "user_sex", nullable = true)
-    public int getUserSex() {
+    public Integer getUserSex() {
         return userSex;
     }
 
-    public void setUserSex(int userSex) {
+    public void setUserSex(Integer userSex) {
         this.userSex = userSex;
     }
 
@@ -100,21 +88,21 @@ public class UserInformationEntity {
 
     @Basic
     @Column(name = "create_time", nullable = true)
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
     @Basic
     @Column(name = "update_time", nullable = true)
-    public Date getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -122,20 +110,34 @@ public class UserInformationEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         UserInformationEntity that = (UserInformationEntity) o;
-        return userId == that.userId &&
-                userNumOfDevice == that.userNumOfDevice &&
-                Objects.equals(userName, that.userName) &&
-                Objects.equals(userPassword, that.userPassword) &&
-                Objects.equals(userAccount, that.userAccount) &&
-                Objects.equals(userSex, that.userSex) &&
-                Objects.equals(userSignature, that.userSignature) &&
-                Objects.equals(createTime, that.createTime) &&
-                Objects.equals(updateTime, that.updateTime);
+
+        if (id != that.id) return false;
+        if (userNumOfDevice != that.userNumOfDevice) return false;
+        if (userName != null ? !userName.equals(that.userName) : that.userName != null) return false;
+        if (userPassword != null ? !userPassword.equals(that.userPassword) : that.userPassword != null) return false;
+        if (userAccount != null ? !userAccount.equals(that.userAccount) : that.userAccount != null) return false;
+        if (userSex != null ? !userSex.equals(that.userSex) : that.userSex != null) return false;
+        if (userSignature != null ? !userSignature.equals(that.userSignature) : that.userSignature != null)
+            return false;
+        if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
+        if (updateTime != null ? !updateTime.equals(that.updateTime) : that.updateTime != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, userName, userPassword, userAccount, userSex, userSignature, userNumOfDevice, createTime, updateTime);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (userName != null ? userName.hashCode() : 0);
+        result = 31 * result + (userPassword != null ? userPassword.hashCode() : 0);
+        result = 31 * result + (userAccount != null ? userAccount.hashCode() : 0);
+        result = 31 * result + (userSex != null ? userSex.hashCode() : 0);
+        result = 31 * result + (userSignature != null ? userSignature.hashCode() : 0);
+        result = 31 * result + (int) userNumOfDevice;
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
+        return result;
     }
 }

@@ -3,11 +3,21 @@ package com.shnu.work.entity;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.Objects;
 
 public class UserDataWhileUsingEntityPK implements Serializable {
+    private long id;
     private long deviceId;
     private long userId;
+
+    @Column(name = "id", nullable = false)
+    @Id
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     @Column(name = "device_id", nullable = false)
     @Id
@@ -33,13 +43,21 @@ public class UserDataWhileUsingEntityPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         UserDataWhileUsingEntityPK that = (UserDataWhileUsingEntityPK) o;
-        return deviceId == that.deviceId &&
-                userId == that.userId;
+
+        if (id != that.id) return false;
+        if (deviceId != that.deviceId) return false;
+        if (userId != that.userId) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(deviceId, userId);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (int) (deviceId ^ (deviceId >>> 32));
+        result = 31 * result + (int) (userId ^ (userId >>> 32));
+        return result;
     }
 }

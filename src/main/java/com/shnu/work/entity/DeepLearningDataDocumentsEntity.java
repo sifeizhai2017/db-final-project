@@ -1,34 +1,26 @@
 package com.shnu.work.entity;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
+import java.sql.Timestamp;
 
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "deep_learning_data_documents", schema = "final_work", catalog = "")
 public class DeepLearningDataDocumentsEntity {
-    private long documentId;
+    private long id;
     private Long userId;
     private Long deviceId;
     private String documentData;
-    @CreatedDate
-    private Date createTime;
-    @LastModifiedDate
-    private Date updateTime;
+    private Timestamp createTime;
+    private Timestamp updateTime;
 
     @Id
-    @Column(name = "document_id", nullable = false)
-    public long getDocumentId() {
-        return documentId;
+    @Column(name = "id", nullable = false)
+    public long getId() {
+        return id;
     }
 
-    public void setDocumentId(long documentId) {
-        this.documentId = documentId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Basic
@@ -63,21 +55,21 @@ public class DeepLearningDataDocumentsEntity {
 
     @Basic
     @Column(name = "create_time", nullable = true)
-    public Date getCreateTime() {
+    public Timestamp getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
     }
 
     @Basic
     @Column(name = "update_time", nullable = true)
-    public Date getUpdateTime() {
+    public Timestamp getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Timestamp updateTime) {
         this.updateTime = updateTime;
     }
 
@@ -85,17 +77,27 @@ public class DeepLearningDataDocumentsEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         DeepLearningDataDocumentsEntity that = (DeepLearningDataDocumentsEntity) o;
-        return documentId == that.documentId &&
-                Objects.equals(userId, that.userId) &&
-                Objects.equals(deviceId, that.deviceId) &&
-                Objects.equals(documentData, that.documentData) &&
-                Objects.equals(createTime, that.createTime) &&
-                Objects.equals(updateTime, that.updateTime);
+
+        if (id != that.id) return false;
+        if (userId != null ? !userId.equals(that.userId) : that.userId != null) return false;
+        if (deviceId != null ? !deviceId.equals(that.deviceId) : that.deviceId != null) return false;
+        if (documentData != null ? !documentData.equals(that.documentData) : that.documentData != null) return false;
+        if (createTime != null ? !createTime.equals(that.createTime) : that.createTime != null) return false;
+        if (updateTime != null ? !updateTime.equals(that.updateTime) : that.updateTime != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(documentId, userId, deviceId, documentData, createTime, updateTime);
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + (deviceId != null ? deviceId.hashCode() : 0);
+        result = 31 * result + (documentData != null ? documentData.hashCode() : 0);
+        result = 31 * result + (createTime != null ? createTime.hashCode() : 0);
+        result = 31 * result + (updateTime != null ? updateTime.hashCode() : 0);
+        return result;
     }
 }
