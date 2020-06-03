@@ -2,6 +2,7 @@ package com.shnu.work.entity;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.sql.Timestamp;
 
 @Entity
@@ -11,15 +12,15 @@ public class UserDataWhileUsingEntity {
     private long id;
     private long deviceId;
     private long userId;
-    private Timestamp userDocumentTime;
+    private Date userDocumentTime;
     private BigDecimal userLocationX;
     private BigDecimal userLocationY;
     private String userName;
     private String userEmergencyContact;
     private String userHealthCareDemo;
     private Integer documentAlert;
-    private Timestamp createTime;
-    private Timestamp updateTime;
+    private Date createTime;
+    private Date updateTime;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -53,11 +54,11 @@ public class UserDataWhileUsingEntity {
 
     @Basic
     @Column(name = "user_document_time", nullable = true)
-    public Timestamp getUserDocumentTime() {
+    public Date getUserDocumentTime() {
         return userDocumentTime;
     }
 
-    public void setUserDocumentTime(Timestamp userDocumentTime) {
+    public void setUserDocumentTime(Date userDocumentTime) {
         this.userDocumentTime = userDocumentTime;
     }
 
@@ -123,21 +124,21 @@ public class UserDataWhileUsingEntity {
 
     @Basic
     @Column(name = "create_time", nullable = true)
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
     @Basic
     @Column(name = "update_time", nullable = true)
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
