@@ -62,4 +62,9 @@ public class UserController {
     public String backToHomepage() {
         return "/index";
     }
+
+    @RequestMapping("/getSensorInfo")
+    public String getSensorInfo() {
+        return "/sensorinfo";
+    }
 }
