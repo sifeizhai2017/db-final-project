@@ -25,7 +25,7 @@ public class RedisUtils {
      * @param key key
      * @return value
      */
-    public String get(final String key) {
+    public String get(String key) {
         return redisTemplate.opsForValue().get(key);
     }
 

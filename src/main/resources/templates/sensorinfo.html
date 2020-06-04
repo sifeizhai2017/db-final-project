@@ -83,7 +83,7 @@
             </ol>
             <h1>传感器信息概览 <small>Sensor Information Overview</small></h1>
             <hr>
-            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addModal">增加</button>
+            <button type="button" class="btn btn-primary mar" data-toggle="modal" data-target="#addModal">增加</button>
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
                     <thead>
@@ -123,14 +123,58 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                <h4 class="modal-title" id="myModalLabel">新增位置信息</h4>
             </div>
             <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <form class="form-horizontal" action="/user/saveNewRecord">
+                    <div class="form-group">
+                        <label for="deviceId" class="col-sm-2 control-label">设备id</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="deviceId" placeholder="设备id">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="userLocationX" class="col-sm-2 control-label">经度</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="userLocationX" placeholder="经度">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="userLocationY" class="col-sm-2 control-label">纬度</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="userLocationY" placeholder="纬度">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="userDocumentTime" class="col-sm-2 control-label">时间戳</label>
+                        <div class="col-sm-10">
+                            <input type="date" class="form-control" id="userDocumentTime" placeholder="时间戳">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="userEmergencyContact" class="col-sm-2 control-label">联系电话</label>
+                        <div class="col-sm-10">
+                            <input type="tel" class="form-control" id="userEmergencyContact" placeholder="联系电话">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="documentAlert" class="col-sm-2 control-label">健康状况</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="documentAlert">
+                                <option>健康</option>
+                                <option>亚健康</option>
+                                <option>不健康</option>
+                            </select>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group text-right">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="submit" class="btn btn-primary">新增</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

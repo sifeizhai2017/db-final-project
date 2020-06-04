@@ -19,8 +19,17 @@ public interface IUserDataWhileUsingService {
 
     /**
      * 通过ID查询
+     *
      * @param id id
      * @return 结果
      */
     Optional<UserDataWhileUsingEntity> findById(Integer id);
+
+    /**
+     * 保存一条记录
+     *
+     * @param userDataWhileUsingEntity UserDataWhileUsingEntity
+     * @return UserDataWhileUsingEntity
+     */
+    UserDataWhileUsingEntity save(UserDataWhileUsingEntity userDataWhileUsingEntity);
 }

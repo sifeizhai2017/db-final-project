@@ -26,4 +26,9 @@ public class UserDataWhileUsingServiceImpl implements IUserDataWhileUsingService
     public Optional<UserDataWhileUsingEntity> findById(Integer id) {
         return this.userDataWhileUsingRepository.findById(id);
     }
+
+    @Override
+    public UserDataWhileUsingEntity save(UserDataWhileUsingEntity userDataWhileUsingEntity) {
+        return userDataWhileUsingRepository.save(userDataWhileUsingEntity);
+    }
 }

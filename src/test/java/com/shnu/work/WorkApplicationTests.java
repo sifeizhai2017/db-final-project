@@ -42,5 +42,11 @@ class WorkApplicationTests {
     public void testRandomLocationUtils() {
         Map<String, String> jw = RandomLocationUtils.randomLonLat(85, 122, 29, 116);
         System.out.println("jw = " + jw);
+        System.out.println("1" + null);
+    }
+
+    @Test
+    public static void main(String[] args) {
+        System.out.println("1" + null);
     }
 }
