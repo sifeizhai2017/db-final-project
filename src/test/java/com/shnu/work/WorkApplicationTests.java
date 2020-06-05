@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Map;
+import java.util.Set;
 
 @SpringBootTest
 class WorkApplicationTests {
@@ -34,8 +35,10 @@ class WorkApplicationTests {
 
     @Test
     public void testRedis() {
-        boolean set = redisUtils.set("kkk", "vvv");
-        System.out.println("set = " + set);
+//        boolean set = redisUtils.set("kkk", "vvv");
+//        System.out.println("set = " + set);
+        Set<String> location_ = redisUtils.fuzzySearch("*location_*");
+        System.out.println("location_ = " + location_);
     }
 
     @Test

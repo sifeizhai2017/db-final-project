@@ -1,9 +1,15 @@
 package com.shnu.work.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * redis操作工具类
@@ -12,12 +18,31 @@ import org.springframework.stereotype.Component;
  * 2020年5月28日 12点43分
  */
 @Component
+@Repository
 public class RedisUtils {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    /**
+     * 切换数据库
+     *
+     * @param dbNumber 数据库编号
+     */
+    public void switchDatabase(Integer dbNumber) {
+        ((LettuceConnectionFactory) Objects.requireNonNull(redisTemplate.getConnectionFactory())).setDatabase(dbNumber);
+    }
+
+    /**
+     * 模糊查询
+     * @param key key
+     * @return 查询结果
+     */
+    public Set<String> fuzzySearch(String key) {
+        return this.stringRedisTemplate.keys(key);
+    }
 
     /**
      * 读取缓存

@@ -109,6 +109,18 @@ public class UserController {
         userDataWhileUsingEntity.setUserName(loginUserEntity.getUserName());
 
         UserDataWhileUsingEntity save = userDataWhileUsingService.save(userDataWhileUsingEntity);
-        return "/sensorinfo";
+        return "/index";
+    }
+
+    @RequestMapping("/updateRecord")
+    public String updateRecord(HttpSession session) {
+
+        return null;
+    }
+
+    @RequestMapping("/removeRecord")
+    public String removeRecord() {
+
+        return null;
     }
 }
