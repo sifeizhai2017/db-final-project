@@ -130,40 +130,40 @@
                     <div class="form-group">
                         <label for="deviceId" class="col-sm-2 control-label">设备id</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="deviceId" placeholder="设备id">
+                            <input type="text" class="form-control" name="deviceId" id="deviceId" placeholder="设备id">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="userLocationX" class="col-sm-2 control-label">经度</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="userLocationX" placeholder="经度">
+                            <input type="text" class="form-control" name="userLocationX" id="userLocationX" placeholder="经度">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="userLocationY" class="col-sm-2 control-label">纬度</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="userLocationY" placeholder="纬度">
+                            <input type="text" class="form-control" name="userLocationY" id="userLocationY" placeholder="纬度">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="userDocumentTime" class="col-sm-2 control-label">时间戳</label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" id="userDocumentTime" placeholder="时间戳">
+                            <input type="date" class="form-control" name="userDocumentTime" id="userDocumentTime" placeholder="时间戳">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="userEmergencyContact" class="col-sm-2 control-label">联系电话</label>
                         <div class="col-sm-10">
-                            <input type="tel" class="form-control" id="userEmergencyContact" placeholder="联系电话">
+                            <input type="tel" class="form-control" name="userEmergencyContact" maxlength="11" id="userEmergencyContact" placeholder="联系电话">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="documentAlert" class="col-sm-2 control-label">健康状况</label>
                         <div class="col-sm-10">
-                            <select class="form-control" id="documentAlert">
-                                <option>健康</option>
-                                <option>亚健康</option>
-                                <option>不健康</option>
+                            <select class="form-control" name="documentAlert" id="documentAlert">
+                                <option value="0">健康</option>
+                                <option value="1">亚健康</option>
+                                <option value="2">不健康</option>
                             </select>
                         </div>
                     </div>

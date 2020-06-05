@@ -2,21 +2,25 @@ package com.shnu.work.controller;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.google.gson.Gson;
+import com.shnu.work.dto.UserDataWhileUsingDTO;
 import com.shnu.work.entity.UserDataWhileUsingEntity;
 import com.shnu.work.entity.UserInformationEntity;
 import com.shnu.work.service.IUserDataWhileUsingService;
 import com.shnu.work.service.IUserInformationService;
 import com.shnu.work.util.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -90,13 +94,17 @@ public class UserController {
     }
 
     @RequestMapping("/saveNewRecord")
-    public String saveNewRecord(HttpSession session, UserDataWhileUsingEntity userDataWhileUsingEntity) {
+    public String saveNewRecord(HttpSession session, UserDataWhileUsingDTO userDataWhileUsingDto) throws ParseException {
+        LOGGER.info("userDataWhileUsingDto:{}", gson.toJson(userDataWhileUsingDto));
         String loginUser = (String) session.getAttribute("login_user");
         //从redis中获取用户信息
         String loginUserJson = redisUtils.get("login_user_" + loginUser);
         UserInformationEntity loginUserEntity = gson.fromJson(loginUserJson, UserInformationEntity.class);
         LOGGER.info("loginUserEntity:{}", gson.toJson(loginUserEntity));
 
+        UserDataWhileUsingEntity userDataWhileUsingEntity = new UserDataWhileUsingEntity();
+        BeanUtils.copyProperties(userDataWhileUsingDto, userDataWhileUsingEntity);
+        userDataWhileUsingEntity.setUserDocumentTime(DateUtils.parseDate(userDataWhileUsingDto.getUserDocumentTime(), "yyyy-MM-dd"));
         userDataWhileUsingEntity.setUserId(loginUserEntity.getId());
         userDataWhileUsingEntity.setUserName(loginUserEntity.getUserName());
 
