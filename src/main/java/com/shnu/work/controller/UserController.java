@@ -115,6 +115,12 @@ public class UserController {
     @RequestMapping("/updateRecord")
     public String updateRecord(HttpSession session) {
 
+        return "/update";
+    }
+
+    @RequestMapping("/submitUpdateRecord")
+    public String submitUpdateRecord(HttpSession session) {
+
         return null;
     }
 

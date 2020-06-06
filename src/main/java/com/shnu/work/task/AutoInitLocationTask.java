@@ -43,10 +43,9 @@ public class AutoInitLocationTask {
     @Autowired
     RedisUtils redisUtils;
 
-    //    @Scheduled(fixedRate = Integer.MAX_VALUE)
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = Integer.MAX_VALUE)
     private void initDataToRedis() {
-        //todo：写到redis中，每2分钟更新将缓存清到mysql中
+        //写到redis中，每2分钟更新将缓存清到mysql中
         Iterable<UserInformationEntity> allUsers = userInformationRepository.findAll();
         redisUtils.switchDatabase(1);
         for (UserInformationEntity user : allUsers) {
@@ -64,9 +63,10 @@ public class AutoInitLocationTask {
                 // 随机生成健康状况
                 userDataWhileUsingEntity.setUserHealthCareDemo(HealthConditionEnum.getEmByKey((int) (Math.random() * 3)).getValue());
                 userDataWhileUsingEntity.setDocumentAlert(1);
+                userDataWhileUsingRepository.save(userDataWhileUsingEntity);
                 //存入数据库
-                boolean result = redisUtils.set("location_info_" + user.getUserAccount() + "_" + DateFormatUtils.format(userDataWhileUsingEntity.getUserDocumentTime(), "yyyy:MM:dd_hh:mm:ss"),
-                        gson.toJson(userDataWhileUsingEntity));
+//                boolean result = redisUtils.set("location_info_" + user.getUserAccount() + "_" + DateFormatUtils.format(userDataWhileUsingEntity.getUserDocumentTime(), "yyyy:MM:dd_hh:mm:ss"),
+//                        gson.toJson(userDataWhileUsingEntity));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -77,13 +77,13 @@ public class AutoInitLocationTask {
 
     @Scheduled(fixedRate = 60000)
     private void flushDataToMySql() {
-        //todo: 每隔2分钟把所有location_info开头的数据写到mysql中，并删除调这些结果
-        Set<String> locationInfoCacheSet = redisUtils.fuzzySearch("*location_info_*");
-        for (String locationInfoCache : locationInfoCacheSet) {
-            String locationData = redisUtils.get(locationInfoCache);
-            UserDataWhileUsingEntity locationDataEntity = gson.fromJson(locationData, UserDataWhileUsingEntity.class);
-            userDataWhileUsingRepository.save(locationDataEntity);
-            boolean delete = redisUtils.delete(locationInfoCache);
-        }
+        //每隔2分钟把所有location_info开头的数据写到mysql中，并删除调这些结果
+//        Set<String> locationInfoCacheSet = redisUtils.fuzzySearch("*location_info_*");
+//        for (String locationInfoCache : locationInfoCacheSet) {
+//            String locationData = redisUtils.get(locationInfoCache);
+//            UserDataWhileUsingEntity locationDataEntity = gson.fromJson(locationData, UserDataWhileUsingEntity.class);
+//            userDataWhileUsingRepository.save(locationDataEntity);
+//            boolean delete = redisUtils.delete(locationInfoCache);
+//        }
     }
 }
