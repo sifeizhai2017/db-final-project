@@ -22,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,6 +82,12 @@ public class UserController {
     @RequestMapping("/getSensorInfo")
     public ModelAndView getSensorInfo(ModelAndView modelAndView, HttpSession session) {
         String loginUser = (String) session.getAttribute("login_user");
+        listSensorData(modelAndView, loginUser);
+        modelAndView.setViewName("/sensorinfo");
+        return modelAndView;
+    }
+
+    private void listSensorData(ModelAndView modelAndView, String loginUser) {
         if (!StringUtils.isBlank(loginUser)) {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("userInfo:{}", gson.toJson(userInfo));
@@ -91,12 +96,10 @@ public class UserController {
             LOGGER.info("userDataList:{}", gson.toJson(userDataList));
             modelAndView.addObject("userDataList", userDataList);
         }
-        modelAndView.setViewName("/sensorinfo");
-        return modelAndView;
     }
 
     @RequestMapping("/saveNewRecord")
-    public String saveNewRecord(HttpSession session, UserDataWhileUsingDTO userDataWhileUsingDto) throws ParseException {
+    public ModelAndView saveNewRecord(ModelAndView modelAndView, HttpSession session, UserDataWhileUsingDTO userDataWhileUsingDto) throws ParseException {
         LOGGER.info("userDataWhileUsingDto:{}", gson.toJson(userDataWhileUsingDto));
         String loginUser = (String) session.getAttribute("login_user");
         //从redis中获取用户信息
@@ -111,7 +114,9 @@ public class UserController {
         userDataWhileUsingEntity.setUserName(loginUserEntity.getUserName());
 
         UserDataWhileUsingEntity save = userDataWhileUsingService.save(userDataWhileUsingEntity);
-        return "/index";
+
+        listSensorData(modelAndView, loginUser);
+        return modelAndView;
     }
 
     @RequestMapping("/updateRecord/{userDocumentTime}")
@@ -158,12 +163,13 @@ public class UserController {
             LOGGER.info("updateRecord newUserData:{}", gson.toJson(newUserData));
             userDataWhileUsingService.save(newUserData);
         }
+        listSensorData(modelAndView, loginUser);
         modelAndView.setViewName("/sensorinfo");
         return modelAndView;
     }
 
     @RequestMapping("/removeRecord/{userDocumentTime}")
-    public String removeRecord(HttpSession session, @PathVariable("userDocumentTime") String userDocumentTime) {
+    public ModelAndView removeRecord(ModelAndView modelAndView, HttpSession session, @PathVariable("userDocumentTime") String userDocumentTime) {
         String loginUser = (String) session.getAttribute("login_user");
         if (!StringUtils.isBlank(loginUser)) {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
@@ -175,6 +181,7 @@ public class UserController {
             userDataWhileUsingService.removeUserDataById(oldUserData.getId());
         }
 
-        return "/sensorinfo";
+        listSensorData(modelAndView, loginUser);
+        return modelAndView;
     }
 }
