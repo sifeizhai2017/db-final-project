@@ -1,8 +1,10 @@
 package com.shnu.work.controller;
 
 import com.google.gson.Gson;
+import com.shnu.work.entity.AdministrationInformationEntity;
 import com.shnu.work.entity.SystemInformationEntity;
 import com.shnu.work.entity.UserInformationEntity;
+import com.shnu.work.service.IAdministrationInformationService;
 import com.shnu.work.service.ISystemInformationService;
 import com.shnu.work.service.IUserInformationService;
 import com.shnu.work.util.RedisUtils;
@@ -30,6 +32,9 @@ public class LoginController {
 
     @Autowired
     ISystemInformationService systemInformationService;
+
+    @Autowired
+    IAdministrationInformationService administrationInformationService;
 
     @Autowired
     RedisUtils redisUtils;
@@ -98,7 +103,29 @@ public class LoginController {
      * @return 管理后台界面
      */
     @RequestMapping(value = "/adminLogin")
-    public ModelAndView adminLogin(ModelAndView modelAndView) {
+    public ModelAndView adminLogin(ModelAndView modelAndView,
+                                   HttpSession session,
+                                   @Param("adminAccount") String adminAccount,
+                                   @Param("adminPassword") String adminPassword) {
+        try {
+            AdministrationInformationEntity adminInfoEntity = administrationInformationService.getAdministrationInformationEntityByAdministrationAccount(adminAccount);
+            LOGGER.info("adminLogin adminInfoEntity:{}", gson.toJson(adminInfoEntity));
+            String decryptPassword = EncryptDecrypt.decrypt(adminInfoEntity.getAdministrationPassword(), ENCRYPT_KEY);
+            if (!adminPassword.equals(decryptPassword)) {
+                modelAndView.addObject("msg", "error");
+                modelAndView.setViewName("/login");
+            } else {
+                modelAndView.addObject("msg", "success");
+                modelAndView.setViewName("/index");
+                session.setAttribute("admin_user", adminAccount);
+                redisUtils.set("admin_user" + adminPassword, gson.toJson(adminInfoEntity));
+            }
+        } catch (Exception e) {
+            LOGGER.error("登录出错，adminAccount:{}，adminPassword:{}", adminAccount, adminPassword);
+            modelAndView.addObject("msg", "error");
+            modelAndView.setViewName("/login");
+        }
+
         // 暂时不对账号密码进行验证
         modelAndView.setViewName("/admin");
 
