@@ -1,6 +1,7 @@
 package com.shnu.work;
 
 import com.google.gson.Gson;
+import com.shnu.work.util.NewRedisUtils;
 import com.shnu.work.util.RandomLocationUtils;
 import com.shnu.work.util.RedisUtils;
 import com.spoon.pass.encrypt.EncryptDecrypt;
@@ -13,10 +14,6 @@ import java.util.Set;
 
 @SpringBootTest
 class WorkApplicationTests {
-
-    @Autowired
-    RedisUtils redisUtils;
-
     Gson gson = new Gson();
 
     @Test
@@ -35,10 +32,11 @@ class WorkApplicationTests {
 
     @Test
     public void testRedis() {
-//        boolean set = redisUtils.set("kkk", "vvv");
-//        System.out.println("set = " + set);
-        Set<String> location_ = redisUtils.fuzzySearch("*location_*");
-        System.out.println("location_ = " + location_);
+        NewRedisUtils newRedisUtils = NewRedisUtils.getRedisUtil();
+//        String s = newRedisUtils.switchDB(1);
+//        System.out.println("s = " + s);
+        String set = newRedisUtils.set("kkk1", "vvv1");
+        System.out.println("set = " + set);
     }
 
     @Test
