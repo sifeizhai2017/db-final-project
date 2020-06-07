@@ -1,5 +1,7 @@
 package com.shnu.work.entity;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -10,8 +12,9 @@ import java.util.Date;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "user_data_while_using", schema = "final_work", catalog = "")
-@IdClass(UserDataWhileUsingEntityPK.class)
 public class UserDataWhileUsingEntity {
     private long id;
     private long deviceId;
@@ -38,7 +41,7 @@ public class UserDataWhileUsingEntity {
         this.id = id;
     }
 
-    @Id
+    @Basic
     @Column(name = "device_id", nullable = false)
     public long getDeviceId() {
         return deviceId;
@@ -48,7 +51,7 @@ public class UserDataWhileUsingEntity {
         this.deviceId = deviceId;
     }
 
-    @Id
+    @Basic
     @Column(name = "user_id", nullable = false)
     public long getUserId() {
         return userId;

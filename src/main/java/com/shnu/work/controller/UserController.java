@@ -8,7 +8,6 @@ import com.shnu.work.service.IUserDataWhileUsingService;
 import com.shnu.work.service.IUserInformationService;
 import com.shnu.work.util.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -18,10 +17,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -135,12 +134,36 @@ public class UserController {
     }
 
     @RequestMapping("/submitUpdateRecord")
-    public String submitUpdateRecord(@Param("deviceId") Integer deviceId,
+    public ModelAndView submitUpdateRecord(HttpSession session,
+                                     ModelAndView modelAndView,
+                                     @Param("deviceId") Integer deviceId,
                                      @Param("userLocationX") String userLocationX,
                                      @Param("userLocationY") String userLocationY,
-                                     @Param("userDocumentTime") String userDocumentTime) {
-
-        return null;
+                                     @Param("userDocumentTime") String userDocumentTime,
+                                     @Param("userOldDocumentTime") String userOldDocumentTime) throws ParseException {
+        LOGGER.info("userOldDocumentTime:{}", userOldDocumentTime);
+        String loginUser = (String) session.getAttribute("login_user");
+        Date oldDocumentTime = DateUtils.parseDate(userOldDocumentTime.replace(".0", ""), "yyyy-MM-dd hh:mm:ss");
+        if (!StringUtils.isBlank(loginUser)) {
+            UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
+            LOGGER.info("submitUpdateRecord userInfo:{}", gson.toJson(userInfo));
+            // 某一个时间点某一个用户的记录
+            UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(oldDocumentTime, userInfo.getId());
+            LOGGER.info("submitUpdateRecord oldUserData:{}", gson.toJson(oldUserData));
+            //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
+            UserDataWhileUsingEntity newUserData = new UserDataWhileUsingEntity();
+//            BeanUtils.copyProperties(oldUserData, newUserData);
+            newUserData.setId(oldUserData.getId());
+            newUserData.setDeviceId(deviceId);
+            newUserData.setUserLocationX(new BigDecimal(userLocationX));
+            newUserData.setUserLocationY(new BigDecimal(userLocationY));
+            newUserData.setUserDocumentTime(DateUtils.parseDate(userDocumentTime.replace(".0", ""), "yyyy-MM-dd hh:mm:ss"));
+            LOGGER.info("updateRecord newUserData:{}", gson.toJson(newUserData));
+            userDataWhileUsingService.save(newUserData);
+//            userDataWhileUsingService.updateByDocumentTimeAndUserId(newUserData, oldUserData.getId());
+        }
+        modelAndView.setViewName("/sensorinfo");
+        return modelAndView;
     }
 
     @RequestMapping("/removeRecord")

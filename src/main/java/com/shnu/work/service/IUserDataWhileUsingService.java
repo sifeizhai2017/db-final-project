@@ -42,4 +42,14 @@ public interface IUserDataWhileUsingService {
      * @return 结果
      */
     UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(Date userDocumentTime, Long userId);
+
+    /**
+     * 更新
+     *
+     * @param newUserData     新的数据
+     * @param oldDocumentTime 查询条件
+     * @param userId          查询结果
+     * @return 新的结果
+     */
+    Integer updateByDocumentTimeAndUserId(UserDataWhileUsingEntity newUserData, Long id);
 }

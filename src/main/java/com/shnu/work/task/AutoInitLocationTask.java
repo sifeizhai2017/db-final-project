@@ -43,7 +43,7 @@ public class AutoInitLocationTask {
     @Autowired
     RedisUtils redisUtils;
 
-    @Scheduled(fixedRate = Integer.MAX_VALUE)
+    @Scheduled(fixedRate = 1000)
     private void initDataToRedis() {
         //写到redis中，每2分钟更新将缓存清到mysql中
         Iterable<UserInformationEntity> allUsers = userInformationRepository.findAll();
