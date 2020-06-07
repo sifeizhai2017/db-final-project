@@ -2,7 +2,6 @@ package com.shnu.work.service;
 
 import com.shnu.work.entity.UserDataWhileUsingEntity;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,15 +40,29 @@ public interface IUserDataWhileUsingService {
      * @param userId           userId
      * @return 结果
      */
-    UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(Date userDocumentTime, Long userId);
+    UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(String userDocumentTime, Long userId);
 
     /**
      * 更新
      *
-     * @param newUserData     新的数据
-     * @param oldDocumentTime 查询条件
-     * @param userId          查询结果
+     * @param newUserData 新的数据
+     * @param id          查询条件
      * @return 新的结果
      */
     Integer updateByDocumentTimeAndUserId(UserDataWhileUsingEntity newUserData, Long id);
+
+    /**
+     * 根据id删除
+     *
+     * @param id id
+     * @return 影响行数
+     */
+    Integer removeUserDataById(Long id);
+
+    /**
+     * 查找未删除的结果
+     *
+     * @return 结果list
+     */
+    List<UserDataWhileUsingEntity> listAllUndeleted();
 }

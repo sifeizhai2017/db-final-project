@@ -22,6 +22,7 @@ public class UserInformationEntity {
     private Date createTime;
     @LastModifiedDate
     private Date updateTime;
+    private Integer isDeleted;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -111,6 +112,16 @@ public class UserInformationEntity {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Basic
+    @Column(name = "is_deleted", nullable = true)
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     @Override

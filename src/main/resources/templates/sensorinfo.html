@@ -114,8 +114,27 @@
                                class="btn btn-warning btn-xs">修改</a>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-danger btn-xs">删除</button>
+                            <button class="btn btn-danger btn-xs" data-target="#removeModal" data-toggle="modal"
+                                    type="button">删除</button>
                         </td>
+                        <!-- Remove Modal -->
+                        <div class="modal fade" id="removeModal" tabindex="-1" role="dialog" aria-labelledby="myRemoveModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myRemoveModalLabel">警告</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        你确定要删除吗？
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">我再想想</button>
+                                        <a type="button" th:href="@{/user/removeRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}" class="btn btn-danger">没错，我要删除</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </tr>
                     </tbody>
                 </table>

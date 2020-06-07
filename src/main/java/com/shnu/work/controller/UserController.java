@@ -116,15 +116,13 @@ public class UserController {
 
     @RequestMapping("/updateRecord/{userDocumentTime}")
     public ModelAndView updateRecord(ModelAndView modelAndView, HttpSession session,
-                               @PathVariable("userDocumentTime") String userDocumentTime) throws ParseException {
+                               @PathVariable("userDocumentTime") String userDocumentTime) {
         LOGGER.info("userDocumentTime:{}", userDocumentTime);
         String loginUser = (String) session.getAttribute("login_user");
-        Date userDocument = DateUtils.parseDate(userDocumentTime.replace(".0", ""), "yyyy-MM-dd hh:mm:ss");
-        LOGGER.info("userDocument:{}", userDocument);
         if (!StringUtils.isBlank(loginUser)) {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("updateRecord userInfo:{}", gson.toJson(userInfo));
-            UserDataWhileUsingEntity curUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocument, userInfo.getId());
+            UserDataWhileUsingEntity curUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
             LOGGER.info("updateRecord curUserData:{}", gson.toJson(curUserData));
 
             modelAndView.addObject("curUserData", curUserData);
@@ -143,12 +141,11 @@ public class UserController {
                                      @Param("userOldDocumentTime") String userOldDocumentTime) throws ParseException {
         LOGGER.info("userOldDocumentTime:{}", userOldDocumentTime);
         String loginUser = (String) session.getAttribute("login_user");
-        Date oldDocumentTime = DateUtils.parseDate(userOldDocumentTime.replace(".0", ""), "yyyy-MM-dd hh:mm:ss");
         if (!StringUtils.isBlank(loginUser)) {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("submitUpdateRecord userInfo:{}", gson.toJson(userInfo));
             // 某一个时间点某一个用户的记录
-            UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(oldDocumentTime, userInfo.getId());
+            UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
             LOGGER.info("submitUpdateRecord oldUserData:{}", gson.toJson(oldUserData));
             //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
             UserDataWhileUsingEntity newUserData = new UserDataWhileUsingEntity();
@@ -165,9 +162,19 @@ public class UserController {
         return modelAndView;
     }
 
-    @RequestMapping("/removeRecord")
-    public String removeRecord() {
+    @RequestMapping("/removeRecord/{userDocumentTime}")
+    public String removeRecord(HttpSession session, @PathVariable("userDocumentTime") String userDocumentTime) {
+        String loginUser = (String) session.getAttribute("login_user");
+        if (!StringUtils.isBlank(loginUser)) {
+            UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
+            LOGGER.info("removeRecord userInfo:{}", gson.toJson(userInfo));
+            // 某一个时间点某一个用户的记录
+            UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
+            LOGGER.info("removeRecord oldUserData:{}", gson.toJson(oldUserData));
+            //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
+            userDataWhileUsingService.removeUserDataById(oldUserData.getId());
+        }
 
-        return null;
+        return "/sensorinfo";
     }
 }

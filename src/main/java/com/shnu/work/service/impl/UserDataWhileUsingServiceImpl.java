@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +35,7 @@ public class UserDataWhileUsingServiceImpl implements IUserDataWhileUsingService
     }
 
     @Override
-    public UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(Date userDocumentTime, Long userId) {
+    public UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(String userDocumentTime, Long userId) {
         return userDataWhileUsingRepository.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime, userId);
     }
 
@@ -47,5 +46,15 @@ public class UserDataWhileUsingServiceImpl implements IUserDataWhileUsingService
                 newUserData.getUserLocationY(),
                 newUserData.getUserDocumentTime(),
                 id);
+    }
+
+    @Override
+    public Integer removeUserDataById(Long id) {
+        return userDataWhileUsingRepository.removeUserDataById(id);
+    }
+
+    @Override
+    public List<UserDataWhileUsingEntity> listAllUndeleted() {
+        return this.userDataWhileUsingRepository.listAllUndeleted();
     }
 }

@@ -21,7 +21,7 @@ public interface UserDataWhileUsingRepository extends CrudRepository<UserDataWhi
      * @param userId userId
      * @return 所有结果
      */
-    @Query(value = "SELECT * FROM user_data_while_using WHERE user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM user_data_while_using WHERE user_id = ?1 and is_deleted = 0", nativeQuery = true)
     List<UserDataWhileUsingEntity> listUserDataWhileUsingEntitiesByUserId(Long userId);
 
     /**
@@ -31,8 +31,8 @@ public interface UserDataWhileUsingRepository extends CrudRepository<UserDataWhi
      * @param userId           userId
      * @return 结果
      */
-    @Query(value = "SELECT * FROM user_data_while_using WHERE user_document_time = ?1 AND user_id = ?2", nativeQuery = true)
-    UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(Date userDocumentTime, Long userId);
+    @Query(value = "SELECT * FROM user_data_while_using WHERE user_document_time = ?1 AND user_id = ?2 and is_deleted = 0", nativeQuery = true)
+    UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(String userDocumentTime, Long userId);
 
     /**
      * 更新
@@ -47,4 +47,23 @@ public interface UserDataWhileUsingRepository extends CrudRepository<UserDataWhi
     @Modifying
     @Query(value = "UPDATE user_data_while_using SET device_id = ?1, user_location_x = ?2, user_location_y = ?3, user_document_time = ?3 WHERE id = ?4", nativeQuery = true)
     Integer updateByDocumentTimeAndUserId(long deviceId, BigDecimal userLocationX, BigDecimal userLocationY, Date userDocumentTime, long id);
+
+
+    /**
+     * 根据id删除
+     *
+     * @param id id
+     * @return 影响行数
+     */
+    @Modifying
+    @Query(value = "UPDATE user_data_while_using SET is_deleted = 1 WHERE id = ?1", nativeQuery = true)
+    Integer removeUserDataById(Long id);
+
+    /**
+     * 查找未删除的结果
+     *
+     * @return 结果list
+     */
+    @Query(value = "SELECT * FROM user_data_while_using WHERE is_deleted = 0", nativeQuery = true)
+    List<UserDataWhileUsingEntity> listAllUndeleted();
 }
