@@ -55,7 +55,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false" th:text="${session.login_user}"> <span class="caret"></span></a>
+                               aria-haspopup="true" aria-expanded="false" th:text="${session.admin_user}"> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="/login/userLogout">退出登陆</a></li>
                             </ul>
@@ -71,8 +71,8 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-                <li><a href="/user/getSensorInfo">传感器信息概览</a></li>
-                <li><a href="/user/getUserInfo">用户信息修改</a></li>
+                <li><a href="/admin/getSensorInfo">传感器信息概览</a></li>
+<!--                <li><a href="/user/getUserInfo">用户信息修改</a></li>-->
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -82,7 +82,7 @@
             <div class="jumbotron">
                 <div class="container">
                     <h1>主页</h1>
-                    <p>欢迎来到儿童关怀系统用户端</p>
+                    <p>欢迎来到儿童关怀系统管理员端</p>
                     <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
                 </div>
             </div>
@@ -92,13 +92,13 @@
                     <div class="col-md-4">
                         <h2>传感器信息概览</h2>
                         <p>在这里你可以看到所有和你所属的传感器有关的信息</p>
-                        <p><a class="btn btn-default" href="/user/getSensorInfo" role="button">查看更多 »</a></p>
+                        <p><a class="btn btn-default" href="/admin/getSensorInfo" role="button">查看更多 »</a></p>
                     </div>
-                    <div class="col-md-4">
-                        <h2>个人信息修改</h2>
-                        <p>在这里你可以看到并修改你的个人信息</p>
-                        <p><a class="btn btn-default" href="/user/getUserInfo" role="button">查看更多 »</a></p>
-                    </div>
+<!--                    <div class="col-md-4">-->
+<!--                        <h2>个人信息修改</h2>-->
+<!--                        <p>在这里你可以看到并修改你的个人信息</p>-->
+<!--                        <p><a class="btn btn-default" href="/user/getUserInfo" role="button">查看更多 »</a></p>-->
+<!--                    </div>-->
                     <div class="col-md-4">
                         <h2>关于我们</h2>
                         <p>在这里你可以看到我们的信息，例如 <strong>基于多模态数据的大气污染物分析大气污染物分析</strong></p>

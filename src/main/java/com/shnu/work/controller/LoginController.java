@@ -108,7 +108,8 @@ public class LoginController {
                                    @Param("adminAccount") String adminAccount,
                                    @Param("adminPassword") String adminPassword) {
         try {
-            AdministrationInformationEntity adminInfoEntity = administrationInformationService.getAdministrationInformationEntityByAdministrationAccount(adminAccount);
+            AdministrationInformationEntity adminInfoEntity =
+                    administrationInformationService.getAdministrationInformationEntityByAdministrationAccount(adminAccount);
             LOGGER.info("adminLogin adminInfoEntity:{}", gson.toJson(adminInfoEntity));
             String decryptPassword = EncryptDecrypt.decrypt(adminInfoEntity.getAdministrationPassword(), ENCRYPT_KEY);
             if (!adminPassword.equals(decryptPassword)) {

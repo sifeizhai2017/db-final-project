@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +27,7 @@ import java.util.List;
 /**
  * @author Kanna Hashimoto
  */
+@Controller
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
@@ -50,12 +52,12 @@ public class AdminController {
         return modelAndView;
     }
 
-    private void listSensorData(ModelAndView modelAndView, String loginUser) {
-        if (!StringUtils.isBlank(loginUser)) {
-            UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
+    private void listSensorData(ModelAndView modelAndView, String adminUser) {
+        if (!StringUtils.isBlank(adminUser)) {
+            UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(adminUser);
             LOGGER.info("userInfo:{}", gson.toJson(userInfo));
             List<UserDataWhileUsingEntity> userDataList =
-                    userDataWhileUsingService.listUserDataWhileUsingEntitiesByUserId(userInfo.getId());
+                    userDataWhileUsingService.listAllUndeleted();
             LOGGER.info("userDataList:{}", gson.toJson(userDataList));
             modelAndView.addObject("userDataList", userDataList);
         }

@@ -71,9 +71,9 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li><a href="/user/backToHomepage">首页 </a></li>
+                <li><a href="/admin/backToHomepage">首页 </a></li>
                 <li class="active"><a href="#">传感器信息概览 <span class="sr-only">(current)</span></a></li>
-                <li><a href="/user/getUserInfo">用户信息修改</a></li>
+<!--                <li><a href="/admin/getUserInfo">用户信息修改</a></li>-->
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -110,7 +110,7 @@
                         <td th:text="${userData.getUserEmergencyContact()}"></td>
                         <td th:text="${userData.getUserHealthCareDemo()}"></td>
                         <td><a type="button"
-                               th:href="@{/user/updateRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}"
+                               th:href="@{/admin/updateRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}"
                                class="btn btn-warning btn-xs">修改</a>
                         </td>
                         <td>
@@ -130,7 +130,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">我再想想</button>
-                                        <a type="button" th:href="@{/user/removeRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}" class="btn btn-danger">没错，我要删除</a>
+                                        <a type="button" th:href="@{/admin/removeRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}" class="btn btn-danger">没错，我要删除</a>
                                     </div>
                                 </div>
                             </div>

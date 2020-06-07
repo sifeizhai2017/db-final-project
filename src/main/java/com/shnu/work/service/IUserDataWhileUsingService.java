@@ -18,14 +18,6 @@ public interface IUserDataWhileUsingService {
     List<UserDataWhileUsingEntity> listUserDataWhileUsingEntitiesByUserId(Long userId);
 
     /**
-     * 通过ID查询
-     *
-     * @param id id
-     * @return 结果
-     */
-    Optional<UserDataWhileUsingEntity> findById(Integer id);
-
-    /**
      * 保存一条记录
      *
      * @param userDataWhileUsingEntity UserDataWhileUsingEntity
@@ -41,15 +33,6 @@ public interface IUserDataWhileUsingService {
      * @return 结果
      */
     UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(String userDocumentTime, Long userId);
-
-    /**
-     * 更新
-     *
-     * @param newUserData 新的数据
-     * @param id          查询条件
-     * @return 新的结果
-     */
-    Integer updateByDocumentTimeAndUserId(UserDataWhileUsingEntity newUserData, Long id);
 
     /**
      * 根据id删除

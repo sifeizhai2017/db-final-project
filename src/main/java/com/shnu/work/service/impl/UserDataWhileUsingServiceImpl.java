@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Shinomiya Kaguya
@@ -25,11 +24,6 @@ public class UserDataWhileUsingServiceImpl implements IUserDataWhileUsingService
     }
 
     @Override
-    public Optional<UserDataWhileUsingEntity> findById(Integer id) {
-        return this.userDataWhileUsingRepository.findById(id);
-    }
-
-    @Override
     public UserDataWhileUsingEntity save(UserDataWhileUsingEntity userDataWhileUsingEntity) {
         return userDataWhileUsingRepository.save(userDataWhileUsingEntity);
     }
@@ -37,15 +31,6 @@ public class UserDataWhileUsingServiceImpl implements IUserDataWhileUsingService
     @Override
     public UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(String userDocumentTime, Long userId) {
         return userDataWhileUsingRepository.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime, userId);
-    }
-
-    @Override
-    public Integer updateByDocumentTimeAndUserId(UserDataWhileUsingEntity newUserData, Long id) {
-        return userDataWhileUsingRepository.updateByDocumentTimeAndUserId(newUserData.getDeviceId(),
-                newUserData.getUserLocationX(),
-                newUserData.getUserLocationY(),
-                newUserData.getUserDocumentTime(),
-                id);
     }
 
     @Override
