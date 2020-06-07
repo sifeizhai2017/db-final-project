@@ -1,7 +1,9 @@
 package com.shnu.work.controller;
 
 import com.google.gson.Gson;
+import com.shnu.work.entity.SystemInformationEntity;
 import com.shnu.work.entity.UserInformationEntity;
+import com.shnu.work.service.ISystemInformationService;
 import com.shnu.work.service.IUserInformationService;
 import com.shnu.work.util.RedisUtils;
 import com.spoon.pass.encrypt.EncryptDecrypt;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 /**
  * @author tonghao
@@ -24,6 +27,9 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
     @Autowired
     IUserInformationService userInformationService;
+
+    @Autowired
+    ISystemInformationService systemInformationService;
 
     @Autowired
     RedisUtils redisUtils;
@@ -40,8 +46,15 @@ public class LoginController {
      * @return 登录页面
      */
     @RequestMapping("/")
-    public String commonLogin() {
-        return "/login";
+    public ModelAndView commonLogin(ModelAndView modelAndView) {
+        Optional<SystemInformationEntity> sysInfoById = systemInformationService.getSysInfoById(1L);
+        if (sysInfoById.isPresent()) {
+            modelAndView.addObject("sysInfo", sysInfoById.get().getNoteOfDutyFree());
+        } else {
+            modelAndView.addObject("sysInfo", "使用前必读！！！！！");
+        }
+        modelAndView.setViewName("/login");
+        return modelAndView;
     }
 
     /**
