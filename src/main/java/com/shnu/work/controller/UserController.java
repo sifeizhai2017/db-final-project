@@ -182,6 +182,7 @@ public class UserController {
         }
 
         listSensorData(modelAndView, loginUser);
+        modelAndView.setViewName("/sensorinfo");
         return modelAndView;
     }
 }
