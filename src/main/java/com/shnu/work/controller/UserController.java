@@ -152,7 +152,7 @@ public class UserController {
             LOGGER.info("submitUpdateRecord oldUserData:{}", gson.toJson(oldUserData));
             //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
             UserDataWhileUsingEntity newUserData = new UserDataWhileUsingEntity();
-//            BeanUtils.copyProperties(oldUserData, newUserData);
+            BeanUtils.copyProperties(oldUserData, newUserData);
             newUserData.setId(oldUserData.getId());
             newUserData.setDeviceId(deviceId);
             newUserData.setUserLocationX(new BigDecimal(userLocationX));
@@ -160,7 +160,6 @@ public class UserController {
             newUserData.setUserDocumentTime(DateUtils.parseDate(userDocumentTime.replace(".0", ""), "yyyy-MM-dd hh:mm:ss"));
             LOGGER.info("updateRecord newUserData:{}", gson.toJson(newUserData));
             userDataWhileUsingService.save(newUserData);
-//            userDataWhileUsingService.updateByDocumentTimeAndUserId(newUserData, oldUserData.getId());
         }
         modelAndView.setViewName("/sensorinfo");
         return modelAndView;
