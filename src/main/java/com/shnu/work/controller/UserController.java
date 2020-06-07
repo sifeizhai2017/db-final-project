@@ -1,6 +1,5 @@
 package com.shnu.work.controller;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import com.google.gson.Gson;
 import com.shnu.work.dto.UserDataWhileUsingDTO;
 import com.shnu.work.entity.UserDataWhileUsingEntity;
@@ -9,6 +8,7 @@ import com.shnu.work.service.IUserDataWhileUsingService;
 import com.shnu.work.service.IUserInformationService;
 import com.shnu.work.util.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -16,11 +16,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -112,14 +115,30 @@ public class UserController {
         return "/index";
     }
 
-    @RequestMapping("/updateRecord")
-    public String updateRecord(HttpSession session) {
+    @RequestMapping("/updateRecord/{userDocumentTime}")
+    public ModelAndView updateRecord(ModelAndView modelAndView, HttpSession session,
+                               @PathVariable("userDocumentTime") String userDocumentTime) throws ParseException {
+        LOGGER.info("userDocumentTime:{}", userDocumentTime);
+        String loginUser = (String) session.getAttribute("login_user");
+        Date userDocument = DateUtils.parseDate(userDocumentTime.replace(".0", ""), "yyyy-MM-dd hh:mm:ss");
+        LOGGER.info("userDocument:{}", userDocument);
+        if (!StringUtils.isBlank(loginUser)) {
+            UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
+            LOGGER.info("updateRecord userInfo:{}", gson.toJson(userInfo));
+            UserDataWhileUsingEntity curUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocument, userInfo.getId());
+            LOGGER.info("updateRecord curUserData:{}", gson.toJson(curUserData));
 
-        return "/update";
+            modelAndView.addObject("curUserData", curUserData);
+        }
+        modelAndView.setViewName("/update");
+        return modelAndView;
     }
 
     @RequestMapping("/submitUpdateRecord")
-    public String submitUpdateRecord(HttpSession session) {
+    public String submitUpdateRecord(@Param("deviceId") Integer deviceId,
+                                     @Param("userLocationX") String userLocationX,
+                                     @Param("userLocationY") String userLocationY,
+                                     @Param("userDocumentTime") String userDocumentTime) {
 
         return null;
     }

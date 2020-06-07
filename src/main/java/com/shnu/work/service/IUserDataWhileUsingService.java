@@ -2,6 +2,7 @@ package com.shnu.work.service;
 
 import com.shnu.work.entity.UserDataWhileUsingEntity;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,4 +33,13 @@ public interface IUserDataWhileUsingService {
      * @return UserDataWhileUsingEntity
      */
     UserDataWhileUsingEntity save(UserDataWhileUsingEntity userDataWhileUsingEntity);
+
+    /**
+     * 根据userDocumentTime和userId查到结果
+     *
+     * @param userDocumentTime userDocumentTime
+     * @param userId           userId
+     * @return 结果
+     */
+    UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(Date userDocumentTime, Long userId);
 }

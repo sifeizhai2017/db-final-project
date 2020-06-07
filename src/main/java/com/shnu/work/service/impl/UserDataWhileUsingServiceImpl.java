@@ -6,6 +6,7 @@ import com.shnu.work.service.IUserDataWhileUsingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,5 +31,10 @@ public class UserDataWhileUsingServiceImpl implements IUserDataWhileUsingService
     @Override
     public UserDataWhileUsingEntity save(UserDataWhileUsingEntity userDataWhileUsingEntity) {
         return userDataWhileUsingRepository.save(userDataWhileUsingEntity);
+    }
+
+    @Override
+    public UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(Date userDocumentTime, Long userId) {
+        return userDataWhileUsingRepository.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime, userId);
     }
 }

@@ -99,7 +99,10 @@ public class LoginController {
      * @return 主界面
      */
     @RequestMapping(value = "/userLogin")
-    public ModelAndView userLogin(HttpSession session, ModelAndView modelAndView, @Param("userAccount") String userAccount, @Param("userPassword") String userPassword) {
+    public ModelAndView userLogin(HttpSession session,
+                                  ModelAndView modelAndView,
+                                  @Param("userAccount") String userAccount,
+                                  @Param("userPassword") String userPassword) {
         try {
             UserInformationEntity userAccountEntity = userInformationService.getUserInformationEntityByUserAccount(userAccount);
             LOGGER.info("userAccountEntity:{}", gson.toJson(userAccountEntity));

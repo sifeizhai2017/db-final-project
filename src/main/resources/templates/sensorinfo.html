@@ -105,12 +105,17 @@
                         <td th:text="${userData.getDeviceId()}">${userDataList.get}</td>
                         <td th:text="${userData.getUserLocationX()}"></td>
                         <td th:text="${userData.getUserLocationY()}"></td>
-                        <td th:text="${userData.getUserDocumentTime()}"></td>
+                        <td th:text="${#dates.format(userData.getUserDocumentTime(), 'yyyy-MM-dd hh:mm:ss')}"></td>
                         <td th:text="${userData.getUserName()}"></td>
                         <td th:text="${userData.getUserEmergencyContact()}"></td>
                         <td th:text="${userData.getUserHealthCareDemo()}"></td>
-                        <td><a type="button" href="/user/updateRecord" class="btn btn-warning btn-xs" >修改</a></td>
-                        <td><button type="button" class="btn btn-danger btn-xs">删除</button></td>
+                        <td><a type="button"
+                               th:href="@{/user/updateRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}"
+                               class="btn btn-warning btn-xs">修改</a>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger btn-xs">删除</button>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -123,7 +128,8 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="modal-title" id="myModalLabel">新增位置信息</h4>
             </div>
             <div class="modal-body">
@@ -137,25 +143,29 @@
                     <div class="form-group">
                         <label for="userLocationX" class="col-sm-2 control-label">经度</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="userLocationX" id="userLocationX" placeholder="经度">
+                            <input type="text" class="form-control" name="userLocationX" id="userLocationX"
+                                   placeholder="经度">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="userLocationY" class="col-sm-2 control-label">纬度</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="userLocationY" id="userLocationY" placeholder="纬度">
+                            <input type="text" class="form-control" name="userLocationY" id="userLocationY"
+                                   placeholder="纬度">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="userDocumentTime" class="col-sm-2 control-label">时间戳</label>
                         <div class="col-sm-10">
-                            <input type="datetime-local" class="form-control" name="userDocumentTime" id="userDocumentTime" placeholder="时间戳">
+                            <input type="datetime-local" class="form-control" name="userDocumentTime"
+                                   id="userDocumentTime" placeholder="时间戳">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="userEmergencyContact" class="col-sm-2 control-label">联系电话</label>
                         <div class="col-sm-10">
-                            <input type="tel" class="form-control" name="userEmergencyContact" maxlength="11" id="userEmergencyContact" placeholder="联系电话">
+                            <input type="tel" class="form-control" name="userEmergencyContact" maxlength="11"
+                                   id="userEmergencyContact" placeholder="联系电话">
                         </div>
                     </div>
                     <div class="form-group">
