@@ -44,9 +44,9 @@ public class AdminController {
 
     @RequestMapping("/getSensorInfo")
     public ModelAndView getSensorInfo(ModelAndView modelAndView, HttpSession session) {
-        String loginUser = (String) session.getAttribute("login_user");
-        listSensorData(modelAndView, loginUser);
-        modelAndView.setViewName("/sensorinfo");
+        String adminUser = (String) session.getAttribute("admin_user");
+        listSensorData(modelAndView, adminUser);
+        modelAndView.setViewName("/admin");
         return modelAndView;
     }
 

@@ -127,7 +127,7 @@ public class LoginController {
         }
 
         // 暂时不对账号密码进行验证
-        modelAndView.setViewName("/admin");
+        modelAndView.setViewName("/admin-index");
 
         return modelAndView;
     }
