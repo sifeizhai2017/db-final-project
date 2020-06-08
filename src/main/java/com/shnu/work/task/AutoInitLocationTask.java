@@ -6,6 +6,7 @@ import com.shnu.work.entity.UserInformationEntity;
 import com.shnu.work.enums.HealthConditionEnum;
 import com.shnu.work.repository.UserDataWhileUsingRepository;
 import com.shnu.work.repository.UserInformationRepository;
+import com.shnu.work.util.NewRedisUtils;
 import com.shnu.work.util.RandomLocationUtils;
 import com.shnu.work.util.RedisUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -40,14 +41,12 @@ public class AutoInitLocationTask {
     private final static Logger LOGGER = LoggerFactory.getLogger(AutoInitLocationTask.class);
     private final Gson gson = new Gson();
 
-    @Autowired
-    RedisUtils redisUtils;
-
-    @Scheduled(fixedRate = Integer.MAX_VALUE)
+    @Scheduled(cron = "*/5 * * * * *")
     private void initDataToRedis() {
+        LOGGER.info("=========================随机生成数据插入到redis开始===========================");
+        NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
         //写到redis中，每2分钟更新将缓存清到mysql中
         Iterable<UserInformationEntity> allUsers = userInformationRepository.findAll();
-        redisUtils.switchDatabase(1);
         for (UserInformationEntity user : allUsers) {
             try {
                 Map<String, String> lonLatMap = RandomLocationUtils.randomLonLat(100, 200, 300, 40);
@@ -63,27 +62,33 @@ public class AutoInitLocationTask {
                 // 随机生成健康状况
                 userDataWhileUsingEntity.setUserHealthCareDemo(HealthConditionEnum.getEmByKey((int) (Math.random() * 3)).getValue());
                 userDataWhileUsingEntity.setDocumentAlert(1);
-                userDataWhileUsingRepository.save(userDataWhileUsingEntity);
-                //存入数据库
-//                boolean result = redisUtils.set("location_info_" + user.getUserAccount() + "_" + DateFormatUtils.format(userDataWhileUsingEntity.getUserDocumentTime(), "yyyy:MM:dd_hh:mm:ss"),
-//                        gson.toJson(userDataWhileUsingEntity));
+                //存入redis
+                String result = redisUtils.set(2, "location_info_" + user.getUserAccount() + "_" + DateFormatUtils.format(userDataWhileUsingEntity.getUserDocumentTime(), "yyyy:MM:dd_hh:mm:ss"),
+                        gson.toJson(userDataWhileUsingEntity));
+                LOGGER.info("initDataToRedis result:{}", result);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        LOGGER.info("执行静态定时任务时间：" + LocalDateTime.now());
+        LOGGER.info("=========================随机生成数据插入到redis开始===========================");
     }
 
-    @Scheduled(fixedRate = 60000)
+
+    @Scheduled(cron = "*/60 * * * * *")
     private void flushDataToMySql() {
+        LOGGER.info("=========================从redis中取数据插入到mysql开始===========================");
+        NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
         //每隔2分钟把所有location_info开头的数据写到mysql中，并删除调这些结果
-//        Set<String> locationInfoCacheSet = redisUtils.fuzzySearch("*location_info_*");
-//        for (String locationInfoCache : locationInfoCacheSet) {
-//            String locationData = redisUtils.get(locationInfoCache);
-//            UserDataWhileUsingEntity locationDataEntity = gson.fromJson(locationData, UserDataWhileUsingEntity.class);
-//            userDataWhileUsingRepository.save(locationDataEntity);
-//            boolean delete = redisUtils.delete(locationInfoCache);
-//        }
+        Set<String> locationInfoCacheSet = redisUtils.keys(2, "location_info_*");
+        LOGGER.info("flushDataToMySql locationInfoCacheSet:{}", gson.toJson(locationInfoCacheSet));
+        locationInfoCacheSet.forEach(locationInfoCache -> {
+            String locationData = redisUtils.get(2, locationInfoCache);
+            UserDataWhileUsingEntity locationDataEntity = gson.fromJson(locationData, UserDataWhileUsingEntity.class);
+            userDataWhileUsingRepository.save(locationDataEntity);
+            Long delete = redisUtils.del(2, locationInfoCache);
+            LOGGER.info("flushDataToMySql delete:{}", delete);
+        });
+        LOGGER.info("=========================从redis中取数据插入到mysql结束===========================");
     }
 }

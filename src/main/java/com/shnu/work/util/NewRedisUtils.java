@@ -33,6 +33,7 @@ public class NewRedisUtils {
         Jedis jedis = getJedis(db);
         String value;
         value = jedis.get(key);
+        jedis.close();
         return value;
     }
 
@@ -46,7 +47,9 @@ public class NewRedisUtils {
     public String set(Integer db, String key, String value) {
         Jedis jedis = getJedis(db);
         jedis.select(db);
-        return jedis.set(key, value);
+        String set = jedis.set(key, value);
+        jedis.close();
+        return set;
     }
 
     /**
@@ -57,7 +60,9 @@ public class NewRedisUtils {
      */
     public Long del(Integer db, String... keys) {
         Jedis jedis = getJedis(db);
-        return jedis.del(keys);
+        Long del = jedis.del(keys);
+        jedis.close();
+        return del;
     }
 
     /**
@@ -885,7 +890,9 @@ public class NewRedisUtils {
      */
     public Set<String> keys(Integer db, String pattern) {
         Jedis jedis = getJedis(db);
-        return jedis.keys(pattern);
+        Set<String> keys = jedis.keys(pattern);
+        jedis.close();
+        return keys;
     }
 
     /**

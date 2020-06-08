@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Map;
+import java.util.Set;
 
 @SpringBootTest
 class WorkApplicationTests {
@@ -30,10 +31,9 @@ class WorkApplicationTests {
     @Test
     public void testRedis() {
         NewRedisUtils newRedisUtils = NewRedisUtils.getRedisUtil();
-//        String s = newRedisUtils.switchDB(1);
-//        System.out.println("s = " + s);
-//        String set = newRedisUtils.set("kkk1", "vvv1");
-//        System.out.println("set = " + set);
+        //每隔2分钟把所有location_info开头的数据写到mysql中，并删除调这些结果
+        Set<String> locationInfoCacheSet = newRedisUtils.keys(2, "location_info_*");
+        System.out.println("locationInfoCacheSet = " + gson.toJson(locationInfoCacheSet));
     }
 
     @Test
