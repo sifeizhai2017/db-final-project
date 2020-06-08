@@ -7,6 +7,7 @@ import com.shnu.work.entity.UserInformationEntity;
 import com.shnu.work.service.IAdministrationInformationService;
 import com.shnu.work.service.ISystemInformationService;
 import com.shnu.work.service.IUserInformationService;
+import com.shnu.work.util.NewRedisUtils;
 import com.shnu.work.util.RedisUtils;
 import com.spoon.pass.encrypt.EncryptDecrypt;
 import org.apache.ibatis.annotations.Param;
@@ -35,9 +36,6 @@ public class LoginController {
 
     @Autowired
     IAdministrationInformationService administrationInformationService;
-
-    @Autowired
-    RedisUtils redisUtils;
 
     private final static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
@@ -108,6 +106,7 @@ public class LoginController {
                                    @Param("adminAccount") String adminAccount,
                                    @Param("adminPassword") String adminPassword) {
         try {
+            NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
             AdministrationInformationEntity adminInfoEntity =
                     administrationInformationService.getAdministrationInformationEntityByAdministrationAccount(adminAccount);
             LOGGER.info("adminLogin adminInfoEntity:{}", gson.toJson(adminInfoEntity));
@@ -119,7 +118,9 @@ public class LoginController {
                 modelAndView.addObject("msg", "success");
                 modelAndView.setViewName("/index");
                 session.setAttribute("admin_user", adminAccount);
-                redisUtils.set("admin_user" + adminPassword, gson.toJson(adminInfoEntity));
+                redisUtils.set(1, session.getId(), gson.toJson(adminInfoEntity));
+                Long expire = redisUtils.expire(1, session.getId(), 60000);
+                LOGGER.info("adminLogin expire:{}", expire);
             }
         } catch (Exception e) {
             LOGGER.error("登录出错，adminAccount:{}，adminPassword:{}", adminAccount, adminPassword);
@@ -145,6 +146,7 @@ public class LoginController {
                                   @Param("userAccount") String userAccount,
                                   @Param("userPassword") String userPassword) {
         try {
+            NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
             UserInformationEntity userAccountEntity = userInformationService.getUserInformationEntityByUserAccount(userAccount);
             LOGGER.info("userAccountEntity:{}", gson.toJson(userAccountEntity));
             String decryptPassword = EncryptDecrypt.decrypt(userAccountEntity.getUserPassword(), ENCRYPT_KEY);
@@ -155,7 +157,9 @@ public class LoginController {
                 modelAndView.addObject("msg", "success");
                 modelAndView.setViewName("/index");
                 session.setAttribute("login_user", userAccount);
-                redisUtils.set(session.getId(), gson.toJson(userAccountEntity));
+                redisUtils.set(0, session.getId(), gson.toJson(userAccountEntity));
+                Long expire = redisUtils.expire(0, session.getId(), 60000);
+                LOGGER.info("userLogin expire:{}", expire);
             }
         } catch (Exception e) {
             LOGGER.error("登录出错，userAccount:{}，userPassword:{}", userAccount, userPassword);
@@ -167,9 +171,11 @@ public class LoginController {
     }
 
     @RequestMapping("/userLogout")
-    public String logout(HttpSession session) {
+    public String userLogout(HttpSession session) {
+        NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
         session.removeAttribute("login_user");
-        redisUtils.delete(session.getId());
+        Long del = redisUtils.del(0, session.getId());
+        LOGGER.info("logout del:{}", del);
 
         return "/login";
     }
