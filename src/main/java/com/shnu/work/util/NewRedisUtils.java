@@ -45,7 +45,7 @@ public class NewRedisUtils {
      */
     public String set(Integer db, String key, String value) {
         Jedis jedis = getJedis(db);
-        jedis.select(1);
+        jedis.select(db);
         return jedis.set(key, value);
     }
 

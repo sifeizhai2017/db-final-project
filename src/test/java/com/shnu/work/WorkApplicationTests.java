@@ -3,14 +3,11 @@ package com.shnu.work;
 import com.google.gson.Gson;
 import com.shnu.work.util.NewRedisUtils;
 import com.shnu.work.util.RandomLocationUtils;
-import com.shnu.work.util.RedisUtils;
 import com.spoon.pass.encrypt.EncryptDecrypt;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Map;
-import java.util.Set;
 
 @SpringBootTest
 class WorkApplicationTests {
