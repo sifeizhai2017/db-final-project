@@ -8,10 +8,8 @@ import com.shnu.work.repository.UserDataWhileUsingRepository;
 import com.shnu.work.repository.UserInformationRepository;
 import com.shnu.work.util.NewRedisUtils;
 import com.shnu.work.util.RandomLocationUtils;
-import com.shnu.work.util.RedisUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
@@ -56,6 +53,7 @@ public class AutoInitLocationTask {
                 userDataWhileUsingEntity.setUserLocationX(new BigDecimal(Objects.requireNonNull(lonLatMap).get("J")).abs());
                 userDataWhileUsingEntity.setUserLocationY(new BigDecimal(lonLatMap.get("W")).abs());
                 userDataWhileUsingEntity.setUserName(user.getUserName());
+                userDataWhileUsingEntity.setIsDeleted(0);
 
                 // 生成13开头的手机号
                 userDataWhileUsingEntity.setUserEmergencyContact("13" + RandomStringUtils.randomNumeric(9));

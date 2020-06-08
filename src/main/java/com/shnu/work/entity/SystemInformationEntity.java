@@ -5,12 +5,14 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "system_information", schema = "final_work", catalog = "")
-public class SystemInformationEntity {
+public class SystemInformationEntity implements Serializable {
+    private static final long serialVersionUID = 8377459998151960939L;
     private long id;
     private String noteOfDutyFree;
     private String noteOf2;

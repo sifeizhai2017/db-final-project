@@ -5,12 +5,13 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "deep_learning_data_documents", schema = "final_work", catalog = "")
-public class DeepLearningDataDocumentsEntity {
+public class DeepLearningDataDocumentsEntity implements Serializable {
     private long id;
     private Long userId;
     private Long deviceId;

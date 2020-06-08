@@ -7,8 +7,7 @@ import com.spoon.pass.encrypt.EncryptDecrypt;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @SpringBootTest
 class WorkApplicationTests {
@@ -44,7 +43,14 @@ class WorkApplicationTests {
     }
 
     @Test
-    public static void main(String[] args) {
-        System.out.println("1" + null);
+    public void testSet() {
+        HashSet<String> strings = new HashSet<>();
+        strings.add("aaaaa");
+        strings.add("qqqqq");
+        List<String> strings1 = new ArrayList<>();
+        strings1.add("dadadasd");
+        strings1.add("2132132132132131");
+        boolean b = strings1.addAll(new ArrayList<>(strings));
+        System.out.println("strings1 = " + strings1);
     }
 }

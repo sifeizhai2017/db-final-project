@@ -7,6 +7,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -15,7 +16,9 @@ import java.util.Date;
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "user_data_while_using", schema = "final_work", catalog = "")
-public class UserDataWhileUsingEntity {
+public class UserDataWhileUsingEntity implements Serializable {
+    private static final long serialVersionUID = 2529224687382281072L;
+
     private long id;
     private long deviceId;
     private long userId;
