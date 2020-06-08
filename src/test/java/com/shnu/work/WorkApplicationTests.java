@@ -35,8 +35,8 @@ class WorkApplicationTests {
         NewRedisUtils newRedisUtils = NewRedisUtils.getRedisUtil();
 //        String s = newRedisUtils.switchDB(1);
 //        System.out.println("s = " + s);
-        String set = newRedisUtils.set("kkk1", "vvv1");
-        System.out.println("set = " + set);
+//        String set = newRedisUtils.set("kkk1", "vvv1");
+//        System.out.println("set = " + set);
     }
 
     @Test

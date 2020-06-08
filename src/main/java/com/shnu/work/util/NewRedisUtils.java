@@ -26,8 +26,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public String get(String key) {
-        Jedis jedis = getJedis();
+    public String get(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         String value;
         value = jedis.get(key);
         return value;
@@ -40,8 +40,8 @@ public class NewRedisUtils {
      * @param value
      * @return
      */
-    public String set(String key, String value) {
-        Jedis jedis = getJedis();
+    public String set(Integer db, String key, String value) {
+        Jedis jedis = getJedis(db);
         jedis.select(1);
         return jedis.set(key, value);
     }
@@ -52,8 +52,8 @@ public class NewRedisUtils {
      * @param keys
      * @return
      */
-    public Long del(String... keys) {
-        Jedis jedis = getJedis();
+    public Long del(Integer db, String... keys) {
+        Jedis jedis = getJedis(db);
         return jedis.del(keys);
     }
 
@@ -64,8 +64,8 @@ public class NewRedisUtils {
      * @param str
      * @return
      */
-    public Long append(String key, String str) {
-        Jedis jedis = getJedis();
+    public Long append(Integer db, String key, String str) {
+        Jedis jedis = getJedis(db);
         return jedis.append(key, str);
     }
 
@@ -75,8 +75,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Boolean exists(String key) {
-        Jedis jedis = getJedis();
+    public Boolean exists(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.exists(key);
     }
 
@@ -87,8 +87,8 @@ public class NewRedisUtils {
      * @param value
      * @return
      */
-    public Long setnx(String key, String value) {
-        Jedis jedis = getJedis();
+    public Long setnx(Integer db, String key, String value) {
+        Jedis jedis = getJedis(db);
         return jedis.setnx(key, value);
     }
 
@@ -100,8 +100,8 @@ public class NewRedisUtils {
      * @param value
      * @return
      */
-    public String setex(String key, int seconds, String value) {
-        Jedis jedis = getJedis();
+    public String setex(Integer db, String key, int seconds, String value) {
+        Jedis jedis = getJedis(db);
         return jedis.setex(key, seconds, value);
     }
 
@@ -113,8 +113,8 @@ public class NewRedisUtils {
      * @param str
      * @return
      */
-    public Long setrange(String key, int offset, String str) {
-        Jedis jedis = getJedis();
+    public Long setrange(Integer db, String key, int offset, String str) {
+        Jedis jedis = getJedis(db);
         return jedis.setrange(key, offset, str);
     }
 
@@ -124,8 +124,8 @@ public class NewRedisUtils {
      * @param keys
      * @return
      */
-    public List<String> mget(String... keys) {
-        Jedis jedis = getJedis();
+    public List<String> mget(Integer db, String... keys) {
+        Jedis jedis = getJedis(db);
         return jedis.mget(keys);
     }
 
@@ -135,8 +135,8 @@ public class NewRedisUtils {
      * @param keysValues
      * @return
      */
-    public String mset(String... keysValues) {
-        Jedis jedis = getJedis();
+    public String mset(Integer db, String... keysValues) {
+        Jedis jedis = getJedis(db);
         return jedis.mset(keysValues);
     }
 
@@ -146,8 +146,8 @@ public class NewRedisUtils {
      * @param keysValues
      * @return
      */
-    public Long msetnx(String... keysValues) {
-        Jedis jedis = getJedis();
+    public Long msetnx(Integer db, String... keysValues) {
+        Jedis jedis = getJedis(db);
         return jedis.msetnx(keysValues);
     }
 
@@ -158,8 +158,8 @@ public class NewRedisUtils {
      * @param value
      * @return
      */
-    public String getSet(String key, String value) {
-        Jedis jedis = getJedis();
+    public String getSet(Integer db, String key, String value) {
+        Jedis jedis = getJedis(db);
         return jedis.getSet(key, value);
     }
 
@@ -171,8 +171,8 @@ public class NewRedisUtils {
      * @param endOffset
      * @return
      */
-    public String getrange(String key, int startOffset, int endOffset) {
-        Jedis jedis = getJedis();
+    public String getrange(Integer db, String key, int startOffset, int endOffset) {
+        Jedis jedis = getJedis(db);
         return jedis.getrange(key, startOffset, endOffset);
     }
 
@@ -182,8 +182,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Long incr(String key) {
-        Jedis jedis = getJedis();
+    public Long incr(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.incr(key);
     }
 
@@ -194,8 +194,8 @@ public class NewRedisUtils {
      * @param integer
      * @return
      */
-    public Long incrBy(String key, long integer) {
-        Jedis jedis = getJedis();
+    public Long incrBy(Integer db, String key, long integer) {
+        Jedis jedis = getJedis(db);
         return jedis.incrBy(key, integer);
     }
 
@@ -205,8 +205,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Long decr(String key) {
-        Jedis jedis = getJedis();
+    public Long decr(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.decr(key);
     }
 
@@ -217,8 +217,8 @@ public class NewRedisUtils {
      * @param integer
      * @return
      */
-    public Long decrBy(String key, long integer) {
-        Jedis jedis = getJedis();
+    public Long decrBy(Integer db, String key, long integer) {
+        Jedis jedis = getJedis(db);
         return jedis.decrBy(key, integer);
     }
 
@@ -228,8 +228,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Long strLen(String key) {
-        Jedis jedis = getJedis();
+    public Long strLen(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.strlen(key);
     }
 
@@ -241,8 +241,8 @@ public class NewRedisUtils {
      * @param value
      * @return
      */
-    public Long hsetnx(String key, String field, String value) {
-        Jedis jedis = getJedis();
+    public Long hsetnx(Integer db, String key, String field, String value) {
+        Jedis jedis = getJedis(db);
         return jedis.hsetnx(key, field, value);
     }
 
@@ -254,8 +254,8 @@ public class NewRedisUtils {
      * @param value
      * @return
      */
-    public Long hset(String key, String field, String value) {
-        Jedis jedis = getJedis();
+    public Long hset(Integer db, String key, String field, String value) {
+        Jedis jedis = getJedis(db);
         return jedis.hset(key, field, value);
     }
 
@@ -266,8 +266,8 @@ public class NewRedisUtils {
      * @param hash
      * @return
      */
-    public String hmset(String key, Map<String, String> hash) {
-        Jedis jedis = getJedis();
+    public String hmset(Integer db, String key, Map<String, String> hash) {
+        Jedis jedis = getJedis(db);
         return jedis.hmset(key, hash);
     }
 
@@ -278,8 +278,8 @@ public class NewRedisUtils {
      * @param failed
      * @return
      */
-    public String hget(String key, String failed) {
-        Jedis jedis = getJedis();
+    public String hget(Integer db, String key, String failed) {
+        Jedis jedis = getJedis(db);
         return jedis.hget(key, failed);
     }
 
@@ -290,8 +290,8 @@ public class NewRedisUtils {
      * @param seconds
      * @return
      */
-    public Long expire(String key, int seconds) {
-        Jedis jedis = getJedis();
+    public Long expire(Integer db, String key, int seconds) {
+        Jedis jedis = getJedis(db);
         return jedis.expire(key, seconds);
     }
 
@@ -302,8 +302,8 @@ public class NewRedisUtils {
      * @param fields 可以是 一个String 也可以是 String数组
      * @return
      */
-    public List<String> hmget(String key, String... fields) {
-        Jedis jedis = getJedis();
+    public List<String> hmget(Integer db, String key, String... fields) {
+        Jedis jedis = getJedis(db);
         return jedis.hmget(key, fields);
     }
 
@@ -315,8 +315,8 @@ public class NewRedisUtils {
      * @param value
      * @return
      */
-    public Long hincrby(String key, String field, Long value) {
-        Jedis jedis = getJedis();
+    public Long hincrby(Integer db, String key, String field, Long value) {
+        Jedis jedis = getJedis(db);
         return jedis.hincrBy(key, field, value);
     }
 
@@ -327,8 +327,8 @@ public class NewRedisUtils {
      * @param field
      * @return
      */
-    public Boolean hexists(String key, String field) {
-        Jedis jedis = getJedis();
+    public Boolean hexists(Integer db, String key, String field) {
+        Jedis jedis = getJedis(db);
         return jedis.hexists(key, field);
     }
 
@@ -338,8 +338,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Long hlen(String key) {
-        Jedis jedis = getJedis();
+    public Long hlen(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.hlen(key);
     }
 
@@ -350,8 +350,8 @@ public class NewRedisUtils {
      * @param fields 可以是 一个 field 也可以是 一个数组
      * @return
      */
-    public Long hdel(String key, String... fields) {
-        Jedis jedis = getJedis();
+    public Long hdel(Integer db, String key, String... fields) {
+        Jedis jedis = getJedis(db);
         return jedis.hdel(key, fields);
     }
 
@@ -361,8 +361,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Set<String> hkeys(String key) {
-        Jedis jedis = getJedis();
+    public Set<String> hkeys(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.hkeys(key);
     }
 
@@ -372,8 +372,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public List<String> hvals(String key) {
-        Jedis jedis = getJedis();
+    public List<String> hvals(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.hvals(key);
     }
 
@@ -383,8 +383,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Map<String, String> hgetall(String key) {
-        Jedis jedis = getJedis();
+    public Map<String, String> hgetall(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.hgetAll(key);
     }
 
@@ -395,8 +395,8 @@ public class NewRedisUtils {
      * @param strs 可以是一个string 也可以是string数组
      * @return 返回list的value个数
      */
-    public Long lpush(String key, String... strs) {
-        Jedis jedis = getJedis();
+    public Long lpush(Integer db, String key, String... strs) {
+        Jedis jedis = getJedis(db);
         return jedis.lpush(key, strs);
     }
 
@@ -407,8 +407,8 @@ public class NewRedisUtils {
      * @param strs 可以是一个string 也可以是string数组
      * @return 返回list的value个数
      */
-    public Long rpush(String key, String... strs) {
-        Jedis jedis = getJedis();
+    public Long rpush(Integer db, String key, String... strs) {
+        Jedis jedis = getJedis(db);
         return jedis.rpush(key, strs);
     }
 
@@ -421,9 +421,8 @@ public class NewRedisUtils {
      * @param value 添加的value
      * @return
      */
-    public Long linsert(String key, ListPosition where,
-                        String pivot, String value) {
-        Jedis jedis = getJedis();
+    public Long linsert(Integer db, String key, ListPosition where, String pivot, String value) {
+        Jedis jedis = getJedis(db);
         return jedis.linsert(key, where, pivot, value);
     }
 
@@ -436,8 +435,8 @@ public class NewRedisUtils {
      * @param value
      * @return 成功返回OK
      */
-    public String lset(String key, Long index, String value) {
-        Jedis jedis = getJedis();
+    public String lset(Integer db, String key, Long index, String value) {
+        Jedis jedis = getJedis(db);
         return jedis.lset(key, index, value);
     }
 
@@ -449,8 +448,8 @@ public class NewRedisUtils {
      * @param value
      * @return 返回被删除的个数
      */
-    public Long lrem(String key, long count, String value) {
-        Jedis jedis = getJedis();
+    public Long lrem(Integer db, String key, long count, String value) {
+        Jedis jedis = getJedis(db);
         return jedis.lrem(key, count, value);
     }
 
@@ -462,8 +461,8 @@ public class NewRedisUtils {
      * @param end
      * @return 成功返回OK
      */
-    public String ltrim(String key, long start, long end) {
-        Jedis jedis = getJedis();
+    public String ltrim(Integer db, String key, long start, long end) {
+        Jedis jedis = getJedis(db);
         return jedis.ltrim(key, start, end);
     }
 
@@ -473,9 +472,9 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public synchronized String lpop(String key) {
+    public synchronized String lpop(Integer db, String key) {
 
-        Jedis jedis = getJedis();
+        Jedis jedis = getJedis(db);
         return jedis.lpop(key);
     }
 
@@ -485,8 +484,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    synchronized public String rpop(String key) {
-        Jedis jedis = getJedis();
+    synchronized public String rpop(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.rpop(key);
     }
 
@@ -498,8 +497,8 @@ public class NewRedisUtils {
      * @param dstkey
      * @return
      */
-    public String rpoplpush(String srckey, String dstkey) {
-        Jedis jedis = getJedis();
+    public String rpoplpush(Integer db, String srckey, String dstkey) {
+        Jedis jedis = getJedis(db);
         return jedis.rpoplpush(srckey, dstkey);
     }
 
@@ -510,8 +509,8 @@ public class NewRedisUtils {
      * @param index
      * @return 如果没有返回null
      */
-    public String lindex(String key, long index) {
-        Jedis jedis = getJedis();
+    public String lindex(Integer db, String key, long index) {
+        Jedis jedis = getJedis(db);
         return jedis.lindex(key, index);
     }
 
@@ -521,8 +520,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Long llen(String key) {
-        Jedis jedis = getJedis();
+    public Long llen(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.llen(key);
     }
 
@@ -535,8 +534,8 @@ public class NewRedisUtils {
      * @param end
      * @return
      */
-    public List<String> lrange(String key, long start, long end) {
-        Jedis jedis = getJedis();
+    public List<String> lrange(Integer db, String key, long start, long end) {
+        Jedis jedis = getJedis(db);
         return jedis.lrange(key, start, end);
     }
 
@@ -547,8 +546,8 @@ public class NewRedisUtils {
      * @param members 可以是一个String 也可以是一个String数组
      * @return 添加成功的个数
      */
-    public Long sadd(String key, String... members) {
-        Jedis jedis = getJedis();
+    public Long sadd(Integer db, String key, String... members) {
+        Jedis jedis = getJedis(db);
         return jedis.sadd(key, members);
     }
 
@@ -559,8 +558,8 @@ public class NewRedisUtils {
      * @param members 可以是一个String 也可以是一个String数组
      * @return 删除的个数
      */
-    public Long srem(String key, String... members) {
-        Jedis jedis = getJedis();
+    public Long srem(Integer db, String key, String... members) {
+        Jedis jedis = getJedis(db);
         return jedis.srem(key, members);
     }
 
@@ -570,8 +569,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public String spop(String key) {
-        Jedis jedis = getJedis();
+    public String spop(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.spop(key);
     }
 
@@ -582,8 +581,8 @@ public class NewRedisUtils {
      * @param keys 可以 是一个string 则返回set中所有的value 也可以是string数组
      * @return
      */
-    public Set<String> sdiff(String... keys) {
-        Jedis jedis = getJedis();
+    public Set<String> sdiff(Integer db, String... keys) {
+        Jedis jedis = getJedis(db);
         return jedis.sdiff(keys);
     }
 
@@ -595,8 +594,8 @@ public class NewRedisUtils {
      * @param keys   可以 是一个string 则返回set中所有的value 也可以是string数组
      * @return
      */
-    public Long sdiffstore(String dstkey, String... keys) {
-        Jedis jedis = getJedis();
+    public Long sdiffstore(Integer db, String dstkey, String... keys) {
+        Jedis jedis = getJedis(db);
         return jedis.sdiffstore(dstkey, keys);
     }
 
@@ -606,8 +605,8 @@ public class NewRedisUtils {
      * @param keys 可以 是一个string 也可以是一个string数组
      * @return
      */
-    public Set<String> sinter(String... keys) {
-        Jedis jedis = getJedis();
+    public Set<String> sinter(Integer db, String... keys) {
+        Jedis jedis = getJedis(db);
         return jedis.sinter(keys);
     }
 
@@ -618,8 +617,8 @@ public class NewRedisUtils {
      * @param keys   可以 是一个string 也可以是一个string数组
      * @return
      */
-    public Long sinterstore(String dstkey, String... keys) {
-        Jedis jedis = getJedis();
+    public Long sinterstore(Integer db, String dstkey, String... keys) {
+        Jedis jedis = getJedis(db);
         return jedis.sinterstore(dstkey, keys);
     }
 
@@ -629,8 +628,8 @@ public class NewRedisUtils {
      * @param keys 可以 是一个string 也可以是一个string数组
      * @return
      */
-    public Set<String> sunion(String... keys) {
-        Jedis jedis = getJedis();
+    public Set<String> sunion(Integer db, String... keys) {
+        Jedis jedis = getJedis(db);
         return jedis.sunion(keys);
     }
 
@@ -641,8 +640,8 @@ public class NewRedisUtils {
      * @param keys   可以 是一个string 也可以是一个string数组
      * @return
      */
-    public Long sunionstore(String dstkey, String... keys) {
-        Jedis jedis = getJedis();
+    public Long sunionstore(Integer db, String dstkey, String... keys) {
+        Jedis jedis = getJedis(db);
         return jedis.sunionstore(dstkey, keys);
     }
 
@@ -654,8 +653,8 @@ public class NewRedisUtils {
      * @param member set中的value
      * @return
      */
-    public Long smove(String srckey, String dstkey, String member) {
-        Jedis jedis = getJedis();
+    public Long smove(Integer db, String srckey, String dstkey, String member) {
+        Jedis jedis = getJedis(db);
         return jedis.smove(srckey, dstkey, member);
     }
 
@@ -665,8 +664,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Long scard(String key) {
-        Jedis jedis = getJedis();
+    public Long scard(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.scard(key);
     }
 
@@ -677,8 +676,8 @@ public class NewRedisUtils {
      * @param member
      * @return
      */
-    public Boolean sismember(String key, String member) {
-        Jedis jedis = getJedis();
+    public Boolean sismember(Integer db, String key, String member) {
+        Jedis jedis = getJedis(db);
         return jedis.sismember(key, member);
     }
 
@@ -688,8 +687,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public String srandmember(String key) {
-        Jedis jedis = getJedis();
+    public String srandmember(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.srandmember(key);
     }
 
@@ -699,8 +698,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Set<String> smembers(String key) {
-        Jedis jedis = getJedis();
+    public Set<String> smembers(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.smembers(key);
     }
 
@@ -714,8 +713,8 @@ public class NewRedisUtils {
      * @param member
      * @return
      */
-    public Long zadd(String key, double score, String member) {
-        Jedis jedis = getJedis();
+    public Long zadd(Integer db, String key, double score, String member) {
+        Jedis jedis = getJedis(db);
         return jedis.zadd(key, score, member);
     }
 
@@ -726,8 +725,8 @@ public class NewRedisUtils {
      * @param members 可以 是一个string 也可以是一个string数组
      * @return
      */
-    public Long zrem(String key, String... members) {
-        Jedis jedis = getJedis();
+    public Long zrem(Integer db, String key, String... members) {
+        Jedis jedis = getJedis(db);
         return jedis.zrem(key, members);
     }
 
@@ -739,8 +738,8 @@ public class NewRedisUtils {
      * @param member
      * @return
      */
-    public Double zincrby(String key, double score, String member) {
-        Jedis jedis = getJedis();
+    public Double zincrby(Integer db, String key, double score, String member) {
+        Jedis jedis = getJedis(db);
         return jedis.zincrby(key, score, member);
     }
 
@@ -752,8 +751,8 @@ public class NewRedisUtils {
      * @param member
      * @return
      */
-    public Long zrank(String key, String member) {
-        Jedis jedis = getJedis();
+    public Long zrank(Integer db, String key, String member) {
+        Jedis jedis = getJedis(db);
         return jedis.zrank(key, member);
     }
 
@@ -765,8 +764,8 @@ public class NewRedisUtils {
      * @param member
      * @return
      */
-    public Long zrevrank(String key, String member) {
-        Jedis jedis = getJedis();
+    public Long zrevrank(Integer db, String key, String member) {
+        Jedis jedis = getJedis(db);
         return jedis.zrevrank(key, member);
     }
 
@@ -780,8 +779,8 @@ public class NewRedisUtils {
      * @param end
      * @return
      */
-    public Set<String> zrevrange(String key, long start, long end) {
-        Jedis jedis = getJedis();
+    public Set<String> zrevrange(Integer db, String key, long start, long end) {
+        Jedis jedis = getJedis(db);
         return jedis.zrevrange(key, start, end);
     }
 
@@ -793,8 +792,8 @@ public class NewRedisUtils {
      * @param min
      * @return
      */
-    public Set<String> zrangebyscore(String key, String max, String min) {
-        Jedis jedis = getJedis();
+    public Set<String> zrangebyscore(Integer db, String key, String max, String min) {
+        Jedis jedis = getJedis(db);
         return jedis.zrevrangeByScore(key, max, min);
     }
 
@@ -806,8 +805,8 @@ public class NewRedisUtils {
      * @param min
      * @return
      */
-    public Set<String> zrangeByScore(String key, double max, double min) {
-        Jedis jedis = getJedis();
+    public Set<String> zrangeByScore(Integer db, String key, double max, double min) {
+        Jedis jedis = getJedis(db);
         return jedis.zrevrangeByScore(key, max, min);
     }
 
@@ -819,8 +818,8 @@ public class NewRedisUtils {
      * @param max
      * @return
      */
-    public Long zcount(String key, String min, String max) {
-        Jedis jedis = getJedis();
+    public Long zcount(Integer db, String key, String min, String max) {
+        Jedis jedis = getJedis(db);
         return jedis.zcount(key, min, max);
     }
 
@@ -830,8 +829,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public Long zcard(String key) {
-        Jedis jedis = getJedis();
+    public Long zcard(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.zcard(key);
     }
 
@@ -842,8 +841,8 @@ public class NewRedisUtils {
      * @param member
      * @return
      */
-    public Double zscore(String key, String member) {
-        Jedis jedis = getJedis();
+    public Double zscore(Integer db, String key, String member) {
+        Jedis jedis = getJedis(db);
         return jedis.zscore(key, member);
     }
 
@@ -855,8 +854,8 @@ public class NewRedisUtils {
      * @param end
      * @return
      */
-    public Long zremrangeByRank(String key, long start, long end) {
-        Jedis jedis = getJedis();
+    public Long zremrangeByRank(Integer db, String key, long start, long end) {
+        Jedis jedis = getJedis(db);
         return jedis.zremrangeByRank(key, start, end);
     }
 
@@ -868,8 +867,8 @@ public class NewRedisUtils {
      * @param end
      * @return
      */
-    public Long zremrangeByScore(String key, double start, double end) {
-        Jedis jedis = getJedis();
+    public Long zremrangeByScore(Integer db, String key, double start, double end) {
+        Jedis jedis = getJedis(db);
         return jedis.zremrangeByScore(key, start, end);
     }
 
@@ -881,8 +880,8 @@ public class NewRedisUtils {
      * @param pattern
      * @return
      */
-    public Set<String> keys(String pattern) {
-        Jedis jedis = getJedis();
+    public Set<String> keys(Integer db, String pattern) {
+        Jedis jedis = getJedis(db);
         return jedis.keys(pattern);
     }
 
@@ -892,8 +891,8 @@ public class NewRedisUtils {
      * @param key
      * @return
      */
-    public String type(String key) {
-        Jedis jedis = getJedis();
+    public String type(Integer db, String key) {
+        Jedis jedis = getJedis(db);
         return jedis.type(key);
     }
 
@@ -904,8 +903,10 @@ public class NewRedisUtils {
         }
     }
 
-    private Jedis getJedis() {
-        return pool.getResource();
+    private Jedis getJedis(Integer db) {
+        Jedis resource = pool.getResource();
+        resource.select(db);
+        return resource;
     }
 
     public static NewRedisUtils getRedisUtil() {
