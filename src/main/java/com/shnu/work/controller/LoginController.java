@@ -154,9 +154,8 @@ public class LoginController {
             } else {
                 modelAndView.addObject("msg", "success");
                 modelAndView.setViewName("/index");
-                //todo: 同时在session和redis中放入用户信息。参考：https://www.cnblogs.com/leeego-123/p/10476855.html
                 session.setAttribute("login_user", userAccount);
-                redisUtils.set("login_user_" + userAccount, gson.toJson(userAccountEntity));
+                redisUtils.set(session.getId(), gson.toJson(userAccountEntity));
             }
         } catch (Exception e) {
             LOGGER.error("登录出错，userAccount:{}，userPassword:{}", userAccount, userPassword);
@@ -169,9 +168,8 @@ public class LoginController {
 
     @RequestMapping("/userLogout")
     public String logout(HttpSession session) {
-        String loginUser = (String) session.getAttribute("login_user");
         session.removeAttribute("login_user");
-        redisUtils.delete("login_user_" + loginUser);
+        redisUtils.delete(session.getId());
 
         return "/login";
     }
