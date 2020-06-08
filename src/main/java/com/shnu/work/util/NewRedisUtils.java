@@ -1,6 +1,9 @@
 package com.shnu.work.util;
 
-import redis.clients.jedis.*;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.ListPosition;
 
 import java.util.List;
 import java.util.Map;
