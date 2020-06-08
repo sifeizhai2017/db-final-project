@@ -134,15 +134,16 @@ public class UserController {
         if (!StringUtils.isBlank(loginUser)) {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("updateRecord userInfo:{}", gson.toJson(userInfo));
-            UserDataWhileUsingEntity curUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
-            LOGGER.info("updateRecord curUserData:{}", gson.toJson(curUserData));
+            String key = "location_info_" + userInfo.getUserAccount() + "_" + userDocumentTime.replace(".0", "").replace(" ", "_").replace("-", ":");
+            LOGGER.info("updateRecord curDataStr:{}", key);
+            String curDataStr = redisUtils.get(2, key);
+            LOGGER.info("updateRecord curDataStr:{}", curDataStr);
+            UserDataWhileUsingEntity curUserData = gson.fromJson(curDataStr, new TypeToken<UserDataWhileUsingEntity>() {
+            }.getType());
+            //redis中找不到再去mysql中找
             if (curUserData == null) {
-                String key = "location_info_" + userInfo.getUserAccount() + "_" + userDocumentTime.replace(".0", "").replace(" ", "_").replace("-", ":");
-                LOGGER.info("updateRecord curDataStr:{}", key);
-                String curDataStr = redisUtils.get(2, key);
-                LOGGER.info("updateRecord curDataStr:{}", curDataStr);
-                curUserData = gson.fromJson(curDataStr, new TypeToken<UserDataWhileUsingEntity>() {
-                }.getType());
+                curUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
+                LOGGER.info("updateRecord curUserData:{}", gson.toJson(curUserData));
             }
             LOGGER.info("updateRecord curUserData From Redis:{}", gson.toJson(curUserData));
 
@@ -167,15 +168,19 @@ public class UserController {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("submitUpdateRecord userInfo:{}", gson.toJson(userInfo));
             // 某一个时间点某一个用户的记录
-            UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
-            LOGGER.info("submitUpdateRecord oldUserData:{}", gson.toJson(oldUserData));
-            if (oldUserData == null) {
-                String key = "location_info_" + userInfo.getUserAccount() + "_" + userOldDocumentTime.replace(".0", "").replace(" ", "_").replace("-", ":");
-                LOGGER.info("submitUpdateRecord key:{}", key);
-                String oldUserDataStr = redisUtils.get(2, key);
-                LOGGER.info("submitUpdateRecord oldUserDataStr:{}", oldUserDataStr);
-                oldUserData = gson.fromJson(oldUserDataStr, new TypeToken<UserDataWhileUsingEntity>() {
-                }.getType());
+            String key = "location_info_" + userInfo.getUserAccount() + "_" + userOldDocumentTime.replace(".0", "").replace(" ", "_").replace("-", ":");
+            LOGGER.info("submitUpdateRecord key:{}", key);
+            String oldUserDataStr = redisUtils.get(2, key);
+            LOGGER.info("submitUpdateRecord oldUserDataStr:{}", oldUserDataStr);
+            UserDataWhileUsingEntity oldUserData = gson.fromJson(oldUserDataStr, new TypeToken<UserDataWhileUsingEntity>() {
+            }.getType());
+            if (oldUserData != null) {
+                oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
+                LOGGER.info("submitUpdateRecord oldUserData:{}", gson.toJson(oldUserData));
+                //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
+                UserDataWhileUsingEntity newUserData = getNewUserData(deviceId, userLocationX, userLocationY, userDocumentTime, oldUserData);
+                userDataWhileUsingService.save(newUserData);
+            } else {
                 //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
                 UserDataWhileUsingEntity newUserData = getNewUserData(deviceId, userLocationX, userLocationY, userDocumentTime, oldUserData);
                 redisUtils.del(2, key);
@@ -183,10 +188,6 @@ public class UserController {
                 String result = redisUtils.set(2, "location_info_" + userInfo.getUserAccount() + "_" + DateFormatUtils.format(DateUtils.parseDate(userDocumentTime, "yyyy-MM-dd hh:mm:ss"), "yyyy:MM:dd_hh:mm:ss"),
                         gson.toJson(newUserData));
                 LOGGER.info("initDataToRedis result:{}", result);
-            } else {
-                //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
-                UserDataWhileUsingEntity newUserData = getNewUserData(deviceId, userLocationX, userLocationY, userDocumentTime, oldUserData);
-                userDataWhileUsingService.save(newUserData);
             }
 
         }
