@@ -8,7 +8,6 @@ import com.shnu.work.service.IAdministrationInformationService;
 import com.shnu.work.service.ISystemInformationService;
 import com.shnu.work.service.IUserInformationService;
 import com.shnu.work.util.NewRedisUtils;
-import com.shnu.work.util.RedisUtils;
 import com.spoon.pass.encrypt.EncryptDecrypt;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
