@@ -53,4 +53,10 @@ class WorkApplicationTests {
         boolean b = strings1.addAll(new ArrayList<>(strings));
         System.out.println("strings1 = " + strings1);
     }
+
+    @Test
+    public void testDate() {
+        String str = "Mon Jun 08 15:01:05 CST 2020";
+
+    }
 }

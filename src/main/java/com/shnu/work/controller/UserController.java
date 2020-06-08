@@ -1,6 +1,7 @@
 package com.shnu.work.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shnu.work.dto.UserDataWhileUsingDTO;
 import com.shnu.work.entity.UserDataWhileUsingEntity;
 import com.shnu.work.entity.UserInformationEntity;
@@ -9,6 +10,7 @@ import com.shnu.work.service.IUserInformationService;
 import com.shnu.work.util.NewRedisUtils;
 import com.shnu.work.util.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -128,14 +130,24 @@ public class UserController {
 
     @RequestMapping("/updateRecord/{userDocumentTime}")
     public ModelAndView updateRecord(ModelAndView modelAndView, HttpSession session,
-                               @PathVariable("userDocumentTime") String userDocumentTime) {
+                                     @PathVariable("userDocumentTime") String userDocumentTime) {
         LOGGER.info("userDocumentTime:{}", userDocumentTime);
         String loginUser = (String) session.getAttribute("login_user");
         if (!StringUtils.isBlank(loginUser)) {
+            NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("updateRecord userInfo:{}", gson.toJson(userInfo));
             UserDataWhileUsingEntity curUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
             LOGGER.info("updateRecord curUserData:{}", gson.toJson(curUserData));
+            if (curUserData == null) {
+                String key = "location_info_" + userInfo.getUserAccount() + "_" + userDocumentTime.replace(".0", "").replace(" ", "_").replace("-", ":");
+                LOGGER.info("updateRecord curDataStr:{}", key);
+                String curDataStr = redisUtils.get(2, key);
+                LOGGER.info("updateRecord curDataStr:{}", curDataStr);
+                curUserData = gson.fromJson(curDataStr, new TypeToken<UserDataWhileUsingEntity>() {
+                }.getType());
+            }
+            LOGGER.info("updateRecord curUserData From Redis:{}", gson.toJson(curUserData));
 
             modelAndView.addObject("curUserData", curUserData);
         }
@@ -145,12 +157,12 @@ public class UserController {
 
     @RequestMapping("/submitUpdateRecord")
     public ModelAndView submitUpdateRecord(HttpSession session,
-                                     ModelAndView modelAndView,
-                                     @Param("deviceId") Integer deviceId,
-                                     @Param("userLocationX") String userLocationX,
-                                     @Param("userLocationY") String userLocationY,
-                                     @Param("userDocumentTime") String userDocumentTime,
-                                     @Param("userOldDocumentTime") String userOldDocumentTime) throws ParseException {
+                                           ModelAndView modelAndView,
+                                           @Param("deviceId") Integer deviceId,
+                                           @Param("userLocationX") String userLocationX,
+                                           @Param("userLocationY") String userLocationY,
+                                           @Param("userDocumentTime") String userDocumentTime,
+                                           @Param("userOldDocumentTime") String userOldDocumentTime) throws ParseException {
         LOGGER.info("userOldDocumentTime:{}", userOldDocumentTime);
         String loginUser = (String) session.getAttribute("login_user");
         if (!StringUtils.isBlank(loginUser)) {

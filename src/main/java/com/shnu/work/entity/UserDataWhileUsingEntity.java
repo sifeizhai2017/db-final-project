@@ -46,7 +46,7 @@ public class UserDataWhileUsingEntity implements Serializable {
     }
 
     @Basic
-    @Column(name = "device_id", nullable = false)
+    @Column(name = "device_id", nullable = true)
     public long getDeviceId() {
         return deviceId;
     }
@@ -56,7 +56,7 @@ public class UserDataWhileUsingEntity implements Serializable {
     }
 
     @Basic
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = true)
     public long getUserId() {
         return userId;
     }

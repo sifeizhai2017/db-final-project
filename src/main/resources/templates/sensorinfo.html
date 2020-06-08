@@ -103,6 +103,8 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <!--                               th:href="@{/user/updateRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}"-->
+
                     <tr th:each="userData:${userDataList}">
                         <td th:text="${userData.getDeviceId()}">${userDataList.get}</td>
                         <td th:text="${userData.getUserLocationX()}"></td>
@@ -112,7 +114,7 @@
                         <td th:text="${userData.getUserEmergencyContact()}"></td>
                         <td th:text="${userData.getUserHealthCareDemo()}"></td>
                         <td><a type="button"
-                               th:href="@{/user/updateRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}"
+                               th:href="@{/user/updateRecord/{userDocumentTime}(userDocumentTime=${#dates.format(userData.getUserDocumentTime(), 'yyyy-MM-dd hh:mm:ss')})}"
                                class="btn btn-warning btn-xs">修改</a>
                         </td>
                         <td>

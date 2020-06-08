@@ -38,7 +38,7 @@ public class AutoInitLocationTask {
     private final static Logger LOGGER = LoggerFactory.getLogger(AutoInitLocationTask.class);
     private final Gson gson = new Gson();
 
-    @Scheduled(cron = "*/5 * * * * *")
+//    @Scheduled(cron = "*/5 * * * * *")
     private void initDataToRedis() {
         LOGGER.info("=========================随机生成数据插入到redis开始===========================");
         NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
@@ -73,7 +73,7 @@ public class AutoInitLocationTask {
     }
 
 
-    @Scheduled(cron = "*/60 * * * * *")
+//    @Scheduled(cron = "*/60 * * * * *")
     private void flushDataToMySql() {
         LOGGER.info("=========================从redis中取数据插入到mysql开始===========================");
         NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
