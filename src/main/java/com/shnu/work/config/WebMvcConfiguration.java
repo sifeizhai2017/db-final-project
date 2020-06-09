@@ -21,6 +21,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                 "/**/*.jpg",
                 "/**/*.js",
                 "/**/*.png",
+                "/**/*.woff",
                 "/index");
         interceptorRegistration.excludePathPatterns("/adminLogin",
                 "/login/**",

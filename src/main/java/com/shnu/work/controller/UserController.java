@@ -8,7 +8,6 @@ import com.shnu.work.entity.UserInformationEntity;
 import com.shnu.work.service.IUserDataWhileUsingService;
 import com.shnu.work.service.IUserInformationService;
 import com.shnu.work.util.NewRedisUtils;
-import com.shnu.work.util.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
@@ -17,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -36,15 +37,12 @@ import java.util.Set;
 @Controller
 @RequestMapping("/user")
 public class UserController {
+    private final static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+    private final Gson gson = new Gson();
     @Autowired
     IUserInformationService userInformationService;
-
     @Autowired
     IUserDataWhileUsingService userDataWhileUsingService;
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
-
-    private final Gson gson = new Gson();
 
     @RequestMapping("/getUserInfo")
     public ModelAndView getUserInfo(ModelAndView modelAndView, HttpSession session) {
@@ -97,7 +95,7 @@ public class UserController {
                     userDataWhileUsingService.listUserDataWhileUsingEntitiesByUserId(userInfo.getId());
             LOGGER.info("userDataList Before Redis:{}", gson.toJson(userDataList));
             Set<String> redisUserData = redisUtils.keys(2, "location_info_" + userInfo.getUserAccount() + "_*");
-            redisUserData.stream().map(key -> redisUtils.get(2, key)).map(value -> gson.fromJson(value, UserDataWhileUsingEntity.class)).forEach(userDataList::add);
+            redisUserData.stream().map(key -> redisUtils.get(2, key)).map(value -> gson.fromJson(value, UserDataWhileUsingEntity.class)).filter(userDataWhileUsingEntity -> new Integer(1).equals(userDataWhileUsingEntity.getIsDeleted())).forEach(userDataList::add);
             LOGGER.info("userDataList After Redis:{}", gson.toJson(userDataList));
             modelAndView.addObject("userDataList", userDataList);
         }
@@ -174,7 +172,7 @@ public class UserController {
             LOGGER.info("submitUpdateRecord oldUserDataStr:{}", oldUserDataStr);
             UserDataWhileUsingEntity oldUserData = gson.fromJson(oldUserDataStr, new TypeToken<UserDataWhileUsingEntity>() {
             }.getType());
-            if (oldUserData != null) {
+            if (oldUserDataStr == null) {
                 oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
                 LOGGER.info("submitUpdateRecord oldUserData:{}", gson.toJson(oldUserData));
                 //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
@@ -211,14 +209,30 @@ public class UserController {
     @RequestMapping("/removeRecord/{userDocumentTime}")
     public ModelAndView removeRecord(ModelAndView modelAndView, HttpSession session, @PathVariable("userDocumentTime") String userDocumentTime) {
         String loginUser = (String) session.getAttribute("login_user");
+        NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
         if (!StringUtils.isBlank(loginUser)) {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("removeRecord userInfo:{}", gson.toJson(userInfo));
             // 某一个时间点某一个用户的记录
-            UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
-            LOGGER.info("removeRecord oldUserData:{}", gson.toJson(oldUserData));
-            //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
-            userDataWhileUsingService.removeUserDataById(oldUserData.getId());
+            String key = "location_info_" + userInfo.getUserAccount() + "_" + userDocumentTime.replace(".0", "").replace(" ", "_").replace("-", ":");
+            LOGGER.info("removeRecord key:{}", key);
+            String oldUserDataStr = redisUtils.get(2, key);
+            LOGGER.info("removeRecord oldUserDataStr:{}", oldUserDataStr);
+            if (!StringUtils.isBlank(oldUserDataStr)) {
+                UserDataWhileUsingEntity oldUserData = gson.fromJson(oldUserDataStr, new TypeToken<UserDataWhileUsingEntity>() {
+                }.getType());
+                oldUserData.setIsDeleted(1);
+                redisUtils.set(2, key, gson.toJson(oldUserData));
+            } else {
+                LOGGER.info("removeRecord userDocumentTime:{}", userDocumentTime);
+                UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime, userInfo.getId());
+                LOGGER.info("removeRecord oldUserData:{}", gson.toJson(oldUserData));
+                //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
+                UserDataWhileUsingEntity newUserData = new UserDataWhileUsingEntity();
+                BeanUtils.copyProperties(oldUserData, newUserData);
+                newUserData.setIsDeleted(1);
+                userDataWhileUsingService.save(newUserData);
+            }
         }
 
         listSensorData(modelAndView, loginUser);

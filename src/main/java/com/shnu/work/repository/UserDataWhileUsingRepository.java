@@ -6,8 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,23 +29,8 @@ public interface UserDataWhileUsingRepository extends CrudRepository<UserDataWhi
      * @param userId           userId
      * @return 结果
      */
-    @Query(value = "SELECT * FROM user_data_while_using WHERE user_document_time = ?1 AND user_id = ?2 and is_deleted = 0", nativeQuery = true)
+    @Query(value = "SELECT * FROM user_data_while_using WHERE user_document_time = ?1 AND user_id = ?2 AND is_deleted = 0", nativeQuery = true)
     UserDataWhileUsingEntity getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(String userDocumentTime, Long userId);
-
-    /**
-     * 更新
-     *
-     * @param deviceId         设备id
-     * @param userLocationX    纬度
-     * @param userLocationY    经度
-     * @param userDocumentTime 时间戳
-     * @param id               查询条件
-     * @return
-     */
-    @Modifying
-    @Query(value = "UPDATE user_data_while_using SET device_id = ?1, user_location_x = ?2, user_location_y = ?3, user_document_time = ?3 WHERE id = ?4", nativeQuery = true)
-    Integer updateByDocumentTimeAndUserId(long deviceId, BigDecimal userLocationX, BigDecimal userLocationY, Date userDocumentTime, long id);
-
 
     /**
      * 根据id删除
