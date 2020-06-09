@@ -1,6 +1,7 @@
 package com.shnu.work.interceptor;
 
 import com.shnu.work.util.NewRedisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -26,9 +27,12 @@ public class LoginInterceptor implements HandlerInterceptor {
         String userInfo;
         try {
             userInfo = newRedisUtils.get(0, jSessionId);
+            if (StringUtils.isBlank(userInfo)) {
+                userInfo = newRedisUtils.get(1, jSessionId);
+            }
             LOGGER.info("userInfo:{}", userInfo);
         } catch (Exception e) {
-            return true;
+            return false;
         }
         LOGGER.info("userInfo:{}", userInfo);
 

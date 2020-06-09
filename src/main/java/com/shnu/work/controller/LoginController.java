@@ -115,7 +115,7 @@ public class LoginController {
                 modelAndView.setViewName("/login");
             } else {
                 modelAndView.addObject("msg", "success");
-                modelAndView.setViewName("/index");
+                modelAndView.setViewName("/admin");
                 session.setAttribute("admin_user", adminAccount);
                 redisUtils.set(1, session.getId(), gson.toJson(adminInfoEntity));
                 Long expire = redisUtils.expire(1, session.getId(), 60000);

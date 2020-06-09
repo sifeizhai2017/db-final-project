@@ -51,6 +51,7 @@ public class AdminController {
     @RequestMapping("/getSensorInfo")
     public ModelAndView getSensorInfo(ModelAndView modelAndView, HttpSession session) {
         String adminUser = (String) session.getAttribute("admin_user");
+        LOGGER.info("admin getSensorInfo adminUser:{}", adminUser);
         listSensorData(modelAndView, adminUser);
         modelAndView.setViewName("/admin");
         return modelAndView;
@@ -117,6 +118,8 @@ public class AdminController {
             modelAndView.addObject("curUserData", curUserData);
         }
         modelAndView.setViewName("/update");
+
+        return modelAndView;
     }
 
     @RequestMapping("/submitUpdateRecord")
