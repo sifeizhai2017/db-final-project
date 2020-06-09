@@ -1,13 +1,16 @@
 package com.shnu.work.controller;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.shnu.work.dto.UserDataWhileUsingDTO;
 import com.shnu.work.entity.UserDataWhileUsingEntity;
 import com.shnu.work.entity.UserInformationEntity;
 import com.shnu.work.service.IUserDataWhileUsingService;
 import com.shnu.work.service.IUserInformationService;
+import com.shnu.work.util.NewRedisUtils;
 import com.shnu.work.util.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
@@ -23,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Kanna Hashimoto
@@ -54,11 +58,15 @@ public class AdminController {
 
     private void listSensorData(ModelAndView modelAndView, String adminUser) {
         if (!StringUtils.isBlank(adminUser)) {
+            NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(adminUser);
             LOGGER.info("userInfo:{}", gson.toJson(userInfo));
             List<UserDataWhileUsingEntity> userDataList =
                     userDataWhileUsingService.listAllUndeleted();
-            LOGGER.info("userDataList:{}", gson.toJson(userDataList));
+            LOGGER.info("userDataList Before Redis:{}", gson.toJson(userDataList));
+            Set<String> redisUserData = redisUtils.keys(2, "location_info_*");
+            redisUserData.stream().map(key -> redisUtils.get(2, key)).map(value -> gson.fromJson(value, UserDataWhileUsingEntity.class)).filter(userDataWhileUsingEntity -> new Integer(1).equals(userDataWhileUsingEntity.getIsDeleted())).forEach(userDataList::add);
+            LOGGER.info("userDataList After Redis:{}", gson.toJson(userDataList));
             modelAndView.addObject("userDataList", userDataList);
         }
     }
@@ -88,17 +96,27 @@ public class AdminController {
     public ModelAndView updateRecord(ModelAndView modelAndView, HttpSession session,
                                      @PathVariable("userDocumentTime") String userDocumentTime) {
         LOGGER.info("userDocumentTime:{}", userDocumentTime);
+        NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
         String loginUser = (String) session.getAttribute("login_user");
         if (!StringUtils.isBlank(loginUser)) {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("updateRecord userInfo:{}", gson.toJson(userInfo));
-            UserDataWhileUsingEntity curUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
-            LOGGER.info("updateRecord curUserData:{}", gson.toJson(curUserData));
+            String key = "location_info_" + userInfo.getUserAccount() + "_" + userDocumentTime.replace(".0", "").replace(" ", "_").replace("-", ":");
+            LOGGER.info("updateRecord curDataStr:{}", key);
+            String curDataStr = redisUtils.get(2, key);
+            LOGGER.info("updateRecord curDataStr:{}", curDataStr);
+            UserDataWhileUsingEntity curUserData = gson.fromJson(curDataStr, new TypeToken<UserDataWhileUsingEntity>() {
+            }.getType());
+            //redis中找不到再去mysql中找
+            if (curUserData == null) {
+                curUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
+                LOGGER.info("updateRecord curUserData:{}", gson.toJson(curUserData));
+            }
+            LOGGER.info("updateRecord curUserData From Redis:{}", gson.toJson(curUserData));
 
             modelAndView.addObject("curUserData", curUserData);
         }
         modelAndView.setViewName("/update");
-        return modelAndView;
     }
 
     @RequestMapping("/submitUpdateRecord")
@@ -111,39 +129,78 @@ public class AdminController {
                                            @Param("userOldDocumentTime") String userOldDocumentTime) throws ParseException {
         LOGGER.info("userOldDocumentTime:{}", userOldDocumentTime);
         String loginUser = (String) session.getAttribute("login_user");
+        NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
         if (!StringUtils.isBlank(loginUser)) {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("submitUpdateRecord userInfo:{}", gson.toJson(userInfo));
             // 某一个时间点某一个用户的记录
-            UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
-            LOGGER.info("submitUpdateRecord oldUserData:{}", gson.toJson(oldUserData));
-            //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
-            UserDataWhileUsingEntity newUserData = new UserDataWhileUsingEntity();
-            BeanUtils.copyProperties(oldUserData, newUserData);
-            newUserData.setId(oldUserData.getId());
-            newUserData.setDeviceId(deviceId);
-            newUserData.setUserLocationX(new BigDecimal(userLocationX));
-            newUserData.setUserLocationY(new BigDecimal(userLocationY));
-            newUserData.setUserDocumentTime(DateUtils.parseDate(userDocumentTime.replace(".0", ""), "yyyy-MM-dd hh:mm:ss"));
-            LOGGER.info("updateRecord newUserData:{}", gson.toJson(newUserData));
-            userDataWhileUsingService.save(newUserData);
+            String key = "location_info_" + userInfo.getUserAccount() + "_" + userOldDocumentTime.replace(".0", "").replace(" ", "_").replace("-", ":");
+            LOGGER.info("submitUpdateRecord key:{}", key);
+            String oldUserDataStr = redisUtils.get(2, key);
+            LOGGER.info("submitUpdateRecord oldUserDataStr:{}", oldUserDataStr);
+            UserDataWhileUsingEntity oldUserData = gson.fromJson(oldUserDataStr, new TypeToken<UserDataWhileUsingEntity>() {
+            }.getType());
+            if (oldUserDataStr == null) {
+                oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
+                LOGGER.info("submitUpdateRecord oldUserData:{}", gson.toJson(oldUserData));
+                //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
+                UserDataWhileUsingEntity newUserData = getNewUserData(deviceId, userLocationX, userLocationY, userDocumentTime, oldUserData);
+                userDataWhileUsingService.save(newUserData);
+            } else {
+                //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
+                UserDataWhileUsingEntity newUserData = getNewUserData(deviceId, userLocationX, userLocationY, userDocumentTime, oldUserData);
+                redisUtils.del(2, key);
+                //存入redis
+                String result = redisUtils.set(2, "location_info_" + userInfo.getUserAccount() + "_" + DateFormatUtils.format(DateUtils.parseDate(userDocumentTime, "yyyy-MM-dd hh:mm:ss"), "yyyy:MM:dd_hh:mm:ss"),
+                        gson.toJson(newUserData));
+                LOGGER.info("initDataToRedis result:{}", result);
+            }
+
         }
         listSensorData(modelAndView, loginUser);
         modelAndView.setViewName("/sensorinfo");
         return modelAndView;
     }
 
+    private UserDataWhileUsingEntity getNewUserData(Integer deviceId, String userLocationX, String userLocationY, String userDocumentTime, UserDataWhileUsingEntity oldUserData) throws ParseException {
+        UserDataWhileUsingEntity newUserData = new UserDataWhileUsingEntity();
+        BeanUtils.copyProperties(oldUserData, newUserData);
+        newUserData.setId(oldUserData.getId());
+        newUserData.setDeviceId(deviceId);
+        newUserData.setUserLocationX(new BigDecimal(userLocationX));
+        newUserData.setUserLocationY(new BigDecimal(userLocationY));
+        newUserData.setUserDocumentTime(DateUtils.parseDate(userDocumentTime.replace(".0", ""), "yyyy-MM-dd hh:mm:ss"));
+        LOGGER.info("updateRecord newUserData:{}", gson.toJson(newUserData));
+        return newUserData;
+    }
+
     @RequestMapping("/removeRecord/{userDocumentTime}")
     public ModelAndView removeRecord(ModelAndView modelAndView, HttpSession session, @PathVariable("userDocumentTime") String userDocumentTime) {
         String loginUser = (String) session.getAttribute("login_user");
+        NewRedisUtils redisUtils = NewRedisUtils.getRedisUtil();
         if (!StringUtils.isBlank(loginUser)) {
             UserInformationEntity userInfo = userInformationService.getUserInformationEntityByUserAccount(loginUser);
             LOGGER.info("removeRecord userInfo:{}", gson.toJson(userInfo));
             // 某一个时间点某一个用户的记录
-            UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime.replace(".0", ""), userInfo.getId());
-            LOGGER.info("removeRecord oldUserData:{}", gson.toJson(oldUserData));
-            //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
-            userDataWhileUsingService.removeUserDataById(oldUserData.getId());
+            String key = "location_info_" + userInfo.getUserAccount() + "_" + userDocumentTime.replace(".0", "").replace(" ", "_").replace("-", ":");
+            LOGGER.info("removeRecord key:{}", key);
+            String oldUserDataStr = redisUtils.get(2, key);
+            LOGGER.info("removeRecord oldUserDataStr:{}", oldUserDataStr);
+            if (!StringUtils.isBlank(oldUserDataStr)) {
+                UserDataWhileUsingEntity oldUserData = gson.fromJson(oldUserDataStr, new TypeToken<UserDataWhileUsingEntity>() {
+                }.getType());
+                oldUserData.setIsDeleted(1);
+                redisUtils.set(2, key, gson.toJson(oldUserData));
+            } else {
+                LOGGER.info("removeRecord userDocumentTime:{}", userDocumentTime);
+                UserDataWhileUsingEntity oldUserData = userDataWhileUsingService.getUserDataWhileUsingEntityByUserDocumentTimeAndUserId(userDocumentTime, userInfo.getId());
+                LOGGER.info("removeRecord oldUserData:{}", gson.toJson(oldUserData));
+                //必须new一个对象然后copyProperties，不然报错，报错原因和id有关
+                UserDataWhileUsingEntity newUserData = new UserDataWhileUsingEntity();
+                BeanUtils.copyProperties(oldUserData, newUserData);
+                newUserData.setIsDeleted(1);
+                userDataWhileUsingService.save(newUserData);
+            }
         }
 
         listSensorData(modelAndView, loginUser);
