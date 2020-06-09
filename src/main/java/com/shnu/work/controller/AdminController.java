@@ -75,7 +75,7 @@ public class AdminController {
     @RequestMapping("/saveNewRecord")
     public ModelAndView saveNewRecord(ModelAndView modelAndView, HttpSession session, UserDataWhileUsingDTO userDataWhileUsingDto) throws ParseException {
         LOGGER.info("userDataWhileUsingDto:{}", gson.toJson(userDataWhileUsingDto));
-        String loginUser = (String) session.getAttribute("login_user");
+        String loginUser = (String) session.getAttribute("admin_user");
         //从redis中获取用户信息
         String loginUserJson = redisUtils.get("login_user_" + loginUser);
         UserInformationEntity loginUserEntity = gson.fromJson(loginUserJson, UserInformationEntity.class);

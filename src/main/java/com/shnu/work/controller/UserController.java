@@ -117,7 +117,9 @@ public class UserController {
         userDataWhileUsingEntity.setUserId(loginUserEntity.getId());
         userDataWhileUsingEntity.setUserName(loginUserEntity.getUserName());
 
-        UserDataWhileUsingEntity save = userDataWhileUsingService.save(userDataWhileUsingEntity);
+        // 存入redis
+        String result = redisUtils.set(2, "location_info_" + loginUserEntity.getUserAccount() + "_" + DateFormatUtils.format(userDataWhileUsingEntity.getUserDocumentTime(), "yyyy:MM:dd_hh:mm:ss"),
+                gson.toJson(userDataWhileUsingEntity));
 
         listSensorData(modelAndView, loginUser);
         return modelAndView;

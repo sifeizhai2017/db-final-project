@@ -55,7 +55,7 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                               aria-haspopup="true" aria-expanded="false" th:text="${session.login_user}"> <span
+                               aria-haspopup="true" aria-expanded="false" th:text="${session.admin_user}"> <span
                                     class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="/login/userLogout">退出登陆</a></li>
@@ -110,7 +110,7 @@
                         <td th:text="${userData.getUserEmergencyContact()}"></td>
                         <td th:text="${userData.getUserHealthCareDemo()}"></td>
                         <td><a type="button"
-                               th:href="@{/admin/updateRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}"
+                               th:href="@{/admin/updateRecord/{userDocumentTime}(userDocumentTime=${#dates.format(userData.getUserDocumentTime(), 'yyyy-MM-dd hh:mm:ss')})}"
                                class="btn btn-warning btn-xs">修改</a>
                         </td>
                         <td>
@@ -130,7 +130,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">我再想想</button>
-                                        <a type="button" th:href="@{/admin/removeRecord/{userDocumentTime}(userDocumentTime=${userData.getUserDocumentTime()})}" class="btn btn-danger">没错，我要删除</a>
+                                        <a type="button" th:href="@{/admin/removeRecord/{userDocumentTime}(userDocumentTime=${#dates.format(userData.getUserDocumentTime(), 'yyyy-MM-dd hh:mm:ss')})}" class="btn btn-danger">没错，我要删除</a>
                                     </div>
                                 </div>
                             </div>
